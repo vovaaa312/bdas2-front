@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Adresy</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 10px 0;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+<h1>Adresy</h1>
+<div th:if="${not #lists.isEmpty(adresy)}">
+  <table>
+    <thead>
+    <tr>
+      <th>ZEME</th>
+      <th>MESTO</th>
+      <th>ADRESA</th>
+      <th>PSC</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="adresa : ${adresy}">
+      <td th:text="${adresa.zeme}"></td>
+      <td th:text="${adresa.mesto}"></td>
+      <td th:text="${adresa.adresa}"></td>
+      <td th:text="${adresa.psc}"></td>
+      <td><a th:href="@{adresa-update/{id}(id=${adresa.id})}">Edit</a></td>
+      <td><a th:href="@{adresa-delete/{id}(id=${adresa.id})}">Delete</a></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
