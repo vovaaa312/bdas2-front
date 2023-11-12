@@ -17,7 +17,7 @@
 <div class="container" style="margin-bottom: 70px;">
     <h2>Add pacient</h2>
 
-    <form th:action="@{/addPacient}" th:object="${pacientAdresa}" method="post">
+    <form th:action="@{/savePacient}" th:object="${pacientAdresa}" method="post">
         <div class="mb-3">
             <label  class="form-label">Jmeno</label>
             <input th:field="*{jmeno}" type="text" class="form-control">
@@ -69,7 +69,7 @@
                     <a th:href="@{/pacienti}" class="btn btn-primary">Back</a>
                 </div>
                 <div class="col">
-                    <form th:action="@{/savePA}" th:object="${pacientAdresa}" method="post">
+                    <form th:action="@{/savePacient}" th:object="${pacientAdresa}" method="post">
                         <!-- Поля формы здесь -->
                         <button type="submit" class="btn btn-success">Submit</button>
                     </form>

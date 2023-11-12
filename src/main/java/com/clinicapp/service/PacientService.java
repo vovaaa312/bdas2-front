@@ -1,27 +1,28 @@
 package com.clinicapp.service;
 
+import com.clinicapp.model.Pacient;
 import com.clinicapp.model.views.PacientAdresa;
-import com.clinicapp.repository.PacientAdressRepository;
+import com.clinicapp.repository.PacientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PacientAddressService {
+public class PacientService {
 
-    PacientAdressRepository pacientAdressRepository;
+    private final PacientRepository pacientAdressRepository;
 
     @Autowired
-    public PacientAddressService(PacientAdressRepository pacientAdressRepository) {
+    public PacientService(PacientRepository pacientAdressRepository) {
         this.pacientAdressRepository = pacientAdressRepository;
     }
 
-    public List<PacientAdresa> findAll(){
+    public List<Pacient> findAll(){
         return pacientAdressRepository.findAll();
     }
 
-    public PacientAdresa getById(int id){
+    public Pacient getById(int id){
         return pacientAdressRepository.getOne(id);
     }
 

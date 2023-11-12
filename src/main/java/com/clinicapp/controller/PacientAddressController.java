@@ -1,7 +1,7 @@
 package com.clinicapp.controller;
 
 import com.clinicapp.model.views.PacientAdresa;
-import com.clinicapp.service.PacientAddressService;
+import com.clinicapp.service.PacientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class PacientAddressController {
-    private PacientAddressService pacientAddressService;
+    private PacientService pacientAddressService;
 
     @Autowired
-    public PacientAddressController(PacientAddressService pacientAddressService) {
+    public PacientAddressController(PacientService pacientAddressService) {
         this.pacientAddressService = pacientAddressService;
     }
 
@@ -31,7 +31,7 @@ public class PacientAddressController {
         return "pacient/add-pacient";
     }
 
-    @PostMapping("/savePA")
+    @PostMapping("/savePacient")
     public String savePacient(@ModelAttribute("pacientAdresa") PacientAdresa pacientAdresa) {
         pacientAddressService.save(pacientAdresa);
         return "redirect:/pacienti"; // Используйте редирект для предотвращения дублирования запросов при обновлении страницы
