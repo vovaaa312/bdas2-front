@@ -23,7 +23,7 @@ public class AddressService {
     }
 
     public  Adresa getById(int id){
-        return addressRepository.getOne(id);
+        return addressRepository.getById(id);
     }
 
 }
