@@ -20,6 +20,6 @@ public class AddressController {
     @GetMapping("/")
     public String homePage(Model model){
         model.addAttribute("adresyList", addressService.findAll());
-        return "hello";
+        return "adresy-list";
     }
 }

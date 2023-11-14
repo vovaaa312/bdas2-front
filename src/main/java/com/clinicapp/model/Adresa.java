@@ -8,6 +8,9 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -38,6 +41,15 @@ public class Adresa {
         this.adresa = adresa;
         this.psc = psc;
     }
+
+//    public Adresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
+//        Adresa adresa = new Adresa();
+//        adresa.setId(rs.getInt("ID_ADRESA"));
+//        adresa.setZeme(rs.getString("ZEME"));
+//        adresa.setMesto(rs.getString("MESTO"));
+//        adresa.setAdresa(rs.getString("ADRESA"));
+//        adresa.setPsc(rs.getInt("PSC"));
+//    }
 
 
 }
