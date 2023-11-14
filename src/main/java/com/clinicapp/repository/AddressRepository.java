@@ -12,4 +12,11 @@ import java.util.List;
 public class AddressRepository  {
 
 
+    public List<Adresa> findAll() {
+        return null;
+    }
+
+    public Adresa getById(int id) {
+        return null;
+    }
 }

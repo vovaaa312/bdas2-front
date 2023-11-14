@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,16 @@ public class PacientRepository {
     @Autowired
     public PacientRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void savePacientProcedure(
+            String jmeno, String prijmeni, Date datumHospitalizace, Date datumNarozeni,
+            int cisloTelefonu, String pohlavi, String zeme, String mesto, String adresa, int psc) {
+
+        String sql = "CALL VLOZ_PACIENTA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(sql, jmeno, prijmeni, datumHospitalizace, datumNarozeni,
+                cisloTelefonu, pohlavi, zeme, mesto, adresa, psc);
     }
 
     public void save(Pacient pacient) {

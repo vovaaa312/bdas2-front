@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Date;
+
 @Controller
 public class PacientAddressController {
     private PacientAddressService pacientAddressService;
@@ -33,6 +35,17 @@ public class PacientAddressController {
 
     @PostMapping("/savePA")
     public String savePacient(@ModelAttribute("pacientAdresa") PacientAdresa pacientAdresa) {
+
+        pacientAdresa.setJmeno("PETR");
+        pacientAdresa.setPrijmeni("PETROV");
+        pacientAdresa.setDatumHospitalizace(new Date());
+        pacientAdresa.setDatumNarozeni(new Date());
+        pacientAdresa.setCisloTelefonu(123);
+        pacientAdresa.setPohlavi("MUZ");
+        pacientAdresa.setZeme("CR");
+        pacientAdresa.setMesto("QWEQWE");
+        pacientAdresa.setAdresa("AWQERWERE");
+        pacientAdresa.setPsc(12312);
         pacientAddressService.save(pacientAdresa);
         return "redirect:/pacienti"; // Используйте редирект для предотвращения дублирования запросов при обновлении страницы
     }
