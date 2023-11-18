@@ -36,17 +36,17 @@ public class PacientAddressController {
     @PostMapping("/savePA")
     public String savePacient(@ModelAttribute("pacientAdresa") PacientAdresa pacientAdresa) {
 
-        pacientAdresa.setJmeno("PETR");
-        pacientAdresa.setPrijmeni("PETROV");
-        pacientAdresa.setDatumHospitalizace(new Date());
-        pacientAdresa.setDatumNarozeni(new Date());
-        pacientAdresa.setCisloTelefonu(123);
-        pacientAdresa.setPohlavi("MUZ");
-        pacientAdresa.setZeme("CR");
-        pacientAdresa.setMesto("QWEQWE");
-        pacientAdresa.setAdresa("AWQERWERE");
-        pacientAdresa.setPsc(12312);
-        pacientAddressService.save(pacientAdresa);
+//        pacientAdresa.setJmeno("PETR");
+//        pacientAdresa.setPrijmeni("PETROV");
+//        pacientAdresa.setDatumHospitalizace(new Date());
+//        pacientAdresa.setDatumNarozeni(new Date());
+//        pacientAdresa.setCisloTelefonu(123);
+//        pacientAdresa.setPohlavi("MUZ");
+//        pacientAdresa.setZeme("CR");
+//        pacientAdresa.setMesto("QWEQWE");
+//        pacientAdresa.setAdresa("AWQERWERE");
+//        pacientAdresa.setPsc(12312);
+//        pacientAddressService.save(pacientAdresa);
         return "redirect:/pacienti"; // Используйте редирект для предотвращения дублирования запросов при обновлении страницы
     }
 
