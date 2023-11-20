@@ -14,11 +14,11 @@ import java.util.Date;
 @Table(name = "pacienti")
 public class Pacient {
     @Id
-    @Column(name = "ID_ADRESA")
-    private int id;
+    @Column(name = "ID_PACIENT")
+    private int idPacient;
 
     @Column(name = "ADRESY_ID_ADRESA")
-    private int id_adresa;
+    private int adresyIdAdresa;
 
     @Column(name = "JMENO")
     private String jmeno;
@@ -26,7 +26,7 @@ public class Pacient {
     @Column(name = "PRIJMENI")
     private String prijmeni;
 
-    @Column(name = "DATUM_HOSTPITALIZACE")
+    @Column(name = "DATUM_HOSPITALIZACE")
     private Date datumHospitalizace;
 
     @Column(name = "DATUM_NAROZENI")
@@ -40,7 +40,7 @@ public class Pacient {
 
 
     public Pacient(int id_adresa, String jmeno, String prijmeni, Date datumHospitalizace, Date datumNarozeni, int cisloTelefonu, String pohlavi) {
-        this.id_adresa = id_adresa;
+        this.adresyIdAdresa = id_adresa;
         this.jmeno = jmeno;
         this.prijmeni = prijmeni;
         this.datumHospitalizace = datumHospitalizace;
