@@ -1,13 +1,11 @@
-// В файле, где определен тип Pacient (например, types.ts)
-
-export type Pacient = {
+export type Zamestnanec = {
   id: number;
   addressId: number;
   jmeno: string;
   prijmeni: string;
-  datumHospitalizace: Date;
   datumNarozeni: Date;
   cisloTelefonu: number;
   pohlavi: string;
+  pracZkusenosti: number;
   // Добавьте остальные поля, если они присутствуют
 };

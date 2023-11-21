@@ -1,23 +1,46 @@
 package com.clinicapp.controller;
 
 import com.clinicapp.model.Pacient;
-import com.clinicapp.repository.PacientRepository;
+import com.clinicapp.service.PacientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("/api/v1/pacienti")
+
+@CrossOrigin("*")
+@RestController
+@RequestMapping("/api/pacienti")
 public class PacientController {
 
     @Autowired
-    private PacientRepository pacientRepository;
+    private PacientService pacientService;
+
 
     @GetMapping
-    public List<Pacient> getAllPacients(){
-        return pacientRepository.findAll();
+    public ResponseEntity<List<Pacient>> getAllPacients() {
+        return ResponseEntity.ok(pacientService.getAll());
     }
+
+    @PostMapping
+    public void createPacient(@RequestBody Pacient pacient) {
+         pacientService.save(pacient);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<Pacient> updatePacient(@PathVariable long id, @RequestBody Pacient pacient) {
+        pacientService.update(pacient);
+        return ResponseEntity.ok(pacient);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deletePacient(@PathVariable int id){
+        pacientService.getById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
 }

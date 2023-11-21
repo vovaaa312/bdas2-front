@@ -18,11 +18,11 @@ public class UzivatelService {
     }
 
     public List<Uzivatel> findAll(){
-        return uzivatelRepository.findAll();
+        return uzivatelRepository.getAll();
     }
 
     public Uzivatel getById(int id){
-        return uzivatelRepository.findById(id);
+        return uzivatelRepository.getById(id);
     }
 
     public void save(Uzivatel uzivatel){

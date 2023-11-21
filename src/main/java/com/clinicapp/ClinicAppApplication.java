@@ -19,13 +19,11 @@ public class ClinicAppApplication implements CommandLineRunner {
 
     @Autowired
     private PacientRepository pacientRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        Pacient p = new Pacient(61,"IVAN","PETROV", new Date(), new Date(),123,"muz");
-        p = null;        //pacientRepository.save(p);
-        p = pacientRepository.findById(80131);
 
-        List<Pacient > list = pacientRepository.findAll();
+        List<Pacient> list = pacientRepository.getAll();
         System.out.println(list);
     }
 }

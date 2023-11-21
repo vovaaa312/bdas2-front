@@ -21,7 +21,7 @@ import java.sql.SQLException;
 public class Adresa {
     @Id
     @Column(name = "ID_ADRESA")
-    private int id;
+    private int idAdresa;
 
     @Column(name = "ZEME")
     private String zeme;
