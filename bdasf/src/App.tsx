@@ -1,6 +1,5 @@
 // App.tsx
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
 import PacientList from "./components/pacient/PacientList";
@@ -22,6 +21,8 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/pacienti" element={<PacientList />} />
         <Route path="/addPacient" element={<AddPacient />} />
+        <Route path="/edit-pacient/:id" element={<AddPacient />} />
+
         <Route path="/zamestnanci" element={<ZamestnanecList />} />
         <Route path="/addZamestnanec" element={<AddZamestnanec />} />
       </Routes>

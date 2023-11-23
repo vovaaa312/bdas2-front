@@ -22,18 +22,6 @@ public class PacientService {
         return pacientRepository.getAll();
     }
 
-    public List<Pacient> getByJmeno(String jmeno) {
-        return pacientRepository.getByJmeno(jmeno);
-    }
-
-    public List<Pacient> getByPrijmeni(String prijmeni) {
-        return pacientRepository.getByPrijmeni(prijmeni);
-    }
-
-    public List<Pacient> getByCisloTelefonu(Integer cisloTelefonu) {
-        return pacientRepository.getByCisloTelefonu(cisloTelefonu);
-    }
-
     public Pacient getById(int id) {
         return pacientRepository.getById(id);
     }
@@ -45,6 +33,19 @@ public class PacientService {
     public void update(Pacient pacient) {
         pacientRepository.update(pacient);
     }
+    public void delete(int id){
+        pacientRepository.deleteById(id);
+    }
 
+    public List<Pacient> getByJmeno(String jmeno) {
+        return pacientRepository.getByJmeno(jmeno);
+    }
 
+    public List<Pacient> getByPrijmeni(String prijmeni) {
+        return pacientRepository.getByPrijmeni(prijmeni);
+    }
+
+    public List<Pacient> getByCisloTelefonu(Integer cisloTelefonu) {
+        return pacientRepository.getByCisloTelefonu(cisloTelefonu);
+    }
 }

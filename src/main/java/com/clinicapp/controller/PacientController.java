@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:5173"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/api/pacienti")
 public class PacientController {
@@ -20,6 +20,7 @@ public class PacientController {
     private PacientService pacientService;
 
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<Pacient>> getAllPacients() {
         return ResponseEntity.ok(pacientService.getAll());
@@ -30,15 +31,22 @@ public class PacientController {
          pacientService.save(pacient);
     }
 
+
+    @GetMapping("{id}")
+    public ResponseEntity<Pacient> getPacientById(@PathVariable Integer id){
+       Pacient pacient=   pacientService.getById(id);
+        return ResponseEntity.ok(pacient);
+    }
     @PutMapping("{id}")
-    public ResponseEntity<Pacient> updatePacient(@PathVariable long id, @RequestBody Pacient pacient) {
+    public ResponseEntity<Pacient> updatePacient(@PathVariable int id, @RequestBody Pacient pacient) {
         pacientService.update(pacient);
         return ResponseEntity.ok(pacient);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deletePacient(@PathVariable int id){
-        pacientService.getById(id);
+        //pacientService.getById(id);
+        pacientService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }

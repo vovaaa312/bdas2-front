@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.Date;
 import java.util.List;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class })
 public class ClinicAppApplication implements CommandLineRunner {
 
     public static void main(String[] args) {

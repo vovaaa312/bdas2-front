@@ -1,20 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { Pacient } from "../pacient/Pacient";
 
 const BASE_URL = "http://localhost:8080/api/pacienti";
-
-interface Pacient {
-  idAdresa: number;
-  jmeno: string;
-  prijmeni: string;
-  datumHospitalizace: Date | null;
-  datumNarozeni: Date | null;
-  cisloTelefonu: number;
-  pohlavi: string;
-  zeme: string;
-  mesto: string;
-  adresa: string;
-  psc: number;
-}
 
 class PacientService {
   getAllPacienti(): Promise<AxiosResponse<Pacient[]>> {
