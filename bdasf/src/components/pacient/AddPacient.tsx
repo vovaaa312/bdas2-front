@@ -78,22 +78,22 @@ const AddPacient: React.FC = () => {
           <div className="card col-md-6 offset-md-3 offset-md-3">
             <div className="card-body">
               <form>
-                <div className="form-group mb-2">
-                  <label>Id adresa</label>
-                  <input
-                    placeholder="-"
-                    type="number"
-                    name="idAdresa"
-                    className="form-control"
-                    value={pacient.idAdresa}
-                    onChange={(e) =>
-                      setPacient((prevPacient) => ({
-                        ...prevPacient,
-                        idAdresa: parseInt(e.target.value, 10),
-                      }))
-                    }
-                  />
-                </div>
+                {/*<div className="form-group mb-2">*/}
+                {/*  <label>Id adresa</label>*/}
+                {/*  <input*/}
+                {/*    placeholder="-"*/}
+                {/*    type="number"*/}
+                {/*    name="idAdresa"*/}
+                {/*    className="form-control"*/}
+                {/*    value={pacient.idAdresa}*/}
+                {/*    onChange={(e) =>*/}
+                {/*      setPacient((prevPacient) => ({*/}
+                {/*        ...prevPacient,*/}
+                {/*        idAdresa: parseInt(e.target.value, 10),*/}
+                {/*      }))*/}
+                {/*    }*/}
+                {/*  />*/}
+                {/*</div>*/}
 
                 {/* Jmeno */}
                 <div className="form-group mb-2">
@@ -205,6 +205,24 @@ const AddPacient: React.FC = () => {
                     }
                   />
                 </div>
+
+                  {/* Zeme */}
+                  <div className="form-group mb-2">
+                      <label>Zeme</label>
+                      <input
+                          placeholder="-"
+                          type="text"
+                          name="zeme"
+                          className="form-control"
+                          value={pacient.pohlavi}
+                          onChange={(e) =>
+                              setPacient((prevPacient) => ({
+                                  ...prevPacient,
+                                  pohlavi: e.target.value,
+                              }))
+                          }
+                      />
+                  </div>
 
                 <div>
                   <Link to="/pacienti">
