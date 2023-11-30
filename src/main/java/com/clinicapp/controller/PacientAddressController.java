@@ -4,52 +4,53 @@ import com.clinicapp.model.Pacient;
 import com.clinicapp.model.views.PacientAdresa;
 import com.clinicapp.service.PacientAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@CrossOrigin(origins = {"http://localhost:5173"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@RestController
+@RequestMapping("/api/pacienti-data")
 public class PacientAddressController {
-    private PacientAddressService pacientAddressService;
 
     @Autowired
-    public PacientAddressController(PacientAddressService pacientAddressService) {
-        this.pacientAddressService = pacientAddressService;
+    private PacientAddressService pacientAddressService;
+
+    @CrossOrigin
+    @GetMapping
+    public ResponseEntity<List<PacientAdresa>> getAllPacients() {
+        return ResponseEntity.ok(pacientAddressService.getAll());
     }
 
-    @GetMapping("/pacienti")
-    public String homePage(Model model){
-        model.addAttribute("pacientiList", pacientAddressService.findAll());
-        return "pacient/pacienti-list";
+    @PostMapping
+    public void createPacient(@RequestBody PacientAdresa pacientAdresa) {
+        pacientAddressService.save(pacientAdresa);
     }
 
-    @GetMapping("/add-pacient-page")
-    public String addPacientPage(Model model){
-        PacientAdresa pacientAdresa = new PacientAdresa();
-        model.addAttribute("pacientAdresa", pacientAdresa);
-        return "pacient/add-pacient";
+    @GetMapping("{id}")
+    public ResponseEntity<PacientAdresa> getPacientById(@PathVariable Integer id) {
+        PacientAdresa pacientAdresa = pacientAddressService.getById(id);
+        return ResponseEntity.ok(pacientAdresa);
     }
 
-    @PostMapping("/savePA")
-    public String savePacient(@ModelAttribute("pacientAdresa") PacientAdresa pacientAdresa) {
-
-//        pacientAdresa.setJmeno("PETR");
-//        pacientAdresa.setPrijmeni("PETROV");
-//        pacientAdresa.setDatumHospitalizace(new Date());
-//        pacientAdresa.setDatumNarozeni(new Date());
-//        pacientAdresa.setCisloTelefonu(123);
-//        pacientAdresa.setPohlavi("MUZ");
-//        pacientAdresa.setZeme("CR");
-//        pacientAdresa.setMesto("QWEQWE");
-//        pacientAdresa.setAdresa("AWQERWERE");
-//        pacientAdresa.setPsc(12312);
-//        pacientAddressService.save(pacientAdresa);
-        return "redirect:/pacienti"; // Используйте редирект для предотвращения дублирования запросов при обновлении страницы
+    @PutMapping("{id}")
+    public ResponseEntity<PacientAdresa> updatePacient(@PathVariable int id, @RequestBody PacientAdresa pacientAdresa) {
+        pacientAddressService.update(pacientAdresa);
+        return ResponseEntity.ok(pacientAdresa);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deletePacient(@PathVariable int id) {
+        //pacientService.getById(id);
+        pacientAddressService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.clinicapp.model.views;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -14,11 +15,20 @@ import java.util.Date;
 @Setter
 @ToString
 @Table(name = "pacienti_view")
+@NamedStoredProcedureQuery(
+        name = "PacientAdresa.getByIdProc",
+        procedureName = "GET_PACIENT_BY_ID",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_pacient", type = Integer.class),
+                @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, name = "p_cursor_out", type = Void.class)
+        },
+        resultClasses = PacientAdresa.class
+)
 public class PacientAdresa {
 
     @Id
-    @Column(name = "ID_ADRESA")
-    private int idAdresa;
+    @Column(name = "ID_PACIENT")
+    private Integer idPacient;
 
     @Column(name = "JMENO")
     private String jmeno;
@@ -33,10 +43,13 @@ public class PacientAdresa {
     private Date datumNarozeni;
 
     @Column(name = "CISLO_TELEFONU")
-    private int cisloTelefonu;
+    private Integer cisloTelefonu;
 
     @Column(name = "POHLAVI")
     private String pohlavi;
+
+    @Column(name = "ID_ADRESA")
+    private Integer idAdresa;
 
     @Column(name = "ZEME")
     private String zeme;
@@ -48,24 +61,22 @@ public class PacientAdresa {
     private String adresa;
 
     @Column(name = "PSC")
-    private int psc;
+    private Integer psc;
 
-    public PacientAdresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
-        PacientAdresa pacientAdresa = new PacientAdresa();
-        pacientAdresa.setIdAdresa(rs.getInt("ID_ADRESA"));
-        pacientAdresa.setJmeno(rs.getString("JMENO"));
-        pacientAdresa.setPrijmeni(rs.getString("PRIJMENI"));
-        pacientAdresa.setDatumHospitalizace(rs.getDate("DATUM_HOSPITALIZACE"));
-        pacientAdresa.setDatumNarozeni(rs.getDate("DATUM_NAROZENI"));
-        pacientAdresa.setCisloTelefonu(rs.getInt("CISLO_TELEFONU"));
-        pacientAdresa.setPohlavi(rs.getString("POHLAVI"));
-        pacientAdresa.setZeme(rs.getString("ZEME"));
-        pacientAdresa.setMesto(rs.getString("MESTO"));
-        pacientAdresa.setAdresa(rs.getString("ADRESA"));
-        pacientAdresa.setPsc(rs.getInt("PSC"));
-
-        return pacientAdresa;
-
-
-    }
+//    public PacientAdresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
+//        PacientAdresa pacientAdresa = new PacientAdresa();
+//        pacientAdresa.setIdAdresa(rs.getInt("ID_ADRESA"));
+//        pacientAdresa.setJmeno(rs.getString("JMENO"));
+//        pacientAdresa.setPrijmeni(rs.getString("PRIJMENI"));
+//        pacientAdresa.setDatumHospitalizace(rs.getDate("DATUM_HOSPITALIZACE"));
+//        pacientAdresa.setDatumNarozeni(rs.getDate("DATUM_NAROZENI"));
+//        pacientAdresa.setCisloTelefonu(rs.getBigDecimal("CISLO_TELEFONU"));
+//        pacientAdresa.setPohlavi(rs.getString("POHLAVI"));
+//        pacientAdresa.setZeme(rs.getString("ZEME"));
+//        pacientAdresa.setMesto(rs.getString("MESTO"));
+//        pacientAdresa.setAdresa(rs.getString("ADRESA"));
+//        pacientAdresa.setPsc(rs.getInt("PSC"));
+//
+//        return pacientAdresa;
+//    }
 }

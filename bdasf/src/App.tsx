@@ -2,8 +2,6 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
-import PacientList from "./components/pacient/PacientList";
-import AddPacient from "./components/pacient/AddPacient";
 import ZamestnanecList from "./components/zamestnanci/ZamestnanecList";
 import AddZamestnanec from "./components/zamestnanci/AddZamestnanec";
 import Header from "./components/Header";
@@ -27,7 +25,9 @@ function App() {
 
           <Route path="/pacienti" element={<PacientiAdresyList />} />
           <Route path="/addPacient" element={<AddPacientAdresa />} />
-        <Route path="/zamestnanci" element={<ZamestnanecList />} />
+          <Route path="/edit-pacient/:id" element={<AddPacientAdresa />} />
+
+          <Route path="/zamestnanci" element={<ZamestnanecList />} />
         <Route path="/addZamestnanec" element={<AddZamestnanec />} />
       </Routes>
 

@@ -32,7 +32,7 @@ public class PacientRepository {
     public void save(Pacient pacient) {
         String sql = "INSERT INTO ST64550.PACIENTI " +
                 "(ID_PACIENT, ADRESY_ID_ADRESA, JMENO, PRIJMENI, DATUM_HOSPITALIZACE, DATUM_NAROZENI, CISLO_TELEFONU, POHLAVI) " +
-                "VALUES (ADRESY_ID_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (PACIENTI_ID_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, pacient.getAdresyIdAdresa(),
                 pacient.getJmeno(), pacient.getPrijmeni(),
                 pacient.getDatumHospitalizace(), pacient.getDatumNarozeni(),

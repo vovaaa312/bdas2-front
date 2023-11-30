@@ -58,10 +58,13 @@ const PacientiAdresyList: React.FC = () => {
                     <th scope="col">DATUM NAROZENI</th>
                     <th scope="col">CISLO TELEFONU</th>
                     <th scope="col">POHLAVI</th>
+
+                    <th scope="col">ID ADRESA</th>
                     <th scope="col">ZEME</th>
                     <th scope="col">MESTO</th>
                     <th scope="col">ADRESA</th>
                     <th scope="col">PSC</th>
+                    <th scope="col">ACTIONS</th>
 
 
                     {/* Добавьте остальные поля пациента по необходимости */}
@@ -70,15 +73,14 @@ const PacientiAdresyList: React.FC = () => {
                 <tbody>
                 {pacientiAdresyList.map((pacientAdresa) => (
                     <tr key={pacientAdresa.idPacient}>
-                        <td>{pacientAdresa.idPacient}</td>
-
-                        <td scope="row">{pacientAdresa.jmeno}</td>
+                        <td scope="row">{pacientAdresa.idPacient}</td>
+                        <td >{pacientAdresa.jmeno}</td>
                         <td>{pacientAdresa.prijmeni}</td>
-                        {/*<td>{pacient.datumHospitalizace.toString()}</td>*/}
-                        {/*<td>{pacient.datumNarozeni.toString()}</td>*/}
                         <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
                         <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
                         <td>{pacientAdresa.cisloTelefonu}</td>
+                        <td>{pacientAdresa.pohlavi}</td>
+                        <td>{pacientAdresa.idAdresa}</td>
                         <td>{pacientAdresa.zeme}</td>
                         <td>{pacientAdresa.mesto}</td>
                         <td>{pacientAdresa.adresa}</td>
@@ -87,10 +89,11 @@ const PacientiAdresyList: React.FC = () => {
                         <td>
                             <Link
                                 className="btn btn-info"
-                                to={`/edit/${pacientAdresa.idPacient}`}
+                                to={`/edit-pacient/${pacientAdresa.idPacient}`}
                             >
                                 Update
                             </Link>
+
                             <button
                                 className="btn btn-danger"
                                 onClick={() => deletePacient(pacientAdresa.idPacient)}
@@ -99,6 +102,7 @@ const PacientiAdresyList: React.FC = () => {
                                 Delete
                             </button>
                         </td>
+
                         {/* Добавьте остальные поля пациента по необходимости */}
                     </tr>
                 ))}

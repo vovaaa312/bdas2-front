@@ -51,6 +51,7 @@ const PacientList: React.FC = () => {
         <thead>
           <tr>
             <th scope="col">ID</th>
+            <th scope="col">ID ADRESA</th>
 
             <th scope="col">JMENO</th>
             <th scope="col">PRIJMENI</th>
@@ -65,7 +66,7 @@ const PacientList: React.FC = () => {
         <tbody>
           {pacientiList.map((pacient) => (
             <tr key={pacient.idPacient}>
-              <td>{pacient.idPacient}</td>
+              <td>{pacient.idAdresa}</td>
 
               <td scope="row">{pacient.jmeno}</td>
               <td>{pacient.prijmeni}</td>

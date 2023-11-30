@@ -17,40 +17,53 @@ function Login() {
 
   return (
     <>
-      <div className="login-form">
-        <div>
-          <h1>Login</h1>
+      <div className="container">
+        <div className="card col-md-6 offset-md-3 offset-md-3">
+          <div className="card-body">
+            <div className="form-group mb-2">
+              <h1>Login</h1>
+            </div>
+
+            <div className="form-group mb-2">
+              <input
+                  onChange={(e) => setUsername(e.target.value)}
+                  type="text"
+                  placeholder="Username"
+                  className="form-control"
+
+              />
+            </div>
+
+            <div className="form-group mb-2">
+              {" "}
+              <input
+                  onChange={(e) => setPassword(e.target.value)}
+                  type="password"
+                  placeholder="Password"
+                  className="form-control"
+
+              />
+            </div>
+
+            <div className="form-group mb-2">
+              {" "}
+              <button
+                  onClick={handleLogin}
+                  type="submit"
+                  className="btn btn-success">
+                Login
+              </button>
+            </div>
+
+            <div className="form-group mb-2">
+              <Link to="/registration">
+                <button className="btn btn-danger" >Registration</button>
+              </Link>
+            </div>
+          </div>
+
         </div>
 
-        <div>
-          <input
-            onChange={(e) => setUsername(e.target.value)}
-            type="text"
-            placeholder="Username"
-          />
-        </div>
-
-        <div>
-          {" "}
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="Password"
-          />
-        </div>
-
-        <div>
-          {" "}
-          <button onClick={handleLogin} type="submit">
-            Login
-          </button>
-        </div>
-
-        <div>
-          <Link to="/registration">
-            <button type="button">Registration</button>
-          </Link>
-        </div>
       </div>
     </>
   );

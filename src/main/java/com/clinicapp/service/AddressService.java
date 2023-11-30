@@ -19,7 +19,7 @@ public class AddressService {
 
 
     public List<Adresa> findAll(){
-        return addressRepository.findAll();
+        return addressRepository.getAll();
     }
 
     public  Adresa getById(int id){

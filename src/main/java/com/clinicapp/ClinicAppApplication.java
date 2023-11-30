@@ -1,6 +1,8 @@
 package com.clinicapp;
 
 import com.clinicapp.model.Pacient;
+import com.clinicapp.model.views.PacientAdresa;
+import com.clinicapp.repository.PacientAdressRepository;
 import com.clinicapp.repository.PacientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,12 +23,11 @@ public class ClinicAppApplication implements CommandLineRunner {
     }
 
     @Autowired
-    private PacientRepository pacientRepository;
+    private PacientAdressRepository pacientRepository;
 
     @Override
     public void run(String... args) throws Exception {
 
-        List<Pacient> list = pacientRepository.getAll();
-        System.out.println(list);
+
     }
 }

@@ -1,8 +1,7 @@
 package com.clinicapp.service;
 
-import com.clinicapp.model.Pacient;
 import com.clinicapp.model.views.PacientAdresa;
-import com.clinicapp.repository.PacientRepository;
+import com.clinicapp.repository.PacientAdressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,32 +10,32 @@ import java.util.List;
 @Service
 public class PacientAddressService {
 
-    PacientRepository pacientRepository;
+    @Autowired
+    PacientAdressRepository pacientAdressRepository;
 
     @Autowired
-    public PacientAddressService(PacientRepository pacientAdressRepository) {
-        this.pacientRepository = pacientAdressRepository;
+    public PacientAddressService(PacientAdressRepository pacientAdressRepository) {
+        this.pacientAdressRepository = pacientAdressRepository;
     }
 
-    public List<Pacient> findAll(){
-        return pacientRepository.getAll();
+    public List<PacientAdresa> getAll() {
+        return pacientAdressRepository.getAllProc();
     }
 
-    public Pacient getById(int id){
-        return pacientRepository.getById(id);
+    public PacientAdresa getById(int id) {
+        return pacientAdressRepository.getByIdProc(id);
     }
 
-    public void save(PacientAdresa pacientAdresa){
-        pacientRepository.savePacientProcedure(
-                pacientAdresa.getJmeno(),
-                pacientAdresa.getPrijmeni(),
-                pacientAdresa.getDatumHospitalizace(),
-                pacientAdresa.getDatumNarozeni(),
-                pacientAdresa.getCisloTelefonu(),
-                pacientAdresa.getPohlavi(),
-                pacientAdresa.getZeme(),
-                pacientAdresa.getMesto(),
-                pacientAdresa.getAdresa(),
-                pacientAdresa.getPsc()
-        );    }
+    public void save(PacientAdresa pacientAdresa) {
+        pacientAdressRepository.saveProc(pacientAdresa);
+    }
+
+    public void delete(int id) {
+        pacientAdressRepository.deleteProc(id);
+    }
+
+    public void update(PacientAdresa pacientAdresa) {
+        pacientAdressRepository.updateProc(pacientAdresa);
+    }
+
 }
