@@ -63,20 +63,21 @@ public class PacientAdresa {
     @Column(name = "PSC")
     private Integer psc;
 
-//    public PacientAdresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
-//        PacientAdresa pacientAdresa = new PacientAdresa();
-//        pacientAdresa.setIdAdresa(rs.getInt("ID_ADRESA"));
-//        pacientAdresa.setJmeno(rs.getString("JMENO"));
-//        pacientAdresa.setPrijmeni(rs.getString("PRIJMENI"));
-//        pacientAdresa.setDatumHospitalizace(rs.getDate("DATUM_HOSPITALIZACE"));
-//        pacientAdresa.setDatumNarozeni(rs.getDate("DATUM_NAROZENI"));
-//        pacientAdresa.setCisloTelefonu(rs.getBigDecimal("CISLO_TELEFONU"));
-//        pacientAdresa.setPohlavi(rs.getString("POHLAVI"));
-//        pacientAdresa.setZeme(rs.getString("ZEME"));
-//        pacientAdresa.setMesto(rs.getString("MESTO"));
-//        pacientAdresa.setAdresa(rs.getString("ADRESA"));
-//        pacientAdresa.setPsc(rs.getInt("PSC"));
-//
-//        return pacientAdresa;
-//    }
+    public PacientAdresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
+
+        PacientAdresa pacientAdresa = new PacientAdresa();
+        pacientAdresa.setIdAdresa(rs.getInt("ID_ADRESA"));
+        pacientAdresa.setJmeno(rs.getString("JMENO"));
+        pacientAdresa.setPrijmeni(rs.getString("PRIJMENI"));
+        pacientAdresa.setDatumHospitalizace(rs.getDate("DATUM_HOSPITALIZACE"));
+        pacientAdresa.setDatumNarozeni(rs.getDate("DATUM_NAROZENI"));
+        pacientAdresa.setCisloTelefonu(rs.getInt("CISLO_TELEFONU"));
+        pacientAdresa.setPohlavi(rs.getString("POHLAVI"));
+        pacientAdresa.setZeme(rs.getString("ZEME"));
+        pacientAdresa.setMesto(rs.getString("MESTO"));
+        pacientAdresa.setAdresa(rs.getString("ADRESA"));
+        pacientAdresa.setPsc(rs.getInt("PSC"));
+
+        return pacientAdresa;
+    }
 }

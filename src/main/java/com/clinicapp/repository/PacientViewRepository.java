@@ -1,7 +1,6 @@
 package com.clinicapp.repository;
 
 import com.clinicapp.model.views.PacientAdresa;
-import org.hibernate.dialect.OracleTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,27 +9,18 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.core.simple.SimpleJdbcCallOperations;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
-public class PacientAdressRepository {
-    private JdbcTemplate jdbcTemplate;
-
+public class PacientViewRepository {
     @Autowired
-    public PacientAdressRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
+    private JdbcTemplate jdbcTemplate;
 
     public List<PacientAdresa> getAllProc() {
         String sql = "{call GET_PACIENTI_VIEW(?)}";
@@ -120,7 +110,7 @@ public class PacientAdressRepository {
 
         MapSqlParameterSource in = new MapSqlParameterSource()
                 .addValue("p_id_pacient", pacientAdresa.getIdPacient())
-                .addValue("p_adresa_id_adresa", pacientAdresa.getIdAdresa())
+                .addValue("p_id_adresa", pacientAdresa.getIdAdresa())
                 .addValue("p_jmeno", pacientAdresa.getJmeno())
                 .addValue("p_prijmeni", pacientAdresa.getPrijmeni())
                 .addValue("p_datum_hospitalizace", pacientAdresa.getDatumHospitalizace())

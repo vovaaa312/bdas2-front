@@ -17,8 +17,8 @@ public class Pacient {
     @Column(name = "ID_PACIENT")
     private int idPacient;
 
-    @Column(name = "ADRESY_ID_ADRESA")
-    private int adresyIdAdresa;
+    @Column(name = "ID_ADRESA")
+    private int idAdresa;
 
     @Column(name = "JMENO")
     private String jmeno;
@@ -40,7 +40,7 @@ public class Pacient {
 
 
     public Pacient(int id_adresa, String jmeno, String prijmeni, Date datumHospitalizace, Date datumNarozeni, int cisloTelefonu, String pohlavi) {
-        this.adresyIdAdresa = id_adresa;
+        this.idAdresa = id_adresa;
         this.jmeno = jmeno;
         this.prijmeni = prijmeni;
         this.datumHospitalizace = datumHospitalizace;

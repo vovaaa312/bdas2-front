@@ -18,22 +18,12 @@ public class PacientRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void savePacientProcedure(
-            String jmeno, String prijmeni, Date datumHospitalizace, Date datumNarozeni,
-            int cisloTelefonu, String pohlavi, String zeme, String mesto, String adresa, int psc) {
-
-        String sql = "CALL VLOZ_PACIENTA(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        jdbcTemplate.update(sql, jmeno, prijmeni, datumHospitalizace, datumNarozeni,
-                cisloTelefonu, pohlavi, zeme, mesto, adresa, psc);
-    }
-
 
     public void save(Pacient pacient) {
         String sql = "INSERT INTO ST64550.PACIENTI " +
-                "(ID_PACIENT, ADRESY_ID_ADRESA, JMENO, PRIJMENI, DATUM_HOSPITALIZACE, DATUM_NAROZENI, CISLO_TELEFONU, POHLAVI) " +
+                "(ID_PACIENT, ID_ADRESA, JMENO, PRIJMENI, DATUM_HOSPITALIZACE, DATUM_NAROZENI, CISLO_TELEFONU, POHLAVI) " +
                 "VALUES (PACIENTI_ID_SEQ.nextval, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, pacient.getAdresyIdAdresa(),
+        jdbcTemplate.update(sql, pacient.getIdAdresa(),
                 pacient.getJmeno(), pacient.getPrijmeni(),
                 pacient.getDatumHospitalizace(), pacient.getDatumNarozeni(),
                 pacient.getCisloTelefonu(), pacient.getPohlavi());
@@ -41,8 +31,8 @@ public class PacientRepository {
 
 
     public void update(Pacient pacient) {
-        jdbcTemplate.update("UPDATE PACIENTI SET ADRESY_ID_ADRESA=?, JMENO=?, PRIJMENI=?, DATUM_HOSPITALIZACE=?, DATUM_NAROZENI=?, CISLO_TELEFONU=?, POHLAVI=? WHERE ID_PACIENT=?",
-                pacient.getAdresyIdAdresa(), pacient.getJmeno(), pacient.getPrijmeni(), pacient.getDatumHospitalizace(), pacient.getDatumNarozeni(), pacient.getCisloTelefonu(), pacient.getPohlavi(), pacient.getIdPacient());
+        jdbcTemplate.update("UPDATE PACIENTI SET ID_ADRESA=?, JMENO=?, PRIJMENI=?, DATUM_HOSPITALIZACE=?, DATUM_NAROZENI=?, CISLO_TELEFONU=?, POHLAVI=? WHERE ID_PACIENT=?",
+                pacient.getIdAdresa(), pacient.getJmeno(), pacient.getPrijmeni(), pacient.getDatumHospitalizace(), pacient.getDatumNarozeni(), pacient.getCisloTelefonu(), pacient.getPohlavi(), pacient.getIdPacient());
     }
 
     public Pacient getById(Integer id) {

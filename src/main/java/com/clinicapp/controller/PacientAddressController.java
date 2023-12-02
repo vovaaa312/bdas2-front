@@ -1,16 +1,12 @@
 package com.clinicapp.controller;
 
-import com.clinicapp.model.Pacient;
 import com.clinicapp.model.views.PacientAdresa;
-import com.clinicapp.service.PacientAddressService;
+import com.clinicapp.service.PacientViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:5173"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -19,7 +15,7 @@ import java.util.List;
 public class PacientAddressController {
 
     @Autowired
-    private PacientAddressService pacientAddressService;
+    private PacientViewService pacientAddressService;
 
     @CrossOrigin
     @GetMapping
