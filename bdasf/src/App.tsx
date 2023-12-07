@@ -1,39 +1,44 @@
 // App.tsx
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
-import ZamestnanecList from "./components/zamestnanci/ZamestnanecList";
-import AddZamestnanec from "./components/zamestnanci/AddZamestnanec";
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 import "./App.css";
-import PacientiAdresyList from "./components/pacientAdresa/PacientiAdresyList.tsx";
-import AddPacientAdresa from "./components/pacientAdresa/AddPacientAdresa.tsx";
+import PacientiViewList from "./components/entityLists/PacientiViewList.tsx";
+import AddPacientView from "./components/createPages/AddPacientView.tsx";
+
+import ZamestnanciViewList from "./components/entityLists/ZamestnanciViewList.tsx";
+import AddZamestnanecView from "./components/createPages/AddZamestnanecView.tsx";
 
 function App() {
-  return (
-    <div>
-      <Header></Header>
+    return (
+        <div>
+            <Header></Header>
 
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/registration" element={<Registration />} />
-        {/*<Route path="/pacienti" element={<PacientList />} />*/}
-        {/*<Route path="/addPacient" element={<AddPacient />} />*/}
-        {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
+            <Routes>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/registration" element={<Registration/>}/>
 
-          <Route path="/pacienti" element={<PacientiAdresyList />} />
-          <Route path="/addPacient" element={<AddPacientAdresa />} />
-          <Route path="/edit-pacient/:id" element={<AddPacientAdresa />} />
+                {/*<Route path="/pacienti" element={<PacientList />} />*/}
+                {/*<Route path="/addPacient" element={<AddPacient />} />*/}
+                {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
 
-          <Route path="/zamestnanci" element={<ZamestnanecList />} />
-        <Route path="/addZamestnanec" element={<AddZamestnanec />} />
-      </Routes>
+                <Route path="/pacienti" element={<PacientiViewList/>}/>
+                <Route path="/addPacient" element={<AddPacientView/>}/>
+                <Route path="/edit-pacient/:id" element={<AddPacientView/>}/>
 
-      <Footer></Footer>
-    </div>
-  );
+                <Route path="/zamestnanci" element={<ZamestnanciViewList/>}/>
+                <Route path="/addZamestnanec" element={<AddZamestnanecView/>}/>
+                <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecView/>}/>
+
+            </Routes>
+
+            <Footer></Footer>
+        </div>
+    );
 }
 
 export default App;

@@ -1,8 +1,8 @@
 // AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import PacientService from "../services/PacientService";
-import { Pacient } from "./Pacient";
+import PacientService from "../services/PacientService.tsx";
+import { Pacient } from "../entity/Pacient.tsx";
 
 const AddPacient: React.FC = () => {
   const navigate = useNavigate();

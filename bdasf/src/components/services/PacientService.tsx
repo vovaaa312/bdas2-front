@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { Pacient } from "../pacient/Pacient";
+import { Pacient } from "../entity/Pacient.tsx";
 
 const BASE_URL = "http://localhost:8080/api/pacienti";
 

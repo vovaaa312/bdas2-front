@@ -1,53 +1,55 @@
 // AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import PacientAdresaService from "../services/PacientAdresaService.tsx";
-import {PacientAdresa} from "./PacientAdresa.tsx";
-
-const AddPacientAdresa: React.FC = () => {
+import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
+import OddeleniService from "../services/OddeleniService.tsx";
+import {ZamestnanecView} from "../entity/ZamestnanecView.tsx";
+const AddZamestnanecView: React.FC = () => {
     const navigate = useNavigate();
 
-
-
-    const [pacient, setPacient] = useState<PacientAdresa>({
-        idPacient: 0,
+    const [zamestnanec, setZamestnanec] = useState<ZamestnanecView>({
+        idZamestnanec: 0,
         jmeno: "",
         prijmeni: "",
-        datumHospitalizace: new Date(),
         datumNarozeni: new Date(),
         cisloTelefonu: 0,
-        pohlavi: "",
+        pracovniZkusenosti: 0,
 
         idAdresa: 0,
         zeme:"",
         mesto:"",
         adresa:"",
-        psc:0
+        psc:0,
 
+        idOddeleni:0,
+        nazevOddeleni:""
     });
 
     const { id } = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
 
-    const saveOrUpdatePacient = (e: React.FormEvent) => {
+    const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
+
+
+    const saveOrUpdateZamestnance = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (id) {
-            // Update existing pacient
-            PacientAdresaService.updatePacient(pacientId, pacient)
+            // Update existing zamestnanec
+            ZamestnanciViewService.updateZamestnanec(pacientId, zamestnanec)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti");
+                    navigate("/zamestnanci");
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         } else {
-            // Create new pacient
-            PacientAdresaService.createPacient(pacient)
+            // Create new zamestnanec
+            ZamestnanciViewService.createZamestnanec(zamestnanec)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti");
+                    navigate("/zamestnanci");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -57,21 +59,29 @@ const AddPacientAdresa: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            PacientAdresaService.getPacientById(pacientId)
+            ZamestnanciViewService.getZamestnanecById(pacientId)
                 .then((response) => {
-                    setPacient(response.data);
+                    setZamestnanec(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
+
+        OddeleniService.getAllOddeleni()
+            .then((response) => {
+                setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
+            })
+            .catch((error) => {
+                console.error("Error loading oddeleni options", error);
+            });
     }, [id]);
 
     const title = () => {
         if (id) {
-            return <h2 className="text-center">Update pacient</h2>;
+            return <h2 className="text-center">Update zamestnanec</h2>;
         } else {
-            return <h2 className="text-center">Add pacient</h2>;
+            return <h2 className="text-center">Add zamestnanec</h2>;
         }
     };
 
@@ -91,7 +101,7 @@ const AddPacientAdresa: React.FC = () => {
                                 {/*    type="number"*/}
                                 {/*    name="idAdresa"*/}
                                 {/*    className="form-control"*/}
-                                {/*    value={pacient.idAdresa}*/}
+                                {/*    value={zamestnanec.idAdresa}*/}
                                 {/*    onChange={(e) =>*/}
                                 {/*      setPacient((prevPacient) => ({*/}
                                 {/*        ...prevPacient,*/}
@@ -109,9 +119,9 @@ const AddPacientAdresa: React.FC = () => {
                                         type="text"
                                         name="jmeno"
                                         className="form-control"
-                                        value={pacient.jmeno}
+                                        value={zamestnanec.jmeno}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 jmeno: e.target.value,
                                             }))
@@ -126,36 +136,16 @@ const AddPacientAdresa: React.FC = () => {
                                         type="text"
                                         name="prijmeni"
                                         className="form-control"
-                                        value={pacient.prijmeni}
+                                        value={zamestnanec.prijmeni}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 prijmeni: e.target.value,
                                             }))
                                         }
                                     />
                                 </div>
-                                {/* Datum Hospitalizace */}
-                                <div className="form-group mb-2">
-                                    <label>Datum Hospitalizace</label>
-                                    <input
-                                        placeholder="-"
-                                        type="date"
-                                        name="datumHospitalizace"
-                                        className="form-control"
-                                        value={
-                                            pacient.datumHospitalizace instanceof Date
-                                                ? pacient.datumHospitalizace.toISOString().split("T")[0]
-                                                : ""
-                                        }
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                datumHospitalizace: new Date(e.target.value),
-                                            }))
-                                        }
-                                    />
-                                </div>
+
                                 {/* Datum Narozeni */}
                                 <div className="form-group mb-2">
                                     <label>Datum Narozeni</label>
@@ -165,12 +155,12 @@ const AddPacientAdresa: React.FC = () => {
                                         name="datumNarozeni"
                                         className="form-control"
                                         value={
-                                            pacient.datumNarozeni instanceof Date
-                                                ? pacient.datumNarozeni.toISOString().split("T")[0]
+                                            zamestnanec.datumNarozeni instanceof Date
+                                                ? zamestnanec.datumNarozeni.toISOString().split("T")[0]
                                                 : ""
                                         }
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 datumNarozeni: new Date(e.target.value),
                                             }))
@@ -185,28 +175,28 @@ const AddPacientAdresa: React.FC = () => {
                                         type="number"
                                         name="cisloTelefonu"
                                         className="form-control"
-                                        value={pacient.cisloTelefonu}
+                                        value={zamestnanec.cisloTelefonu}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 cisloTelefonu: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
                                 </div>
-                                {/* Pohlavi */}
+                                {/* Pracovni zkusenosti */}
                                 <div className="form-group mb-2">
-                                    <label>Pohlavi</label>
+                                    <label>Pracovni zkusenosti</label>
                                     <input
                                         placeholder="-"
-                                        type="text"
-                                        name="pohlavi"
+                                        type="number"
+                                        name="pracovniZkusenosti"
                                         className="form-control"
-                                        value={pacient.pohlavi}
+                                        value={zamestnanec.pracovniZkusenosti}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
-                                                pohlavi: e.target.value,
+                                                pracovniZkusenosti: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
@@ -220,9 +210,9 @@ const AddPacientAdresa: React.FC = () => {
                                         type="text"
                                         name="zeme"
                                         className="form-control"
-                                        value={pacient.zeme}
+                                        value={zamestnanec.zeme}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 zeme: e.target.value,
                                             }))
@@ -237,9 +227,9 @@ const AddPacientAdresa: React.FC = () => {
                                         type="text"
                                         name="mesto"
                                         className="form-control"
-                                        value={pacient.mesto}
+                                        value={zamestnanec.mesto}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 mesto: e.target.value,
                                             }))
@@ -255,9 +245,9 @@ const AddPacientAdresa: React.FC = () => {
                                         type="text"
                                         name="adresa"
                                         className="form-control"
-                                        value={pacient.adresa}
+                                        value={zamestnanec.adresa}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 adresa: e.target.value,
                                             }))
@@ -273,14 +263,36 @@ const AddPacientAdresa: React.FC = () => {
                                         type="number"
                                         name="psc"
                                         className="form-control"
-                                        value={pacient.psc}
+                                        value={zamestnanec.psc}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
+                                            setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
                                                 psc: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
+                                </div>
+                                {/* Combobox для Oddeleni */}
+                                <div className="form-group mb-2">
+                                    <label>Oddeleni</label>
+                                    <select
+                                        name="oddeleni"
+                                        className="form-control"
+                                        value={zamestnanec.nazevOddeleni || ""}
+                                        onChange={(e) =>
+                                            setZamestnanec((prevPacient) => ({
+                                                ...prevPacient,
+                                                nazevOddeleni: e.target.value,
+                                            }))
+                                        }
+                                    >
+                                        <option value="" disabled>Select Oddeleni</option>
+                                        {oddeleniOptions.map((oddeleni) => (
+                                            <option key={oddeleni} value={oddeleni}>
+                                                {oddeleni}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
 
                                 <div>
@@ -291,7 +303,7 @@ const AddPacientAdresa: React.FC = () => {
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveOrUpdatePacient(e)}
+                                        onClick={(e) => saveOrUpdateZamestnance(e)}
                                     >
                                         Submit
                                     </button>
@@ -305,4 +317,4 @@ const AddPacientAdresa: React.FC = () => {
     );
 };
 
-export default AddPacientAdresa;
+export default AddZamestnanecView;

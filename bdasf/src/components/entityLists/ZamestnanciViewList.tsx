@@ -1,20 +1,21 @@
+
 // PacientList.tsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PacientAdresaService from "../services/PacientAdresaService.tsx";
-import {PacientAdresa} from "./PacientAdresa.tsx";
+import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
+import {ZamestnanecView} from "../entity/ZamestnanecView.tsx";
 
-const PacientiAdresyList: React.FC = () => {
-    const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
+const ZamestnanciViewList: React.FC = () => {
+    const [zamestnanciList, setZamestnanciList] = useState<ZamestnanecView[]>([]);
 
     useEffect(() => {
-        getAllPacients();
+        getAllZamestnanci();
     }, []);
 
-    const getAllPacients = () => {
-        PacientAdresaService.getAllPacienti()
+    const getAllZamestnanci = () => {
+        ZamestnanciViewService.getAllZamestnanci()
             .then((response) => {
-                setPacientiAdresyList(response.data);
+                setZamestnanciList(response.data);
                 console.log(response.data);
             })
             .catch((error) => {
@@ -23,9 +24,9 @@ const PacientiAdresyList: React.FC = () => {
     };
 
     const deletePacient = (pacientId: number) => {
-        PacientAdresaService.deletePacient(pacientId)
+        ZamestnanciViewService.deleteZamestnanec(pacientId)
             .then(() => {
-                getAllPacients();
+                getAllZamestnanci();
             })
             .catch((error) => {
                 console.log(error);
@@ -38,11 +39,11 @@ const PacientiAdresyList: React.FC = () => {
     };
     return (
         <div>
-            <h1>Pacienti</h1>
+            <h1>Zamestnanci</h1>
             <div>
-                <Link to="/addPacient">
+                <Link to="/addZamestnanec">
                     <button className="btn btn-info" type="button">
-                        Add pacient
+                        Add zamestnance
                     </button>
                 </Link>
             </div>
@@ -54,16 +55,19 @@ const PacientiAdresyList: React.FC = () => {
 
                     <th scope="col">JMENO</th>
                     <th scope="col">PRIJMENI</th>
-                    <th scope="col">DATUM HOSPITALIZACE</th>
                     <th scope="col">DATUM NAROZENI</th>
                     <th scope="col">CISLO TELEFONU</th>
-                    <th scope="col">POHLAVI</th>
+                    <th scope="col">PRACOVNI ZKUSENOSTI</th>
 
                     <th scope="col">ID ADRESA</th>
                     <th scope="col">ZEME</th>
                     <th scope="col">MESTO</th>
                     <th scope="col">ADRESA</th>
                     <th scope="col">PSC</th>
+
+                    <th scope="col">ID ODDELENI</th>
+                    <th scope="col">NAZEV ODDELENI</th>
+
                     <th scope="col">ACTIONS</th>
 
 
@@ -71,32 +75,35 @@ const PacientiAdresyList: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {pacientiAdresyList.map((pacientAdresa) => (
-                    <tr key={pacientAdresa.idPacient}>
-                        <td scope="row">{pacientAdresa.idPacient}</td>
-                        <td >{pacientAdresa.jmeno}</td>
-                        <td>{pacientAdresa.prijmeni}</td>
-                        <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
-                        <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
-                        <td>{pacientAdresa.cisloTelefonu}</td>
-                        <td>{pacientAdresa.pohlavi}</td>
-                        <td>{pacientAdresa.idAdresa}</td>
-                        <td>{pacientAdresa.zeme}</td>
-                        <td>{pacientAdresa.mesto}</td>
-                        <td>{pacientAdresa.adresa}</td>
-                        <td>{pacientAdresa.psc}</td>
+                {zamestnanciList.map((zamestnanecView) => (
+                    <tr key={zamestnanecView.idZamestnanec}>
+                        <td scope="row">{zamestnanecView.idZamestnanec}</td>
+                        <td >{zamestnanecView.jmeno}</td>
+                        <td>{zamestnanecView.prijmeni}</td>
+                        <td>{formatDate(new Date(zamestnanecView.datumNarozeni))}</td>
+                        <td>{zamestnanecView.cisloTelefonu}</td>
+                        <td>{zamestnanecView.pracovniZkusenosti}</td>
+                        <td>{zamestnanecView.idAdresa}</td>
+                        <td>{zamestnanecView.zeme}</td>
+                        <td>{zamestnanecView.mesto}</td>
+                        <td>{zamestnanecView.adresa}</td>
+                        <td>{zamestnanecView.psc}</td>
+
+                        <td>{zamestnanecView.idOddeleni}</td>
+                        <td>{zamestnanecView.nazevOddeleni}</td>
+
 
                         <td>
                             <Link
                                 className="btn btn-info"
-                                to={`/edit-pacient/${pacientAdresa.idPacient}`}
+                                to={`/edit-zamestnanec/${zamestnanecView.idZamestnanec}`}
                             >
                                 Update
                             </Link>
 
                             <button
                                 className="btn btn-danger"
-                                onClick={() => deletePacient(pacientAdresa.idPacient)}
+                                onClick={() => deletePacient(zamestnanecView.idZamestnanec)}
                                 style={{ marginLeft: "10px" }}
                             >
                                 Delete
@@ -112,4 +119,4 @@ const PacientiAdresyList: React.FC = () => {
     );
 };
 
-export default PacientiAdresyList;
+export default ZamestnanciViewList;
