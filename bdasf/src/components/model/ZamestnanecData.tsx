@@ -1,7 +1,7 @@
 
 
 
-export interface ZamestnanecAdresa {
+export interface ZamestnanecData {
     idZamestnanec: number;
     jmeno: string;
     prijmeni: string;
@@ -14,6 +14,9 @@ export interface ZamestnanecAdresa {
     mesto:string;
     adresa:string;
     psc:number;
+
+    idOddeleni:number;
+    nazevOddeleni: string;
 
 
 }

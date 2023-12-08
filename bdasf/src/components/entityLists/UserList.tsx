@@ -22,6 +22,11 @@ const UserList: React.FC = () => {
     };
 
     const deleteUser = (userId: number) => {
+        if (!userId) {
+            console.log("User ID is undefined or invalid");
+            return;
+        }
+
         UserService.deleteUser(userId)
             .then(() => {
                 getAllUsers();
@@ -49,6 +54,8 @@ const UserList: React.FC = () => {
                     <th scope="col">LOGIN</th>
                     <th scope="col">PASSWORD</th>
                     <th scope="col">ROLE</th>
+                    <th scope="col">ACTIONS</th>
+
 
 
 
@@ -58,20 +65,20 @@ const UserList: React.FC = () => {
                 </thead>
                 <tbody>
                 {userList.map((user) => (
-                    <tr key={user.userId}>
+                    <tr key={user.id}>
                         <td>{user.login}</td>
                         <td>{user.password}</td>
-                        <td>{user.userRole}</td>
+                        <td>{user.roleName}</td>
                         <td>
                             <Link
                                 className="btn btn-info"
-                                to={`/edit-user/${user.userId}`}
+                                to={`/edit-user/${user.id}`}
                             >
                                 Update
                             </Link>
                             <button
                                 className="btn btn-danger"
-                                onClick={() => deleteUser(user.userId)}
+                                onClick={() => deleteUser(user.id)}
                                 style={{ marginLeft: "10px" }}
                             >
                                 Delete

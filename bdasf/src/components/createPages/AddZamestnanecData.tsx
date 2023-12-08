@@ -1,13 +1,13 @@
 // AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
+import ZamestnanciDataService from "../services/ZamestnanciDataService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
-import {ZamestnanecAdresa} from "../model/ZamestnanecAdresa.tsx";
-const AddZamestnanecView: React.FC = () => {
+import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
+const AddZamestnanecData: React.FC = () => {
     const navigate = useNavigate();
 
-    const [zamestnanec, setZamestnanec] = useState<ZamestnanecAdresa>({
+    const [zamestnanec, setZamestnanec] = useState<ZamestnanecData>({
         idZamestnanec: 0,
         jmeno: "",
         prijmeni: "",
@@ -19,7 +19,10 @@ const AddZamestnanecView: React.FC = () => {
         zeme:"",
         mesto:"",
         adresa:"",
-        psc:0
+        psc:0,
+
+        idOddeleni:0,
+        nazevOddeleni:""
     });
 
     const { id } = useParams<{ id?: string }>();
@@ -33,17 +36,17 @@ const AddZamestnanecView: React.FC = () => {
 
         if (id) {
             // Update existing zamestnanec
-            ZamestnanciViewService.updateZamestnanec(pacientId, zamestnanec)
+            ZamestnanciDataService.updateZamestnanec(pacientId, zamestnanec)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/zamestnanci");
+                    navigate("/zamestnanci-data");
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         } else {
             // Create new zamestnanec
-            ZamestnanciViewService.createZamestnanec(zamestnanec)
+            ZamestnanciDataService.createZamestnanec(zamestnanec)
                 .then((response) => {
                     console.log(response.data);
                     navigate("/zamestnanci");
@@ -56,7 +59,7 @@ const AddZamestnanecView: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            ZamestnanciViewService.getZamestnanecById(pacientId)
+            ZamestnanciDataService.getZamestnanecById(pacientId)
                 .then((response) => {
                     setZamestnanec(response.data);
                 })
@@ -293,7 +296,8 @@ const AddZamestnanecView: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <Link to="/pacienti" className="btn btn-danger">
+                                    <Link to="/pacienti-data
+                                    " className="btn btn-danger">
                                         Back
                                     </Link>
 
@@ -314,4 +318,4 @@ const AddZamestnanecView: React.FC = () => {
     );
 };
 
-export default AddZamestnanecView;
+export default AddZamestnanecData;

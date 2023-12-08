@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import UserService from "../services/AuthService.tsx";
-import {UserRole} from "../model/security/UserRole.tsx";
 
 function Registration() {
   const [username, setUsername] = useState("");
@@ -26,9 +25,9 @@ function Registration() {
       ? console.log("Passwords are equal")
       : console.log("Passwords are not equal");
 
-    const role = UserRole.USER;
     try {
-      const response = await UserService.register({ username, password ,role});
+      const role = "USER";
+      const response = await UserService.register({ username, password,role});
       console.log("Register successful:", response.data);
       // Handle successful login, e.g., store user data, redirect, etc.
     } catch (error) {

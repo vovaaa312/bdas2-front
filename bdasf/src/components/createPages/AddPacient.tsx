@@ -31,7 +31,7 @@ const AddPacient: React.FC = () => {
       PacientService.updatePacient(pacientId, pacient)
         .then((response) => {
           console.log(response.data);
-          navigate("/pacienti");
+          navigate("/pacienti-adresy");
         })
         .catch((error) => {
           console.log(error);
@@ -41,7 +41,7 @@ const AddPacient: React.FC = () => {
       PacientService.createPacient(pacient)
         .then((response) => {
           console.log(response.data);
-          navigate("/pacienti");
+          navigate("/pacienti-adresy");
         })
         .catch((error) => {
           console.log(error);
@@ -225,7 +225,7 @@ const AddPacient: React.FC = () => {
                   </div>
 
                 <div>
-                  <Link to="/pacienti">
+                  <Link to="/pacienti-adresy">
                     <button type="button" className="btn btn-danger">
                       Back
                     </button>

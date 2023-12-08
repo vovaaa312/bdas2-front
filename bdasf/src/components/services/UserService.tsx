@@ -12,8 +12,6 @@ class UserService {
         return axios.post<void>(`${BASE_URL}/registration`, registerData);
     }
 
-
-
     getUserDetails(login: number): Promise<AxiosResponse<User>> {
         return axios.get<User>(`${BASE_URL}/${login}`);
     }
@@ -27,6 +25,18 @@ class UserService {
     }
     deleteUser(userId: number): Promise<AxiosResponse<void>> {
         return axios.delete<void>(`${BASE_URL}/${userId}`);
+    }
+
+    createUser(user: User):Promise<AxiosResponse<User>>{
+        return axios.post<User>(BASE_URL,user)
+    }
+
+    updateUser(userId:number, user:User):Promise<AxiosResponse<User>>{
+        return axios.put<User>(`${BASE_URL}/${userId}`, user)
+    }
+
+    getUserById(id:number):Promise<AxiosResponse<User>>{
+        return axios.get<User>(`${BASE_URL}/${id}`);
     }
 
 

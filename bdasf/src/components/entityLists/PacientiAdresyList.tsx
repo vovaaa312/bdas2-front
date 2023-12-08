@@ -1,21 +1,20 @@
-
 // PacientList.tsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
-import {ZamestnanecAdresa} from "../model/ZamestnanecAdresa.tsx";
+import PacientViewService from "../services/PacientAdresaService.tsx";
+import {PacientAdresa} from "../model/PacientAdresa.tsx";
 
-const ZamestnanciViewList: React.FC = () => {
-    const [zamestnanciList, setZamestnanciList] = useState<ZamestnanecAdresa[]>([]);
+const PacientiAdresyList: React.FC = () => {
+    const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
 
     useEffect(() => {
-        getAllZamestnanci();
+        getAllPacients();
     }, []);
 
-    const getAllZamestnanci = () => {
-        ZamestnanciViewService.getAllZamestnanci()
+    const getAllPacients = () => {
+        PacientViewService.getAllPacienti()
             .then((response) => {
-                setZamestnanciList(response.data);
+                setPacientiAdresyList(response.data);
                 console.log(response.data);
             })
             .catch((error) => {
@@ -24,9 +23,9 @@ const ZamestnanciViewList: React.FC = () => {
     };
 
     const deletePacient = (pacientId: number) => {
-        ZamestnanciViewService.deleteZamestnanec(pacientId)
+        PacientViewService.deletePacient(pacientId)
             .then(() => {
-                getAllZamestnanci();
+                getAllPacients();
             })
             .catch((error) => {
                 console.log(error);
@@ -39,11 +38,11 @@ const ZamestnanciViewList: React.FC = () => {
     };
     return (
         <div>
-            <h1>Zamestnanci</h1>
+            <h1>Pacienti</h1>
             <div>
-                <Link to="/addZamestnanec">
+                <Link to="/addPacientAdresa">
                     <button className="btn btn-info" type="button">
-                        Add zamestnance
+                        Add pacient
                     </button>
                 </Link>
             </div>
@@ -51,20 +50,17 @@ const ZamestnanciViewList: React.FC = () => {
             <table className="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
-
                     <th scope="col">JMENO</th>
                     <th scope="col">PRIJMENI</th>
+                    <th scope="col">DATUM HOSPITALIZACE</th>
                     <th scope="col">DATUM NAROZENI</th>
                     <th scope="col">CISLO TELEFONU</th>
-                    <th scope="col">PRACOVNI ZKUSENOSTI</th>
+                    <th scope="col">POHLAVI</th>
 
-                    <th scope="col">ID ADRESA</th>
                     <th scope="col">ZEME</th>
                     <th scope="col">MESTO</th>
                     <th scope="col">ADRESA</th>
                     <th scope="col">PSC</th>
-
                     <th scope="col">ACTIONS</th>
 
 
@@ -72,33 +68,30 @@ const ZamestnanciViewList: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {zamestnanciList.map((zamestnanecView) => (
-                    <tr key={zamestnanecView.idZamestnanec}>
-                        <td scope="row">{zamestnanecView.idZamestnanec}</td>
-                        <td >{zamestnanecView.jmeno}</td>
-                        <td>{zamestnanecView.prijmeni}</td>
-                        <td>{formatDate(new Date(zamestnanecView.datumNarozeni))}</td>
-                        <td>{zamestnanecView.cisloTelefonu}</td>
-                        <td>{zamestnanecView.pracovniZkusenosti}</td>
-                        <td>{zamestnanecView.idAdresa}</td>
-                        <td>{zamestnanecView.zeme}</td>
-                        <td>{zamestnanecView.mesto}</td>
-                        <td>{zamestnanecView.adresa}</td>
-                        <td>{zamestnanecView.psc}</td>
-
-
+                {pacientiAdresyList.map((pacientAdresa) => (
+                    <tr key={pacientAdresa.idPacient}>
+                        <td >{pacientAdresa.jmeno}</td>
+                        <td>{pacientAdresa.prijmeni}</td>
+                        <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
+                        <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
+                        <td>{pacientAdresa.cisloTelefonu}</td>
+                        <td>{pacientAdresa.pohlavi}</td>
+                        <td>{pacientAdresa.zeme}</td>
+                        <td>{pacientAdresa.mesto}</td>
+                        <td>{pacientAdresa.adresa}</td>
+                        <td>{pacientAdresa.psc}</td>
 
                         <td>
                             <Link
                                 className="btn btn-info"
-                                to={`/edit-zamestnanec/${zamestnanecView.idZamestnanec}`}
+                                to={`/edit-pacient-adresa/${pacientAdresa.idPacient}`}
                             >
                                 Update
                             </Link>
 
                             <button
                                 className="btn btn-danger"
-                                onClick={() => deletePacient(zamestnanecView.idZamestnanec)}
+                                onClick={() => deletePacient(pacientAdresa.idPacient)}
                                 style={{ marginLeft: "10px" }}
                             >
                                 Delete
@@ -114,4 +107,4 @@ const ZamestnanciViewList: React.FC = () => {
     );
 };
 
-export default ZamestnanciViewList;
+export default PacientiAdresyList;

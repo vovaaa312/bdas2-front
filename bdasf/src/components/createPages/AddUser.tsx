@@ -1,48 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { User} from "../model/security/User.tsx";
-import UserService from "../services/AuthService.tsx";
+import React, {useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {User} from "../model/security/User.tsx";
+import UserService from "../services/UserService.tsx";
 
 // AddPacient.tsx
 
 const AddUser: React.FC = () => {
     const navigate = useNavigate();
 
+    //const [roleOptions, setRoleOptions] = useState<string[]>(["USER", "ADMIN", "ZAMESTNANEC", "ZAMESTNANEC_NADRIZENY"]);
+    const roleOptions = ["USER", "ADMIN", "ZAMESTNANEC", "ZAMESTNANEC_NADRIZENY"];
 
 
-    const [pacient, setPacient] = useState<User>({
-        idPacient: 0,
-        idAdresa: 0,
-        jmeno: "",
-        prijmeni: "",
-        datumHospitalizace: new Date(),
-        datumNarozeni: new Date(),
-        cisloTelefonu: 0,
-        pohlavi: "",
+    const [user, setUser] = useState<User>({
+        id: 0,
+        login: "",
+        password: "",
+        roleId: 0,
+        roleName: roleOptions[0]  // Начальное значение из roleOptions
     });
 
-    const { id } = useParams<{ id?: string }>();
-    const pacientId = parseInt(id || "0");
 
-    const saveOrUpdatePacient = (e: React.FormEvent) => {
+    const { id } = useParams<{ id?: string }>();
+    const userId = parseInt(id || "0");
+
+    const saveOrUpdateUser = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (id) {
-            // Update existing pacient
-            PacientService.updatePacient(pacientId, pacient)
+            // Update existing user
+            UserService.updateUser(userId, user)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti");
+                    navigate("/users");
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         } else {
-            // Create new pacient
-            PacientService.createPacient(pacient)
+            // Create new user
+            console.log(user);
+            UserService.createUser(user)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti");
+                    navigate("/users");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -52,9 +53,9 @@ const AddUser: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            PacientService.getPacientById(pacientId)
+            UserService.getUserById(userId)
                 .then((response) => {
-                    setPacient(response.data);
+                    setUser(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -64,9 +65,9 @@ const AddUser: React.FC = () => {
 
     const title = () => {
         if (id) {
-            return <h2 className="text-center">Update pacient</h2>;
+            return <h2 className="text-center">Update user</h2>;
         } else {
-            return <h2 className="text-center">Add pacient</h2>;
+            return <h2 className="text-center">Add user</h2>;
         }
     };
 
@@ -79,154 +80,79 @@ const AddUser: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
                             <form>
+
+                                {/*/!*userId*!/*/}
+                                {/*<div className="form-group mb-2">*/}
+                                {/*    <label>Id user</label>*/}
+                                {/*    <input*/}
+                                {/*        placeholder="-"*/}
+                                {/*        type="number"*/}
+                                {/*        name="userId"*/}
+                                {/*        className="form-control"*/}
+                                {/*        value={user.userId}*/}
+                                {/*        onChange={(e) =>*/}
+                                {/*            setUser((prevUser) => ({*/}
+                                {/*                ...prevUser,*/}
+                                {/*                userId: parseInt(e.target.value, 10),*/}
+                                {/*            }))*/}
+                                {/*        }*/}
+                                {/*    />*/}
+                                {/*</div>*/}
+
+                                {/* login */}
                                 <div className="form-group mb-2">
-                                    <label>Id adresa</label>
+                                    <label>Login</label>
                                     <input
                                         placeholder="-"
-                                        type="number"
-                                        name="idAdresa"
+                                        type="text"
+                                        name="login"
                                         className="form-control"
-                                        value={pacient.idAdresa}
+                                        value={user.login}
                                         onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                idAdresa: parseInt(e.target.value, 10),
+                                            setUser((prevUser) => ({
+                                                ...prevUser,
+                                                login: e.target.value,
+                                            }))
+                                        }
+                                    />
+                                </div>
+                                {/* password */}
+                                <div className="form-group mb-2">
+                                    <label>Password</label>
+                                    <input
+                                        placeholder="-"
+                                        type="password"
+                                        name="password"
+                                        className="form-control"
+                                        value={user.password}
+                                        onChange={(e) =>
+                                            setUser((prevUser) => ({
+                                                ...prevUser,
+                                                password: e.target.value,
                                             }))
                                         }
                                     />
                                 </div>
 
-                                {/* Jmeno */}
+                                {/* Combobox для Role */}
                                 <div className="form-group mb-2">
-                                    <label>Jmeno</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="jmeno"
+                                    <label>Role</label>
+                                    <select
+                                        name="role"
                                         className="form-control"
-                                        value={pacient.jmeno}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                jmeno: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Prijmeni */}
-                                <div className="form-group mb-2">
-                                    <label>Prijmeni</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="prijmeni"
-                                        className="form-control"
-                                        value={pacient.prijmeni}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                prijmeni: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Datum Hospitalizace */}
-                                <div className="form-group mb-2">
-                                    <label>Datum Hospitalizace</label>
-                                    <input
-                                        placeholder="-"
-                                        type="date"
-                                        name="datumHospitalizace"
-                                        className="form-control"
-                                        value={
-                                            pacient.datumHospitalizace instanceof Date
-                                                ? pacient.datumHospitalizace.toISOString().split("T")[0]
-                                                : ""
-                                        }
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                datumHospitalizace: new Date(e.target.value),
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Datum Narozeni */}
-                                <div className="form-group mb-2">
-                                    <label>Datum Narozeni</label>
-                                    <input
-                                        placeholder="-"
-                                        type="date"
-                                        name="datumNarozeni"
-                                        className="form-control"
-                                        value={
-                                            pacient.datumNarozeni instanceof Date
-                                                ? pacient.datumNarozeni.toISOString().split("T")[0]
-                                                : ""
-                                        }
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                datumNarozeni: new Date(e.target.value),
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Cislo Telefonu */}
-                                <div className="form-group mb-2">
-                                    <label>Cislo Telefonu</label>
-                                    <input
-                                        placeholder="-"
-                                        type="number"
-                                        name="cisloTelefonu"
-                                        className="form-control"
-                                        value={pacient.cisloTelefonu}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                cisloTelefonu: parseInt(e.target.value, 10),
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Pohlavi */}
-                                <div className="form-group mb-2">
-                                    <label>Pohlavi</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="pohlavi"
-                                        className="form-control"
-                                        value={pacient.pohlavi}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                pohlavi: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
+                                        value={user.roleName}
+                                        onChange={(e) => setUser({ ...user, roleName: e.target.value })}
+                                    >
+                                        {roleOptions.map((role, index) => (
+                                            <option key={index} value={role}>
+                                                {role}
+                                            </option>
+                                        ))}
+                                    </select>
 
-                                {/* Zeme */}
-                                <div className="form-group mb-2">
-                                    <label>Zeme</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="zeme"
-                                        className="form-control"
-                                        value={pacient.pohlavi}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                pohlavi: e.target.value,
-                                            }))
-                                        }
-                                    />
                                 </div>
-
                                 <div>
-                                    <Link to="/pacienti">
+                                    <Link to="/users">
                                         <button type="button" className="btn btn-danger">
                                             Back
                                         </button>
@@ -236,7 +162,7 @@ const AddUser: React.FC = () => {
                                         type="button"
                                         className="btn btn-success"
                                         onClick={(e) => {
-                                            saveOrUpdatePacient(e);
+                                            saveOrUpdateUser(e);
                                         }}
                                     >
                                         Submit

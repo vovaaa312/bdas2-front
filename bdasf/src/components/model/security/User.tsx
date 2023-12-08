@@ -1,9 +1,9 @@
-import {UserRole} from "./UserRole.tsx";
 
 export type User={
-    userId:number,
+    id: number,  // Изменение с userId на id
     login:string,
     password:string,
-    userRole:UserRole
+    roleId:number,
+    roleName:string
 
 }
