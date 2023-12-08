@@ -1,26 +1,26 @@
 import axios, { AxiosResponse } from "axios";
-import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
+import {ZamestnanecAdresa} from "../model/ZamestnanecAdresa.tsx";
 
 const BASE_URL = "http://localhost:8080/api/zamestnanci-data";
 
-class ZamestnanecViewService {
-    getAllZamestnanci(): Promise<AxiosResponse<ZamestnanecView[]>> {
-        return axios.get<ZamestnanecView[]>(BASE_URL);
+class ZamestnanecVService {
+    getAllZamestnanci(): Promise<AxiosResponse<ZamestnanecAdresa[]>> {
+        return axios.get<ZamestnanecAdresa[]>(BASE_URL);
     }
 
-    createZamestnanec(pacient: ZamestnanecView): Promise<AxiosResponse<ZamestnanecView>> {
-        return axios.post<ZamestnanecView>(BASE_URL, pacient);
+    createZamestnanec(pacient: ZamestnanecAdresa): Promise<AxiosResponse<ZamestnanecAdresa>> {
+        return axios.post<ZamestnanecAdresa>(BASE_URL, pacient);
     }
 
-    getZamestnanecById(pacientId: number): Promise<AxiosResponse<ZamestnanecView>> {
-        return axios.get<ZamestnanecView>(`${BASE_URL}/${pacientId}`);
+    getZamestnanecById(pacientId: number): Promise<AxiosResponse<ZamestnanecAdresa>> {
+        return axios.get<ZamestnanecAdresa>(`${BASE_URL}/${pacientId}`);
     }
 
     updateZamestnanec(
         zamestnanecId: number,
-        zamestnanec: ZamestnanecView
-    ): Promise<AxiosResponse<ZamestnanecView>> {
-        return axios.put<ZamestnanecView>(`${BASE_URL}/${zamestnanecId}`, zamestnanec);
+        zamestnanec: ZamestnanecAdresa
+    ): Promise<AxiosResponse<ZamestnanecAdresa>> {
+        return axios.put<ZamestnanecAdresa>(`${BASE_URL}/${zamestnanecId}`, zamestnanec);
     }
 
     deleteZamestnanec(zamestnanecId: number): Promise<AxiosResponse<void>> {
@@ -28,4 +28,4 @@ class ZamestnanecViewService {
     }
 }
 
-export default new ZamestnanecViewService();
+export default new ZamestnanecVService();

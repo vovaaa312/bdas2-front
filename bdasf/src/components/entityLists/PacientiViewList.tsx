@@ -1,11 +1,11 @@
 // PacientList.tsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PacientViewService from "../services/PacientViewService.tsx";
-import {PacientView} from "../model/PacientView.tsx";
+import PacientViewService from "../services/PacientAdresaService.tsx";
+import {PacientAdresa} from "../model/PacientAdresa.tsx";
 
 const PacientiViewList: React.FC = () => {
-    const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientView[]>([]);
+    const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
 
     useEffect(() => {
         getAllPacients();

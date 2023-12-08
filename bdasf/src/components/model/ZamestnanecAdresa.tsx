@@ -1,19 +1,19 @@
 
 
 
-export interface PacientView {
-    idPacient: number;
+export interface ZamestnanecAdresa {
+    idZamestnanec: number;
     jmeno: string;
     prijmeni: string;
-    datumHospitalizace: Date;
     datumNarozeni: Date;
     cisloTelefonu: number;
-    pohlavi: string;
+    pracovniZkusenosti: number;
 
     idAdresa: number;
     zeme:string;
     mesto:string;
     adresa:string;
     psc:number;
+
 
 }

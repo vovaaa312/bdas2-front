@@ -1,33 +1,35 @@
-// AddPacient.tsx
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import PacientViewService from "../services/PacientAdresaService.tsx";
-
-import {UserRole} from "../model/security/UserRole.tsx";
-import {User} from "../model/security/User.tsx";
+import React, { useEffect, useState } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { User} from "../model/security/User.tsx";
 import UserService from "../services/AuthService.tsx";
 
-const AddPacientView: React.FC = () => {
+// AddPacient.tsx
+
+const AddUser: React.FC = () => {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState<User>({
-        userId:0,
-        login:"",
-        password:"",
-        userRole:UserRole.USER
 
+
+    const [pacient, setPacient] = useState<User>({
+        idPacient: 0,
+        idAdresa: 0,
+        jmeno: "",
+        prijmeni: "",
+        datumHospitalizace: new Date(),
+        datumNarozeni: new Date(),
+        cisloTelefonu: 0,
+        pohlavi: "",
     });
-    const [rolesOptions] = useState<string[]>([UserRole.USER, UserRole.ADMIN]); // Добавлен массив с возможными значениями
 
     const { id } = useParams<{ id?: string }>();
-    const idUser = parseInt(id || "0");
+    const pacientId = parseInt(id || "0");
 
     const saveOrUpdatePacient = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (id) {
-            // Update existing user
-            UserService.updatePacient(idUser, user)
+            // Update existing pacient
+            PacientService.updatePacient(pacientId, pacient)
                 .then((response) => {
                     console.log(response.data);
                     navigate("/pacienti");
@@ -36,8 +38,8 @@ const AddPacientView: React.FC = () => {
                     console.log(error);
                 });
         } else {
-            // Create new user
-            PacientViewService.createPacient(user)
+            // Create new pacient
+            PacientService.createPacient(pacient)
                 .then((response) => {
                     console.log(response.data);
                     navigate("/pacienti");
@@ -50,9 +52,9 @@ const AddPacientView: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            PacientViewService.getPacientById(idUser)
+            PacientService.getPacientById(pacientId)
                 .then((response) => {
-                    setUser(response.data);
+                    setPacient(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -77,6 +79,22 @@ const AddPacientView: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
                             <form>
+                                <div className="form-group mb-2">
+                                    <label>Id adresa</label>
+                                    <input
+                                        placeholder="-"
+                                        type="number"
+                                        name="idAdresa"
+                                        className="form-control"
+                                        value={pacient.idAdresa}
+                                        onChange={(e) =>
+                                            setPacient((prevPacient) => ({
+                                                ...prevPacient,
+                                                idAdresa: parseInt(e.target.value, 10),
+                                            }))
+                                        }
+                                    />
+                                </div>
 
                                 {/* Jmeno */}
                                 <div className="form-group mb-2">
@@ -86,9 +104,9 @@ const AddPacientView: React.FC = () => {
                                         type="text"
                                         name="jmeno"
                                         className="form-control"
-                                        value={user.jmeno}
+                                        value={pacient.jmeno}
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 jmeno: e.target.value,
                                             }))
@@ -103,9 +121,9 @@ const AddPacientView: React.FC = () => {
                                         type="text"
                                         name="prijmeni"
                                         className="form-control"
-                                        value={user.prijmeni}
+                                        value={pacient.prijmeni}
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 prijmeni: e.target.value,
                                             }))
@@ -121,12 +139,12 @@ const AddPacientView: React.FC = () => {
                                         name="datumHospitalizace"
                                         className="form-control"
                                         value={
-                                            user.datumHospitalizace instanceof Date
-                                                ? user.datumHospitalizace.toISOString().split("T")[0]
+                                            pacient.datumHospitalizace instanceof Date
+                                                ? pacient.datumHospitalizace.toISOString().split("T")[0]
                                                 : ""
                                         }
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 datumHospitalizace: new Date(e.target.value),
                                             }))
@@ -142,12 +160,12 @@ const AddPacientView: React.FC = () => {
                                         name="datumNarozeni"
                                         className="form-control"
                                         value={
-                                            user.datumNarozeni instanceof Date
-                                                ? user.datumNarozeni.toISOString().split("T")[0]
+                                            pacient.datumNarozeni instanceof Date
+                                                ? pacient.datumNarozeni.toISOString().split("T")[0]
                                                 : ""
                                         }
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 datumNarozeni: new Date(e.target.value),
                                             }))
@@ -162,9 +180,9 @@ const AddPacientView: React.FC = () => {
                                         type="number"
                                         name="cisloTelefonu"
                                         className="form-control"
-                                        value={user.cisloTelefonu}
+                                        value={pacient.cisloTelefonu}
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 cisloTelefonu: parseInt(e.target.value, 10),
                                             }))
@@ -172,27 +190,21 @@ const AddPacientView: React.FC = () => {
                                     />
                                 </div>
                                 {/* Pohlavi */}
-                                {/* Pohlavi - комбобокс */}
                                 <div className="form-group mb-2">
                                     <label>Pohlavi</label>
-                                    <select
+                                    <input
+                                        placeholder="-"
+                                        type="text"
                                         name="pohlavi"
                                         className="form-control"
-                                        value={user.pohlavi || ""}
+                                        value={pacient.pohlavi}
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
                                                 pohlavi: e.target.value,
                                             }))
                                         }
-                                    >
-                                        <option value="" disabled>Select Pohlavi</option>
-                                        {rolesOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
 
                                 {/* Zeme */}
@@ -203,78 +215,29 @@ const AddPacientView: React.FC = () => {
                                         type="text"
                                         name="zeme"
                                         className="form-control"
-                                        value={user.zeme}
+                                        value={pacient.pohlavi}
                                         onChange={(e) =>
-                                            setUser((prevPacient) => ({
+                                            setPacient((prevPacient) => ({
                                                 ...prevPacient,
-                                                zeme: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Mesto */}
-                                <div className="form-group mb-2">
-                                    <label>Mesto</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="mesto"
-                                        className="form-control"
-                                        value={user.mesto}
-                                        onChange={(e) =>
-                                            setUser((prevPacient) => ({
-                                                ...prevPacient,
-                                                mesto: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-
-                                {/* Adresa */}
-                                <div className="form-group mb-2">
-                                    <label>Adresa</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="adresa"
-                                        className="form-control"
-                                        value={user.adresa}
-                                        onChange={(e) =>
-                                            setUser((prevPacient) => ({
-                                                ...prevPacient,
-                                                adresa: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-
-                                {/* Psc */}
-                                <div className="form-group mb-2">
-                                    <label>PSC</label>
-                                    <input
-                                        placeholder="-"
-                                        type="number"
-                                        name="psc"
-                                        className="form-control"
-                                        value={user.psc}
-                                        onChange={(e) =>
-                                            setUser((prevPacient) => ({
-                                                ...prevPacient,
-                                                psc: parseInt(e.target.value, 10),
+                                                pohlavi: e.target.value,
                                             }))
                                         }
                                     />
                                 </div>
 
                                 <div>
-                                    <Link to="/pacienti" className="btn btn-danger">
-                                        Back
+                                    <Link to="/pacienti">
+                                        <button type="button" className="btn btn-danger">
+                                            Back
+                                        </button>
                                     </Link>
 
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveOrUpdatePacient(e)}
+                                        onClick={(e) => {
+                                            saveOrUpdatePacient(e);
+                                        }}
                                     >
                                         Submit
                                     </button>
@@ -288,4 +251,4 @@ const AddPacientView: React.FC = () => {
     );
 };
 
-export default AddPacientView;
+export default AddUser;

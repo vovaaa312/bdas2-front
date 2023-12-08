@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
-import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
+import {ZamestnanecAdresa} from "../model/ZamestnanecAdresa.tsx";
 const AddZamestnanecView: React.FC = () => {
     const navigate = useNavigate();
 
-    const [zamestnanec, setZamestnanec] = useState<ZamestnanecView>({
+    const [zamestnanec, setZamestnanec] = useState<ZamestnanecAdresa>({
         idZamestnanec: 0,
         jmeno: "",
         prijmeni: "",

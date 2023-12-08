@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import UserService from "../services/UserService.tsx";
+import UserService from "../services/AuthService.tsx";
 import {UserRole} from "../model/security/UserRole.tsx";
 
 function Registration() {

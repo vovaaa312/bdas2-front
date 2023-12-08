@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
-import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
+import {ZamestnanecAdresa} from "../model/ZamestnanecAdresa.tsx";
 
 const ZamestnanciViewList: React.FC = () => {
-    const [zamestnanciList, setZamestnanciList] = useState<ZamestnanecView[]>([]);
+    const [zamestnanciList, setZamestnanciList] = useState<ZamestnanecAdresa[]>([]);
 
     useEffect(() => {
         getAllZamestnanci();
