@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
-import {ZamestnanecView} from "../entity/ZamestnanecView.tsx";
+import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
 
 const ZamestnanciViewList: React.FC = () => {
     const [zamestnanciList, setZamestnanciList] = useState<ZamestnanecView[]>([]);
@@ -65,9 +65,6 @@ const ZamestnanciViewList: React.FC = () => {
                     <th scope="col">ADRESA</th>
                     <th scope="col">PSC</th>
 
-                    <th scope="col">ID ODDELENI</th>
-                    <th scope="col">NAZEV ODDELENI</th>
-
                     <th scope="col">ACTIONS</th>
 
 
@@ -89,8 +86,6 @@ const ZamestnanciViewList: React.FC = () => {
                         <td>{zamestnanecView.adresa}</td>
                         <td>{zamestnanecView.psc}</td>
 
-                        <td>{zamestnanecView.idOddeleni}</td>
-                        <td>{zamestnanecView.nazevOddeleni}</td>
 
 
                         <td>

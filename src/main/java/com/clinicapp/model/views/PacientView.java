@@ -3,7 +3,6 @@ package com.clinicapp.model.views;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -11,6 +10,7 @@ import java.util.Date;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -22,9 +22,9 @@ import java.util.Date;
                 @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_id_pacient", type = Integer.class),
                 @StoredProcedureParameter(mode = ParameterMode.REF_CURSOR, name = "p_cursor_out", type = Void.class)
         },
-        resultClasses = PacientAdresa.class
+        resultClasses = PacientView.class
 )
-public class PacientAdresa {
+public class PacientView {
 
     @Id
     @Column(name = "ID_PACIENT")
@@ -63,9 +63,9 @@ public class PacientAdresa {
     @Column(name = "PSC")
     private Integer psc;
 
-    public PacientAdresa getMapRow(ResultSet rs, int rowNum) throws SQLException {
+    public PacientView getMapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        PacientAdresa pacientAdresa = new PacientAdresa();
+        PacientView pacientAdresa = new PacientView();
         pacientAdresa.setIdAdresa(rs.getInt("ID_ADRESA"));
         pacientAdresa.setJmeno(rs.getString("JMENO"));
         pacientAdresa.setPrijmeni(rs.getString("PRIJMENI"));

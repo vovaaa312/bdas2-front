@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {Oddeleni} from "../entity/Oddeleni.tsx";
+import {Oddeleni} from "../model/Oddeleni.tsx";
 
 const BASE_URL = "http://localhost:8080/api/oddeleni";
 

@@ -20,4 +20,8 @@ public class Oddeleni {
 
     @Column(name = "NAZEV_ODDELENI")
     private String nazevOddeleni;
+
+    public Oddeleni(String nazevOddeleni) {
+        this.nazevOddeleni = nazevOddeleni;
+    }
 }

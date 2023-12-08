@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ZamestnanciViewService from "../services/ZamestnanciViewService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
-import {ZamestnanecView} from "../entity/ZamestnanecView.tsx";
+import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
 const AddZamestnanecView: React.FC = () => {
     const navigate = useNavigate();
 
@@ -19,10 +19,7 @@ const AddZamestnanecView: React.FC = () => {
         zeme:"",
         mesto:"",
         adresa:"",
-        psc:0,
-
-        idOddeleni:0,
-        nazevOddeleni:""
+        psc:0
     });
 
     const { id } = useParams<{ id?: string }>();

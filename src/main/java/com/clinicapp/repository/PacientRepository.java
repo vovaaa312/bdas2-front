@@ -37,33 +37,8 @@ public class PacientRepository {
 
     public Pacient getById(Integer id) {
         String sql = "SELECT * FROM PACIENTI WHERE ID_PACIENT = ?";
-
         // Используем BeanPropertyRowMapper для маппинга результата на объект Pacient
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper<>(Pacient.class));
-
-//        try {
-//            SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate)
-//                    .withProcedureName("GET_PACIENT_BY_ID")
-//                    .declareParameters(
-//                            new SqlParameter("p_id_pacient", Types.INTEGER),
-//                            new SqlOutParameter("p_cursor", OracleTypes.CURSOR, new BeanPropertyRowMapper<>(Pacient.class))
-//                    );
-//
-//            Map<String, Object> inParams = new HashMap<>();
-//            inParams.put("p_id_pacient", id);
-//
-//            Map<String, Object> outParams = jdbcCall.execute(inParams);
-//
-//            List<Pacient> pacientList = (List<Pacient>) outParams.get("p_cursor");
-//
-//            if (pacientList != null && !pacientList.isEmpty()) {
-//                return pacientList.get(0);
-//            } else {
-//                return null;
-//            }
-//        } catch (DataAccessException e) {
-//            return null;
-//        }
     }
 
 

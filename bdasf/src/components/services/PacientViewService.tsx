@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {PacientView} from "../entity/PacientView.tsx";
+import {PacientView} from "../model/PacientView.tsx";
 
 const BASE_URL = "http://localhost:8080/api/pacienti-data";
 

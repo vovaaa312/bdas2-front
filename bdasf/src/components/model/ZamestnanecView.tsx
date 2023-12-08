@@ -15,7 +15,5 @@ export interface ZamestnanecView {
     adresa:string;
     psc:number;
 
-    idOddeleni:number;
-    nazevOddeleni: string;
 
 }

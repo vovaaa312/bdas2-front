@@ -1,6 +1,6 @@
 package com.clinicapp.service;
 
-import com.clinicapp.model.views.PacientAdresa;
+import com.clinicapp.model.views.PacientView;
 import com.clinicapp.repository.PacientViewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,15 @@ public class PacientViewService {
         this.pacientViewRepository = pacientViewRepository;
     }
 
-    public List<PacientAdresa> getAll() {
+    public List<PacientView> getAll() {
         return pacientViewRepository.getAllProc();
     }
 
-    public PacientAdresa getById(int id) {
+    public PacientView getById(int id) {
         return pacientViewRepository.getByIdProc(id);
     }
 
-    public void save(PacientAdresa pacientAdresa) {
+    public void save(PacientView pacientAdresa) {
         pacientViewRepository.saveProc(pacientAdresa);
     }
 
@@ -34,7 +34,7 @@ public class PacientViewService {
         pacientViewRepository.deleteProc(id);
     }
 
-    public void update(PacientAdresa pacientAdresa) {
+    public void update(PacientView pacientAdresa) {
         pacientViewRepository.updateProc(pacientAdresa);
     }
 

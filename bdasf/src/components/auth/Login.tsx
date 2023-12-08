@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Registration from "./Registration";
+import UserService from "../services/UserService.tsx";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    username.length === 0
-      ? console.log("Username is null")
-      : console.log("Username:", username);
-    password.length === 0
-      ? console.log("Password is null")
-      : console.log("Password:", password);
+  const handleLogin = async () => {
+    if (username.length === 0 || password.length === 0) {
+      console.log("Username or Password is null");
+      return;
+    }
+
+    try {
+      const response = await UserService.login({ username, password });
+      console.log("Login successful:", response.data);
+      // Handle successful login, e.g., store user data, redirect, etc.
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Handle errors, e.g., show an error message to the user
+    }
   };
 
   return (

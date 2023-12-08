@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PacientViewService from "../services/PacientViewService.tsx";
-import {PacientView} from "../entity/PacientView.tsx";
+import {PacientView} from "../model/PacientView.tsx";
 
 const PacientiViewList: React.FC = () => {
     const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientView[]>([]);

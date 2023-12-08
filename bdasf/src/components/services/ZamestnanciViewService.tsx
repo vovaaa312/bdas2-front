@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import {ZamestnanecView} from "../entity/ZamestnanecView.tsx";
+import {ZamestnanecView} from "../model/ZamestnanecView.tsx";
 
 const BASE_URL = "http://localhost:8080/api/zamestnanci-data";
 

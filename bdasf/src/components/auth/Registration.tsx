@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import UserService from "../services/UserService.tsx";
+import {UserRole} from "../model/security/UserRole.tsx";
 
 function Registration() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState("USER"); // Начальное значение - "USER"
 
-  const handleLogin = () => {
+
+  const handleLogin = async () => {
     // Handle the login logic here
     username.length === 0
       ? console.log("Username is null")
@@ -23,6 +25,16 @@ function Registration() {
     password === confirmPassword
       ? console.log("Passwords are equal")
       : console.log("Passwords are not equal");
+
+    const role = UserRole.USER;
+    try {
+      const response = await UserService.register({ username, password ,role});
+      console.log("Register successful:", response.data);
+      // Handle successful login, e.g., store user data, redirect, etc.
+    } catch (error) {
+      console.error("Register failed:", error);
+      // Handle errors, e.g., show an error message to the user
+    }
   };
   return (
     <>
@@ -66,16 +78,7 @@ function Registration() {
               />
             </div>
 
-            <div className="form-group mb-2">
-              <select
-                  className="form-control"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-              >
-                <option value="USER">USER</option>
-                <option value="ADMIN">ADMIN</option>
-              </select>
-            </div>
+
 
             <div className="form-group mb-2">
               {" "}
