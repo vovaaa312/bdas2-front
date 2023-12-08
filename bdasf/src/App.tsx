@@ -7,14 +7,12 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 import "./App.css";
-import PacientiViewList from "./components/entityLists/PacientiViewList.tsx";
-import AddPacientView from "./components/createPages/AddPacientView.tsx";
 
-import ZamestnanciViewList from "./components/entityLists/ZamestnanciViewList.tsx";
-import AddZamestnanecView from "./components/createPages/AddZamestnanecView.tsx";
 import React from "react";
 import AddPacient from "./components/createPages/AddPacient.tsx";
 import PacientList from "./components/entityLists/PacientList.tsx";
+import ZamestnanecList from "./components/entityLists/ZamestnanecList.tsx";
+import AddZamestnanec from "./components/createPages/AddZamestnanec.tsx";
 
 function App() {
     return (
@@ -33,9 +31,9 @@ function App() {
                 {/*<Route path="/addPacient" element={<AddPacientView/>}/>*/}
                 {/*<Route path="/edit-pacient/:id" element={<AddPacientView/>}/>*/}
 
-                <Route path="/zamestnanci" element={<ZamestnanciViewList/>}/>
-                <Route path="/addZamestnanec" element={<AddZamestnanecView/>}/>
-                <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecView/>}/>
+                <Route path="/zamestnanci" element={<ZamestnanecList/>}/>
+                <Route path="/addZamestnanec" element={<AddZamestnanec/>}/>
+                <Route path="/edit-zamestnanec/:id" element={<AddZamestnanec/>}/>
 
             </Routes>
 
