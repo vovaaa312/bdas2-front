@@ -52,13 +52,14 @@ const PacientList: React.FC = () => {
           <tr>
             <th scope="col">ID</th>
             <th scope="col">ID ADRESA</th>
-
             <th scope="col">JMENO</th>
             <th scope="col">PRIJMENI</th>
             <th scope="col">DATUM HOSPITALIZACE</th>
             <th scope="col">DATUM NAROZENI</th>
             <th scope="col">CISLO TELEFONU</th>
             <th scope="col">POHLAVI</th>
+            <th scope="col">ACTIONS</th>
+
 
             {/* Добавьте остальные поля пациента по необходимости */}
           </tr>
@@ -66,9 +67,10 @@ const PacientList: React.FC = () => {
         <tbody>
           {pacientiList.map((pacient) => (
             <tr key={pacient.idPacient}>
+              <td>{pacient.idPacient}</td>
               <td>{pacient.idAdresa}</td>
 
-              <td scope="row">{pacient.jmeno}</td>
+              <td>{pacient.jmeno}</td>
               <td>{pacient.prijmeni}</td>
               {/*<td>{pacient.datumHospitalizace.toString()}</td>*/}
               {/*<td>{pacient.datumNarozeni.toString()}</td>*/}

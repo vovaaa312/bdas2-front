@@ -12,6 +12,9 @@ import AddPacientView from "./components/createPages/AddPacientView.tsx";
 
 import ZamestnanciViewList from "./components/entityLists/ZamestnanciViewList.tsx";
 import AddZamestnanecView from "./components/createPages/AddZamestnanecView.tsx";
+import React from "react";
+import AddPacient from "./components/createPages/AddPacient.tsx";
+import PacientList from "./components/entityLists/PacientList.tsx";
 
 function App() {
     return (
@@ -22,13 +25,13 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/registration" element={<Registration/>}/>
 
-                {/*<Route path="/pacienti" element={<PacientList />} />*/}
-                {/*<Route path="/addPacient" element={<AddPacient />} />*/}
-                {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
+                <Route path="/pacienti" element={<PacientList />} />
+                <Route path="/addPacient" element={<AddPacient />} />
+                <Route path="/edit-pacient/:id" element={<AddPacient />} />
 
-                <Route path="/pacienti" element={<PacientiViewList/>}/>
-                <Route path="/addPacient" element={<AddPacientView/>}/>
-                <Route path="/edit-pacient/:id" element={<AddPacientView/>}/>
+                {/*<Route path="/pacienti" element={<PacientiViewList/>}/>*/}
+                {/*<Route path="/addPacient" element={<AddPacientView/>}/>*/}
+                {/*<Route path="/edit-pacient/:id" element={<AddPacientView/>}/>*/}
 
                 <Route path="/zamestnanci" element={<ZamestnanciViewList/>}/>
                 <Route path="/addZamestnanec" element={<AddZamestnanecView/>}/>
