@@ -9,7 +9,7 @@ const AddUser: React.FC = () => {
     const navigate = useNavigate();
 
     //const [roleOptions, setRoleOptions] = useState<string[]>(["USER", "ADMIN", "ZAMESTNANEC", "ZAMESTNANEC_NADRIZENY"]);
-    const roleOptions = ["USER", "ADMIN", "ZAMESTNANEC", "ZAMESTNANEC_NADRIZENY"];
+    const roleOptions = ["UZIVATEL", "ADMIN", "ZAMESTNANEC", "ZAMESTNANEC_NADRIZENY"];
 
 
     const [user, setUser] = useState<User>({

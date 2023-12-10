@@ -15,6 +15,7 @@ import PacientiAdresyList from "./components/entityLists/PacientiAdresyList.tsx"
 import AddPacientView from "./components/createPages/AddPacientView.tsx";
 import ZamestnanciDataList from "./components/entityLists/ZamestnanciDataList.tsx";
 import AddZamestnanecData from "./components/createPages/AddZamestnanecData.tsx";
+import Hello from "./components/Hello.tsx";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
             <Header></Header>
 
             <Routes>
+                <Route path="/hello" element={<Hello/>}/>
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/addUser" element={<AddUser/>}/>
                 <Route path="/edit-user/:id" element={<AddUser/>}/>
