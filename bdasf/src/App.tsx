@@ -8,14 +8,15 @@ import Footer from "./components/Footer";
 
 import "./App.css";
 
-import React from "react";
 import UserList from "./components/entityLists/UserList.tsx";
 import AddUser from "./components/createPages/AddUser.tsx";
 import PacientiAdresyList from "./components/entityLists/PacientiAdresyList.tsx";
-import AddPacientView from "./components/createPages/AddPacientView.tsx";
+import AddPacientAdresa from "./components/createPages/AddPacientAdresa.tsx";
 import ZamestnanciDataList from "./components/entityLists/ZamestnanciDataList.tsx";
 import AddZamestnanecData from "./components/createPages/AddZamestnanecData.tsx";
-import Hello from "./components/Hello.tsx";
+import ChooseUserRolePage from "./components/ChooseUserRolePage.tsx";
+import PacientiKartyList from "./components/entityLists/PacientiKartyList.tsx";
+import AddPacientKarta from "./components/createPages/AddPacientKarta.tsx";
 
 function App() {
     return (
@@ -23,7 +24,9 @@ function App() {
             <Header></Header>
 
             <Routes>
-                <Route path="/hello" element={<Hello/>}/>
+
+
+                <Route path="/select-role" element={<ChooseUserRolePage/>}/>
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/addUser" element={<AddUser/>}/>
                 <Route path="/edit-user/:id" element={<AddUser/>}/>
@@ -37,9 +40,13 @@ function App() {
                 {/*<Route path="/addPacient" element={<AddPacient />} />*/}
                 {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
 
+                <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>
+                <Route path="/add-pacient-karta" element={<AddPacientKarta/>}/>
+                <Route path="/edit-pacient-karta/:id" element={<AddPacientKarta/>}/>
+
                 <Route path="/pacienti-adresy" element={<PacientiAdresyList/>}/>
-                <Route path="/addPacientAdresa" element={<AddPacientView/>}/>
-                <Route path="/edit-pacient-adresa/:id" element={<AddPacientView/>}/>
+                <Route path="/addPacientAdresa" element={<AddPacientAdresa/>}/>
+                <Route path="/edit-pacient-adresa/:id" element={<AddPacientAdresa/>}/>
 
                 <Route path="/zamestnanci-data" element={<ZamestnanciDataList/>}/>
                 <Route path="/addZamestnanec" element={<AddZamestnanecData/>}/>

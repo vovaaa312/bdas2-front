@@ -1,10 +1,9 @@
-// AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import PacientAdresaService from "../services/PacientAdresaService.tsx";
 import {PacientAdresa} from "../model/PacientAdresa.tsx";
 
-const AddPacientView: React.FC = () => {
+const AddPacientAdresa: React.FC = () => {
     const navigate = useNavigate();
 
     const [pacient, setPacient] = useState<PacientAdresa>({
@@ -294,4 +293,4 @@ const AddPacientView: React.FC = () => {
     );
 };
 
-export default AddPacientView;
+export default AddPacientAdresa;
