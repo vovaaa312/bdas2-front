@@ -26,7 +26,7 @@ function Registration() {
       : console.log("Passwords are not equal");
 
     try {
-      const role = "USER";
+      const role = "UZIVATEL";
       const response = await UserService.register({ username, password,role});
       console.log("Register successful:", response.data);
       // Handle successful login, e.g., store user data, redirect, etc.

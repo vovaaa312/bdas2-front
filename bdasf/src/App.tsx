@@ -49,11 +49,11 @@ function App() {
                 <Route path="/edit-pacient-karta/:id" element={<AddPacientKarta/>}/>
 
                 <Route path="/pacienti-adresy" element={<PacientiAdresyList/>}/>
-                <Route path="/addPacientAdresa" element={<AddPacientAdresa/>}/>
+                <Route path="/add-pacient-adresa" element={<AddPacientAdresa/>}/>
                 <Route path="/edit-pacient-adresa/:id" element={<AddPacientAdresa/>}/>
 
                 <Route path="/zamestnanci-data" element={<ZamestnanciDataList/>}/>
-                <Route path="/addZamestnanec" element={<AddZamestnanecData/>}/>
+                <Route path="/add-zamestnanec" element={<AddZamestnanecData/>}/>
                 <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecData/>}/>
 
             </Routes>
