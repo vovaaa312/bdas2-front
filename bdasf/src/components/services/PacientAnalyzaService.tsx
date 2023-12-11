@@ -16,7 +16,7 @@ class PacientAnalyzaService {
         return axios.get<PacientAnalyza>(`${BASE_URL}/${analyzaId}`);
     }
 
-    updatePacient(
+    updateAnalyza(
         analyzaId: number,
         analyza: PacientAnalyza
     ): Promise<AxiosResponse<PacientAnalyza>> {

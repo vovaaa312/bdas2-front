@@ -18,6 +18,7 @@ import ChooseUserRolePage from "./components/ChooseUserRolePage.tsx";
 import PacientiKartyList from "./components/entityLists/PacientiKartyList.tsx";
 import AddPacientKarta from "./components/createPages/AddPacientKarta.tsx";
 import PacientiAnalyzyList from "./components/entityLists/PacientiAnalyzyList.tsx";
+import AddPacientAnalyza from "./components/createPages/AddPacientAnalyza.tsx";
 
 function App() {
     return (
@@ -42,6 +43,7 @@ function App() {
                 {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
 
                 <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
+                <Route path="/add-pacient-analyza" element={<AddPacientAnalyza/>}/>
 
 
                 <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>

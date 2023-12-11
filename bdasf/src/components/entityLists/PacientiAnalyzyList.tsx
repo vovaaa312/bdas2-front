@@ -41,7 +41,7 @@ const PacientiAnalyzyList: React.FC = () => {
         <div>
             <h1>Analyzy pacientu</h1>
             <div>
-                <Link to="/add-pacient-karta">
+                <Link to="/add-pacient-analyza">
                     <button className="btn btn-info" type="button">
                         Add analyza
                     </button>
@@ -72,34 +72,34 @@ const PacientiAnalyzyList: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {pacientiAnalyzyList.map((pacientKarta) => (
-                    <tr key={pacientKarta.idAnalyza}>
-                        <td>{pacientKarta.idPacient}</td>
+                {pacientiAnalyzyList.map((pacientAnalyza) => (
+                    <tr key={pacientAnalyza.idAnalyza}>
+                        <td>{pacientAnalyza.idPacient}</td>
 
-                        <td>{pacientKarta.jmeno}</td>
-                        <td>{pacientKarta.prijmeni}</td>
-                        <td>{pacientKarta.cisloTelefonu}</td>
-                        <td>{pacientKarta.pohlavi}</td>
-                        <td>{pacientKarta.idKarta}</td>
-                        <td>{pacientKarta.idAnalyza}</td>
-                        <td>{pacientKarta.RBC}</td>
-                        <td>{pacientKarta.WBC}</td>
-                        <td>{pacientKarta.HGB}</td>
-                        <td>{pacientKarta.PLT}</td>
-                        <td>{formatDate(new Date(pacientKarta.datum))}</td>
+                        <td>{pacientAnalyza.jmeno}</td>
+                        <td>{pacientAnalyza.prijmeni}</td>
+                        <td>{pacientAnalyza.cisloTelefonu}</td>
+                        <td>{pacientAnalyza.pohlavi}</td>
+                        <td>{pacientAnalyza.idKarta}</td>
+                        <td>{pacientAnalyza.idAnalyza}</td>
+                        <td>{pacientAnalyza.RBC}</td>
+                        <td>{pacientAnalyza.WBC}</td>
+                        <td>{pacientAnalyza.HGB}</td>
+                        <td>{pacientAnalyza.PLT}</td>
+                        <td>{formatDate(new Date(pacientAnalyza.datum))}</td>
 
 
                         <td>
                             <Link
                                 className="btn btn-info"
-                                to={`/edit-pacient-analyza/${pacientKarta.idAnalyza}`}
+                                to={`/edit-pacient-analyza/${pacientAnalyza.idAnalyza}`}
                             >
                                 Update
                             </Link>
 
                             <button
                                 className="btn btn-danger"
-                                onClick={() => deleteAnalyza(pacientKarta.idAnalyza)}
+                                onClick={() => deleteAnalyza(pacientAnalyza.idAnalyza)}
                                 style={{marginLeft: "10px"}}
                             >
                                 Delete
