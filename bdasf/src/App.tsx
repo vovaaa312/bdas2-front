@@ -17,6 +17,7 @@ import AddZamestnanecData from "./components/createPages/AddZamestnanecData.tsx"
 import ChooseUserRolePage from "./components/ChooseUserRolePage.tsx";
 import PacientiKartyList from "./components/entityLists/PacientiKartyList.tsx";
 import AddPacientKarta from "./components/createPages/AddPacientKarta.tsx";
+import PacientiAnalyzyList from "./components/entityLists/PacientiAnalyzyList.tsx";
 
 function App() {
     return (
@@ -39,6 +40,9 @@ function App() {
                 {/*<Route path="/pacienti" element={<PacientList />} />*/}
                 {/*<Route path="/addPacient" element={<AddPacient />} />*/}
                 {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
+
+                <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
+
 
                 <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>
                 <Route path="/add-pacient-karta" element={<AddPacientKarta/>}/>

@@ -1,30 +1,29 @@
 import axios, { AxiosResponse } from "axios";
-import {PacientAdresa} from "../model/PacientAdresa.tsx";
 import {PacientAnalyza} from "../model/PacientAnalyza.tsx";
 
 const BASE_URL = "http://localhost:8080/api/pacienti-analyzy";
 
 class PacientAnalyzaService {
-    getAllPacienti(): Promise<AxiosResponse<PacientAnalyza[]>> {
+    getAllAnalyzy(): Promise<AxiosResponse<PacientAnalyza[]>> {
         return axios.get<PacientAnalyza[]>(BASE_URL);
     }
 
-    createPacient(pacient: PacientAnalyza): Promise<AxiosResponse<PacientAnalyza>> {
-        return axios.post<PacientAnalyza>(BASE_URL, pacient);
+    createAnalyza(analyza: PacientAnalyza): Promise<AxiosResponse<PacientAnalyza>> {
+        return axios.post<PacientAnalyza>(BASE_URL, analyza);
     }
 
-    getPacientById(pacientId: number): Promise<AxiosResponse<PacientAnalyza>> {
-        return axios.get<PacientAnalyza>(`${BASE_URL}/${pacientId}`);
+    getByAnalyzaId(analyzaId: number): Promise<AxiosResponse<PacientAnalyza>> {
+        return axios.get<PacientAnalyza>(`${BASE_URL}/${analyzaId}`);
     }
 
     updatePacient(
-        pacientId: number,
-        pacient: PacientAnalyza
-    ): Promise<AxiosResponse<PacientAdresa>> {
-        return axios.put<PacientAdresa>(`${BASE_URL}/${pacientId}`, pacient);
+        analyzaId: number,
+        analyza: PacientAnalyza
+    ): Promise<AxiosResponse<PacientAnalyza>> {
+        return axios.put<PacientAnalyza>(`${BASE_URL}/${analyzaId}`, analyza);
     }
 
-    deletePacient(pacientId: number): Promise<AxiosResponse<void>> {
+    deleteAnalyza(pacientId: number): Promise<AxiosResponse<void>> {
         return axios.delete<void>(`${BASE_URL}/${pacientId}`);
     }
 }
