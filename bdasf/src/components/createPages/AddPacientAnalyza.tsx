@@ -28,7 +28,7 @@ const AddPacientAnalyza: React.FC = () => {
 
     const saveOrUpdatePacient = (e: React.FormEvent) => {
         e.preventDefault();
-
+        console.log(analyza);
         if (id) {
             // Update existing analyza
             PacientAnalyzaService.updateAnalyza(pacientId, analyza)

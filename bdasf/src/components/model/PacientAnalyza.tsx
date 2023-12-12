@@ -4,7 +4,6 @@ export interface PacientAnalyza {
     prijmeni: string;
     cisloTelefonu: number;
     pohlavi: string;
-
     idKarta:number;
     idAnalyza:number;
     RBC:number;
