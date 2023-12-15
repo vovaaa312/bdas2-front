@@ -1,52 +1,47 @@
+// AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import PacientKataService from "../services/PacientKartaService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
-import {PacientKarta} from "../model/PacientKarta.tsx";
+import PokojeOddeleniService from "../services/PokojeOddeleniService.tsx";
+import {PokojeOddeleni} from "../model/PokojeOddeleni.tsx";
 
-const AddPacientKarta: React.FC = () => {
+const AddPokoj: React.FC = () => {
     const navigate = useNavigate();
 
-    const [karta, setKarta] = useState<PacientKarta>({
-        idPacient: 0,
-        jmeno: "",
-        prijmeni: "",
-        datumHospitalizace: new Date().toISOString().split("T")[0],
-        datumNarozeni: new Date().toISOString().split("T")[0],
-        cisloTelefonu: 0,
-        pohlavi: "",
-
-        idKarta:0,
+    const [pokoj, setPokoj] = useState<PokojeOddeleni>({
+        idPokoj: 0,
+        patro:0,
+        cislo:0,
         idOddeleni:0,
-        nazevOddeleni:""
-
+        nazevOddeleni:"",
+        pocetLuzek:0
     });
-    const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
 
     const { id } = useParams<{ id?: string }>();
-    const kartaId = parseInt(id || "0");
+    const pokojId = parseInt(id || "0");
 
-    const saveOrUpdateKarta = (e: React.FormEvent) => {
+    const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
+
+
+    const saveOrUpdateZamestnance = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (id) {
-            // Update existing pacient
-
-
-            PacientKataService.updateKarta(kartaId, karta)
+            // Update existing pokoj
+            PokojeOddeleniService.updatePokoj(pokojId, pokoj)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti-karty");
+                    navigate("/pokoje-data");
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         } else {
-            // Create new pacient
-            PacientKataService.createPacient(karta)
+            // Create new pokoj
+            PokojeOddeleniService.createPokoj(pokoj)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/pacienti-karty");
+                    navigate("/pokoje-data");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -56,28 +51,29 @@ const AddPacientKarta: React.FC = () => {
 
     useEffect(() => {
         if (id) {
-            PacientKataService.getByKartaId(kartaId)
+            PokojeOddeleniService.getPokojById(pokojId)
                 .then((response) => {
-                    setKarta(response.data);
+                    setPokoj(response.data);
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         }
+
         OddeleniService.getAllOddeleni()
             .then((response) => {
                 setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
             })
             .catch((error) => {
-                console.error("Error loading oddeleni options", error);
+                console.error("Error loading pokoje options", error);
             });
     }, [id]);
 
     const title = () => {
         if (id) {
-            return <h2 className="text-center">Update karta</h2>;
+            return <h2 className="text-center">Update pokoj</h2>;
         } else {
-            return <h2 className="text-center">Add karta</h2>;
+            return <h2 className="text-center">Add pokoj</h2>;
         }
     };
 
@@ -90,58 +86,54 @@ const AddPacientKarta: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
                             <form>
+                                {/*<div className="form-group mb-2">*/}
+                                {/*  <label>Id adresa</label>*/}
+                                {/*  <input*/}
+                                {/*    placeholder="-"*/}
+                                {/*    type="number"*/}
+                                {/*    name="idAdresa"*/}
+                                {/*    className="form-control"*/}
+                                {/*    value={pokoj.idAdresa}*/}
+                                {/*    onChange={(e) =>*/}
+                                {/*      setPacient((prevPacient) => ({*/}
+                                {/*        ...prevPacient,*/}
+                                {/*        idAdresa: parseInt(e.target.value, 10),*/}
+                                {/*      }))*/}
+                                {/*    }*/}
+                                {/*  />*/}
+                                {/*</div>*/}
 
-                                {/* Jmeno */}
-                                <div className="form-group mb-2">
-                                    <label>Jmeno</label>
-                                    <input
-                                        disabled={!!id}
-                                        placeholder="-"
-                                        type="text"
-                                        name="jmeno"
-                                        className="form-control"
-                                        value={karta.jmeno}
-                                        onChange={(e) =>
-                                            setKarta((prevPacient) => ({
-                                                ...prevPacient,
-                                                jmeno: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Prijmeni */}
-                                <div className="form-group mb-2">
-                                    <label>Prijmeni</label>
-                                    <input
-                                        disabled={!!id}
-                                        placeholder="-"
-                                        type="text"
-                                        name="prijmeni"
-                                        className="form-control"
-                                        value={karta.prijmeni}
-                                        onChange={(e) =>
-                                            setKarta((prevPacient) => ({
-                                                ...prevPacient,
-                                                prijmeni: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
 
-                                {/* Cislo Telefonu */}
+                                {/* Patro */}
                                 <div className="form-group mb-2">
-                                    <label>Cislo Telefonu</label>
+                                    <label>Patro</label>
                                     <input
-                                        disabled={!!id}
                                         placeholder="-"
                                         type="number"
-                                        name="cisloTelefonu"
+                                        name="patro"
                                         className="form-control"
-                                        value={karta.cisloTelefonu}
+                                        value={pokoj.patro}
                                         onChange={(e) =>
-                                            setKarta((prevPacient) => ({
+                                            setPokoj((prevPacient) => ({
                                                 ...prevPacient,
-                                                cisloTelefonu: parseInt(e.target.value, 10),
+                                                patro: parseInt(e.target.value, 10),
+                                            }))
+                                        }
+                                    />
+                                </div>
+                                {/* Cislo */}
+                                <div className="form-group mb-2">
+                                    <label>Cislo</label>
+                                    <input
+                                        placeholder="-"
+                                        type="number"
+                                        name="pracovniZkusenosti"
+                                        className="form-control"
+                                        value={pokoj.cislo}
+                                        onChange={(e) =>
+                                            setPokoj((prevPacient) => ({
+                                                ...prevPacient,
+                                                cislo: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
@@ -154,9 +146,9 @@ const AddPacientKarta: React.FC = () => {
                                     <select
                                         name="oddeleni"
                                         className="form-control"
-                                        value={karta.nazevOddeleni || ""}
+                                        value={pokoj.nazevOddeleni || ""}
                                         onChange={(e) =>
-                                            setKarta((prevPacient) => ({
+                                            setPokoj((prevPacient) => ({
                                                 ...prevPacient,
                                                 nazevOddeleni: e.target.value,
                                             }))
@@ -171,16 +163,16 @@ const AddPacientKarta: React.FC = () => {
                                     </select>
                                 </div>
 
-
                                 <div>
-                                    <Link to="/pacienti-karty" className="btn btn-danger">
+                                    <Link to="/pokoje-data
+                                    " className="btn btn-danger">
                                         Back
                                     </Link>
 
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveOrUpdateKarta(e)}
+                                        onClick={(e) => saveOrUpdateZamestnance(e)}
                                     >
                                         Submit
                                     </button>
@@ -194,4 +186,4 @@ const AddPacientKarta: React.FC = () => {
     );
 };
 
-export default AddPacientKarta;
+export default AddPokoj;

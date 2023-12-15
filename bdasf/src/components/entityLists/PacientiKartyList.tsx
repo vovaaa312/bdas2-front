@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {PacientKarta} from "../model/PacientKarta.tsx";
-import PacientKataService from "../services/PacientKataService.tsx";
+import PacientKataService from "../services/PacientKartaService.tsx";
 
 const PacientiKartyList: React.FC = () => {
     const [pacientiKartyList, setPacientiKartyList] = useState<PacientKarta[]>([]);
@@ -34,7 +34,13 @@ const PacientiKartyList: React.FC = () => {
     };
 
     const formatDate = (date: Date) => {
-        const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
         return new Intl.DateTimeFormat("en-US", options).format(date);
     };
     return (

@@ -19,6 +19,9 @@ import PacientiKartyList from "./components/entityLists/PacientiKartyList.tsx";
 import AddPacientKarta from "./components/createPages/AddPacientKarta.tsx";
 import PacientiAnalyzyList from "./components/entityLists/PacientiAnalyzyList.tsx";
 import AddPacientAnalyza from "./components/createPages/AddPacientAnalyza.tsx";
+import PokojeDataList from "./components/entityLists/PokojeOddeleniList.tsx";
+import AddPokoj from "./components/createPages/AddPokoj.tsx";
+import PacientiLuzkaList from "./components/entityLists/PacientiLuzkaList.tsx";
 
 function App() {
     return (
@@ -44,7 +47,7 @@ function App() {
 
                 <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
                 <Route path="/add-pacient-analyza" element={<AddPacientAnalyza/>}/>
-
+                <Route path="/edit-pacient-analyza/:id" element={<AddPacientAnalyza/>}/>
 
                 <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>
                 <Route path="/add-pacient-karta" element={<AddPacientKarta/>}/>
@@ -57,6 +60,14 @@ function App() {
                 <Route path="/zamestnanci-data" element={<ZamestnanciDataList/>}/>
                 <Route path="/add-zamestnanec" element={<AddZamestnanecData/>}/>
                 <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecData/>}/>
+{/*/add-pokoj/*/}
+
+                <Route path="/pokoje-data" element={<PokojeDataList/>}/>
+                <Route path="/add-pokoj" element={<AddPokoj/>}/>
+                <Route path="/edit-pokoj/:id" element={<AddPokoj/>}/>
+                <Route path="/luzka/:id" element={<PacientiLuzkaList/>}/>
+
+
 
             </Routes>
 

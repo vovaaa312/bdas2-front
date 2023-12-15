@@ -5,7 +5,7 @@ export interface ZamestnanecData {
     idZamestnanec: number;
     jmeno: string;
     prijmeni: string;
-    datumNarozeni: Date;
+    datumNarozeni: string;
     cisloTelefonu: number;
     pracovniZkusenosti: number;
 

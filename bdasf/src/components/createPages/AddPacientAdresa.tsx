@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import PacientAdresaService from "../services/PacientAdresaService.tsx";
-import {PacientAdresa} from "../model/PacientAdresa.tsx";
+import { PacientAdresa } from "../model/PacientAdresa.tsx";
 
 const AddPacientAdresa: React.FC = () => {
     const navigate = useNavigate();
@@ -10,19 +10,18 @@ const AddPacientAdresa: React.FC = () => {
         idPacient: 0,
         jmeno: "",
         prijmeni: "",
-        datumHospitalizace: new Date(),
-        datumNarozeni: new Date(),
+        datumHospitalizace: new Date().toISOString().split("T")[0], // Исправлено для поля Date
+        datumNarozeni: new Date().toISOString().split("T")[0], // Исправлено для поля Date
         cisloTelefonu: 0,
         pohlavi: "",
 
         idAdresa: 0,
-        zeme:"",
-        mesto:"",
-        adresa:"",
-        psc:0
-
+        zeme: "",
+        mesto: "",
+        adresa: "",
+        psc: 0,
     });
-    const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]); // Добавлен массив с возможными значениями
+    const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
 
     const { id } = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
@@ -82,7 +81,6 @@ const AddPacientAdresa: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
                             <form>
-
                                 {/* Jmeno */}
                                 <div className="form-group mb-2">
                                     <label>Jmeno</label>
@@ -125,15 +123,11 @@ const AddPacientAdresa: React.FC = () => {
                                         type="date"
                                         name="datumHospitalizace"
                                         className="form-control"
-                                        value={
-                                            pacient.datumHospitalizace instanceof Date
-                                                ? pacient.datumHospitalizace.toISOString().split("T")[0]
-                                                : ""
-                                        }
+                                        value={pacient.datumHospitalizace}
                                         onChange={(e) =>
                                             setPacient((prevPacient) => ({
                                                 ...prevPacient,
-                                                datumHospitalizace: new Date(e.target.value),
+                                                datumHospitalizace: e.target.value,
                                             }))
                                         }
                                     />
@@ -146,15 +140,11 @@ const AddPacientAdresa: React.FC = () => {
                                         type="date"
                                         name="datumNarozeni"
                                         className="form-control"
-                                        value={
-                                            pacient.datumNarozeni instanceof Date
-                                                ? pacient.datumNarozeni.toISOString().split("T")[0]
-                                                : ""
-                                        }
+                                        value={pacient.datumNarozeni}
                                         onChange={(e) =>
                                             setPacient((prevPacient) => ({
                                                 ...prevPacient,
-                                                datumNarozeni: new Date(e.target.value),
+                                                datumNarozeni: e.target.value,
                                             }))
                                         }
                                     />
@@ -294,3 +284,5 @@ const AddPacientAdresa: React.FC = () => {
 };
 
 export default AddPacientAdresa;
+
+

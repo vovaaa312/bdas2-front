@@ -6,10 +6,10 @@ export interface PacientAnalyza {
     pohlavi: string;
     idKarta:number;
     idAnalyza:number;
-    RBC:number;
-    WBC:number;
-    HGB:number;
-    PLT:number;
-    datum:Date;
+    rbc:number;
+    wbc:number;
+    hgb:number;
+    plt:number;
+    datum:string;
 
 }

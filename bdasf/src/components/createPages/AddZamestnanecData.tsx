@@ -11,7 +11,7 @@ const AddZamestnanecData: React.FC = () => {
         idZamestnanec: 0,
         jmeno: "",
         prijmeni: "",
-        datumNarozeni: new Date(),
+        datumNarozeni: new Date().toISOString().split("T")[0],
         cisloTelefonu: 0,
         pracovniZkusenosti: 0,
 
@@ -154,15 +154,11 @@ const AddZamestnanecData: React.FC = () => {
                                         type="date"
                                         name="datumNarozeni"
                                         className="form-control"
-                                        value={
-                                            zamestnanec.datumNarozeni instanceof Date
-                                                ? zamestnanec.datumNarozeni.toISOString().split("T")[0]
-                                                : ""
-                                        }
+                                        value={zamestnanec.datumNarozeni}
                                         onChange={(e) =>
                                             setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
-                                                datumNarozeni: new Date(e.target.value),
+                                                datumNarozeni: e.target.value,
                                             }))
                                         }
                                     />

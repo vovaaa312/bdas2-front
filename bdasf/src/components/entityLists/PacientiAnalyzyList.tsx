@@ -34,7 +34,13 @@ const PacientiAnalyzyList: React.FC = () => {
     };
 
     const formatDate = (date: Date) => {
-        const options = {year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit"};
+        const options: Intl.DateTimeFormatOptions = {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+        };
         return new Intl.DateTimeFormat("en-US", options).format(date);
     };
     return (
@@ -82,10 +88,10 @@ const PacientiAnalyzyList: React.FC = () => {
                         <td>{pacientAnalyza.pohlavi}</td>
                         <td>{pacientAnalyza.idKarta}</td>
                         <td>{pacientAnalyza.idAnalyza}</td>
-                        <td>{pacientAnalyza.RBC}</td>
-                        <td>{pacientAnalyza.WBC}</td>
-                        <td>{pacientAnalyza.HGB}</td>
-                        <td>{pacientAnalyza.PLT}</td>
+                        <td>{pacientAnalyza.rbc}</td>
+                        <td>{pacientAnalyza.wbc}</td>
+                        <td>{pacientAnalyza.hgb}</td>
+                        <td>{pacientAnalyza.plt}</td>
                         <td>{formatDate(new Date(pacientAnalyza.datum))}</td>
 
 

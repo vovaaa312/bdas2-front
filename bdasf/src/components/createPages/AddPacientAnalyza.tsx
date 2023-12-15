@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import PacientAnalyzaService from "../services/PacientAnalyzaService.tsx";
-import {PacientAnalyza} from "../model/PacientAnalyza.tsx";
+import { PacientAnalyza } from "../model/PacientAnalyza.tsx";
 const AddPacientAnalyza: React.FC = () => {
     const navigate = useNavigate();
 
@@ -9,19 +9,18 @@ const AddPacientAnalyza: React.FC = () => {
         idPacient: 0,
         jmeno: "",
         prijmeni: "",
-
         cisloTelefonu: 0,
         pohlavi: "",
-
-        idKarta:0,
-        idAnalyza:0,
-        RBC:0,
-        WBC:0,
-        HGB:0,
-        PLT:0,
-        datum:new Date()
-
+        idKarta: 0,
+        idAnalyza: 0,
+        rbc: 0,
+        wbc: 0,
+        hgb: 0,
+        plt: 0,
+        datum: new Date().toISOString().split("T")[0]
     });
+
+    const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
 
     const { id } = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
@@ -30,7 +29,6 @@ const AddPacientAnalyza: React.FC = () => {
         e.preventDefault();
         console.log(analyza);
         if (id) {
-            // Update existing analyza
             PacientAnalyzaService.updateAnalyza(pacientId, analyza)
                 .then((response) => {
                     console.log(response.data);
@@ -40,7 +38,6 @@ const AddPacientAnalyza: React.FC = () => {
                     console.log(error);
                 });
         } else {
-            // Create new analyza
             PacientAnalyzaService.createAnalyza(analyza)
                 .then((response) => {
                     console.log(response.data);
@@ -81,8 +78,6 @@ const AddPacientAnalyza: React.FC = () => {
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
                             <form>
-
-                                {/* Jmeno */}
                                 <div className="form-group mb-2">
                                     <label>Jmeno</label>
                                     <input
@@ -99,7 +94,6 @@ const AddPacientAnalyza: React.FC = () => {
                                         }
                                     />
                                 </div>
-                                {/* Prijmeni */}
                                 <div className="form-group mb-2">
                                     <label>Prijmeni</label>
                                     <input
@@ -116,27 +110,27 @@ const AddPacientAnalyza: React.FC = () => {
                                         }
                                     />
                                 </div>
-
-
-                                {/* Cislo Telefonu */}
                                 <div className="form-group mb-2">
-                                    <label>Cislo Telefonu</label>
-                                    <input
-                                        placeholder="-"
-                                        type="number"
-                                        name="cisloTelefonu"
+                                    <label>Pohlavi</label>
+                                    <select
+                                        name="pohlavi"
                                         className="form-control"
-                                        value={analyza.cisloTelefonu}
+                                        value={analyza.pohlavi || ""}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                cisloTelefonu: parseInt(e.target.value, 10),
+                                                pohlavi: e.target.value,
                                             }))
                                         }
-                                    />
+                                    >
+                                        <option value="" disabled>Select Pohlavi</option>
+                                        {pohlaviOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
-
-                                {/* RBC */}
                                 <div className="form-group mb-2">
                                     <label>RBC</label>
                                     <input
@@ -144,99 +138,83 @@ const AddPacientAnalyza: React.FC = () => {
                                         type="number"
                                         name="RBC"
                                         className="form-control"
-                                        value={analyza.RBC}
+                                        value={analyza.rbc}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                RBC: parseInt(e.target.value, 10),
+                                                rbc: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
                                 </div>
-
-                                {/* WBC */}
                                 <div className="form-group mb-2">
-                                    <label>RBC</label>
+                                    <label>WBC</label>
                                     <input
                                         placeholder="-"
                                         type="number"
                                         name="WBC"
                                         className="form-control"
-                                        value={analyza.WBC}
+                                        value={analyza.wbc}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                WBC: parseInt(e.target.value, 10),
+                                                wbc: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
                                 </div>
-
-                                {/* HGB */}
                                 <div className="form-group mb-2">
-                                    <label>RBC</label>
+                                    <label>HGB</label>
                                     <input
                                         placeholder="-"
                                         type="number"
                                         name="HGB"
                                         className="form-control"
-                                        value={analyza.HGB}
+                                        value={analyza.hgb}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                HGB: parseInt(e.target.value, 10),
+                                                hgb: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
                                 </div>
-
-                                {/* PLT */}
                                 <div className="form-group mb-2">
-                                    <label>RBC</label>
+                                    <label>PLT</label>
                                     <input
                                         placeholder="-"
                                         type="number"
                                         name="PLT"
                                         className="form-control"
-                                        value={analyza.PLT}
+                                        value={analyza.plt}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                PLT: parseInt(e.target.value, 10),
+                                                plt: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />
                                 </div>
-
-                                {/* Datum */}
                                 <div className="form-group mb-2">
-                                    <label>Datum Hospitalizace</label>
+                                    <label>Datum provedeni</label>
                                     <input
                                         placeholder="-"
                                         type="date"
-                                        name="datumHospitalizace"
+                                        name="datum"
                                         className="form-control"
-                                        value={
-                                            analyza.datum instanceof Date
-                                                ? analyza.datum.toISOString().split("T")[0]
-                                                : ""
-                                        }
+                                        value={analyza.datum}
                                         onChange={(e) =>
                                             setAnalyza((prevPacient) => ({
                                                 ...prevPacient,
-                                                datum: new Date(e.target.value),
+                                                datum: e.target.value,
                                             }))
                                         }
                                     />
                                 </div>
-
-
-
                                 <div>
                                     <Link to="/pacienti-analyzy" className="btn btn-danger">
                                         Back
                                     </Link>
-
                                     <button
                                         type="button"
                                         className="btn btn-success"
