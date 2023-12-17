@@ -8,6 +8,7 @@ export interface ZamestnanecData {
     datumNarozeni: string;
     cisloTelefonu: number;
     pracovniZkusenosti: number;
+    pohlavi:string;
 
     idAdresa: number;
     zeme:string;

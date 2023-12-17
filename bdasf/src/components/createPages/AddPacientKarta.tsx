@@ -157,8 +157,6 @@ const AddPacientKarta: React.FC = () => {
                                         onChange={handlePacientChange}
                                     />
 
-
-
                                 </div>
 
                                 {/* Combobox для Oddeleni */}

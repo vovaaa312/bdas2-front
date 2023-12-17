@@ -26,6 +26,8 @@ import PacientiRezervaceList from "./components/entityLists/PacientiRezervaceLis
 import AddLuzko from "./components/createPages/AddLuzko.tsx";
 import NavstevyPacientuList from "./components/entityLists/NavstevyPacientuList.tsx";
 import AddNavsteva from "./components/createPages/AddNavsteva.tsx";
+import LogList from "./components/entityLists/LogList.tsx";
+import SystemCatalogList from "./components/entityLists/SystemCatalogList.tsx";
 
 function App() {
     return (
@@ -67,6 +69,10 @@ function App() {
 
                     <Route path="/navstevy-pacientu" element={<NavstevyPacientuList/>}/>
                     <Route path="/add-navsteva" element={<AddNavsteva/>}/>
+
+                    <Route path="/logs" element={<LogList/>}/>
+                    <Route path="/catalog" element={<SystemCatalogList/>}/>
+
 
 
                 </Routes>

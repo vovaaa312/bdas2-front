@@ -4,8 +4,17 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import ZamestnanciDataService from "../services/ZamestnanecDataService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
+import {Oddeleni} from "../model/Oddeleni.tsx";
+import Select from "react-select";
 const AddZamestnanecData: React.FC = () => {
     const navigate = useNavigate();
+    const [oddeleni, setOddeleni] = useState<Oddeleni[]>([]);
+    const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
+
+    const oddeleniOptions = oddeleni.map(oddeleni => ({
+        value: oddeleni.idOddeleni, // Убедитесь, что здесь используется правильное свойство для идентификатора
+        label: `${oddeleni.nazevOddeleni}`
+    }));
 
     const [zamestnanec, setZamestnanec] = useState<ZamestnanecData>({
         idZamestnanec: 0,
@@ -28,7 +37,6 @@ const AddZamestnanecData: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
 
-    const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
 
 
     const saveOrUpdateZamestnance = (e: React.FormEvent) => {
@@ -49,7 +57,7 @@ const AddZamestnanecData: React.FC = () => {
             ZamestnanciDataService.createZamestnanec(zamestnanec)
                 .then((response) => {
                     console.log(response.data);
-                    navigate("/zamestnanci");
+                    navigate("/zamestnanci-data");
                 })
                 .catch((error) => {
                     console.log(error);
@@ -58,6 +66,15 @@ const AddZamestnanecData: React.FC = () => {
     };
 
     useEffect(() => {
+        OddeleniService.getAllOddeleni()
+            .then((response) => {
+                setOddeleni(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+
         if (id) {
             ZamestnanciDataService.getZamestnanecById(pacientId)
                 .then((response) => {
@@ -68,15 +85,24 @@ const AddZamestnanecData: React.FC = () => {
                 });
         }
 
-        OddeleniService.getAllOddeleni()
-            .then((response) => {
-                setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
-            })
-            .catch((error) => {
-                console.error("Error loading oddeleni options", error);
-            });
+        // OddeleniService.getAllOddeleni()
+        //     .then((response) => {
+        //         setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
+        //     })
+        //     .catch((error) => {
+        //         console.error("Error loading oddeleni options", error);
+        //     });
     }, [id]);
 
+    const handleOddeleniChange = (selectedOption) => {
+        console.log("Selected oddeleni:", selectedOption);
+        setZamestnanec(prevZamestnanec => ({
+            ...prevZamestnanec,
+            idOddeleni: selectedOption ? selectedOption.value : null
+        }));
+        console.log("Zam idOddeleni:", zamestnanec.idOddeleni);
+
+    };
     const title = () => {
         if (id) {
             return <h2 className="text-center">Update zamestnanec</h2>;
@@ -146,6 +172,29 @@ const AddZamestnanecData: React.FC = () => {
                                     />
                                 </div>
 
+                                {/* Pohlavi - комбобокс */}
+                                <div className="form-group mb-2">
+                                    <label>Pohlavi</label>
+                                    <select
+                                        name="pohlavi"
+                                        className="form-control"
+                                        value={zamestnanec.pohlavi || ""}
+                                        onChange={(e) =>
+                                            setZamestnanec((prevZamestnanec) => ({
+                                                ...prevZamestnanec,
+                                                pohlavi: e.target.value,
+                                            }))
+                                        }
+                                    >
+                                        <option value="" disabled>Select...</option>
+                                        {pohlaviOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
                                 {/* Datum Narozeni */}
                                 <div className="form-group mb-2">
                                     <label>Datum Narozeni</label>
@@ -180,6 +229,14 @@ const AddZamestnanecData: React.FC = () => {
                                         }
                                     />
                                 </div>
+                                {/* Combobox для Oddeleni */}
+                                <label>Vyberte oddeleni</label>
+                                <Select
+                                    options={oddeleniOptions}
+                                    value={oddeleniOptions.find((option) => option.value === zamestnanec.idOddeleni)}
+                                    onChange={handleOddeleniChange}
+                                />
+
                                 {/* Pracovni zkusenosti */}
                                 <div className="form-group mb-2">
                                     <label>Pracovni zkusenosti</label>
@@ -268,31 +325,32 @@ const AddZamestnanecData: React.FC = () => {
                                         }
                                     />
                                 </div>
-                                {/* Combobox для Oddeleni */}
-                                <div className="form-group mb-2">
-                                    <label>Oddeleni</label>
-                                    <select
-                                        name="oddeleni"
-                                        className="form-control"
-                                        value={zamestnanec.nazevOddeleni || ""}
-                                        onChange={(e) =>
-                                            setZamestnanec((prevPacient) => ({
-                                                ...prevPacient,
-                                                nazevOddeleni: e.target.value,
-                                            }))
-                                        }
-                                    >
-                                        <option value="" disabled>Select Oddeleni</option>
-                                        {oddeleniOptions.map((oddeleni) => (
-                                            <option key={oddeleni} value={oddeleni}>
-                                                {oddeleni}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+
+
+                                {/*<div className="form-group mb-2">*/}
+                                {/*    <label>Oddeleni</label>*/}
+                                {/*    <select*/}
+                                {/*        name="oddeleni"*/}
+                                {/*        className="form-control"*/}
+                                {/*        value={zamestnanec.nazevOddeleni || ""}*/}
+                                {/*        onChange={(e) =>*/}
+                                {/*            setZamestnanec((prevPacient) => ({*/}
+                                {/*                ...prevPacient,*/}
+                                {/*                nazevOddeleni: e.target.value,*/}
+                                {/*            }))*/}
+                                {/*        }*/}
+                                {/*    >*/}
+                                {/*        <option value="" disabled>Select Oddeleni</option>*/}
+                                {/*        {oddeleniOptions.map((oddeleni) => (*/}
+                                {/*            <option key={oddeleni} value={oddeleni}>*/}
+                                {/*                {oddeleni}*/}
+                                {/*            </option>*/}
+                                {/*        ))}*/}
+                                {/*    </select>*/}
+                                {/*</div>*/}
 
                                 <div>
-                                    <Link to="/pacienti-data
+                                    <Link to="/zamestnanci-data
                                     " className="btn btn-danger">
                                         Back
                                     </Link>

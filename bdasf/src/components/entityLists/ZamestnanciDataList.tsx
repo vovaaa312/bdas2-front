@@ -45,7 +45,7 @@ const ZamestnanciDataList: React.FC = () => {
         <div>
             <h1>Zamestnanci</h1>
             <div>
-                <Link to="/addZamestnanec">
+                <Link to="/add-zamestnanec">
                     <button className="btn btn-info" type="button">
                         Add zamestnance
                     </button>
@@ -62,6 +62,7 @@ const ZamestnanciDataList: React.FC = () => {
                     <th scope="col">DATUM NAROZENI</th>
                     <th scope="col">CISLO TELEFONU</th>
                     <th scope="col">PRACOVNI ZKUSENOSTI</th>
+                    <th scope="col">POHLAVI</th>
 
                     <th scope="col">ID ADRESA</th>
                     <th scope="col">ZEME</th>
@@ -87,6 +88,9 @@ const ZamestnanciDataList: React.FC = () => {
                         <td>{formatDate(new Date(zamestnanecData.datumNarozeni))}</td>
                         <td>{zamestnanecData.cisloTelefonu}</td>
                         <td>{zamestnanecData.pracovniZkusenosti}</td>
+                        <td>{zamestnanecData.pohlavi}</td>
+
+
                         <td>{zamestnanecData.idAdresa}</td>
                         <td>{zamestnanecData.zeme}</td>
                         <td>{zamestnanecData.mesto}</td>
