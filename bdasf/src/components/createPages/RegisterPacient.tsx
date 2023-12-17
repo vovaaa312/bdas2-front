@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import PacientAdresaService from "../services/PacientAdresaService.tsx";
-import PacientRegisterService
 import {PacientAdresa} from "../model/PacientAdresa.tsx";
 
 const AddPacientAdresa: React.FC = () => {

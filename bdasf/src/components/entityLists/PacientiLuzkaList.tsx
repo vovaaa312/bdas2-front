@@ -1,17 +1,19 @@
-// PacientList.tsx
 import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {PacientLuzko} from "../model/PacientLuzko.tsx";
 import PacientLuzkoService from "../services/PacientLuzkoService.tsx";
 
 const PacientiLuzkaList: React.FC = () => {
+    const navigate = useNavigate();
     const [pacientiLuzkaList, setPacientiLuzkaList] = useState<PacientLuzko[]>([]);
     const {id} = useParams<{ id?: string }>();
     const luzkoId = parseInt(id || "0");
+   // const [luzko, setLuzko] = useState<PacientLuzko>();
 
 
     useEffect(() => {
         getAllLuzka();
+
     }, []);
 
     const getAllLuzka = () => {
@@ -29,18 +31,33 @@ const PacientiLuzkaList: React.FC = () => {
     };
 
     const deleteLuzko = (luzkoId: number) => {
-        const confirmDelete = window.confirm(
-            "Chcete odebrat toto luzko?"
-        );
-        if (confirmDelete) {
-            PacientLuzkoService.deleteLuzko(luzkoId)
-                .then(() => {
-                    getAllLuzka();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
+        PacientLuzkoService.getByLuzkoId(luzkoId)
+            .then((response) => {
+                const retrievedLuzko = response.data;
+                console.log(retrievedLuzko);
+
+                if (retrievedLuzko && retrievedLuzko.idPacient == 0) {
+                    const confirmDelete = window.confirm(
+                        "Chcete odebrat toto luzko?"
+                    );
+                    if (confirmDelete) {
+                        PacientLuzkoService.deleteLuzko(luzkoId)
+                            .then(() => {
+                                getAllLuzka();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    }
+                } else {
+                    window.alert("Toto luzko je obsazene!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+
 
     };
 
@@ -84,14 +101,41 @@ const PacientiLuzkaList: React.FC = () => {
     };
 
 
+    const rezervaceLuzka = (luzkoId: number) => {
+        PacientLuzkoService.getByLuzkoId(luzkoId)
+            .then((response) => {
+                const retrievedLuzko = response.data;
+                console.log(retrievedLuzko);
+
+                if (retrievedLuzko && retrievedLuzko.idPacient == 0) {
+                    // Теперь навигация будет выполняться только если luzko.idPacient равно null
+                    navigate(`rezervace-luzka/${luzkoId}`);
+                } else {
+                    window.alert("Toto luzko je obsazene!");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
 
     return (
         <div>
             <h1>Luzka</h1>
             <div>
-                <Link to="/add-pacient-adresa">
-                    <button className="btn btn-info" type="button">
-                        Add luzko
+                <Link
+                    className="btn btn-info"
+                    to={`/add-luzko/${id}`}
+                >
+                  Add luzko
+                </Link>
+            </div>
+
+            <div>
+                <Link to="/pokoje-data">
+                    <button className="btn btn-link" type="button">
+                       Zpet
                     </button>
                 </Link>
             </div>
@@ -127,16 +171,9 @@ const PacientiLuzkaList: React.FC = () => {
                         <td>{pacientLuzko.prijmeni}</td>
 
                         <td>
-                            <Link
-                                className="btn btn-info"
-                                to={`/edit-pacient-adresa/${pacientLuzko.idPacient}`}
-                            >
-                                Update
-                            </Link>
-
                             <button
                                 className="btn btn-danger"
-                                onClick={() => deleteLuzko(pacientLuzko.idPacient)}
+                                onClick={() => deleteLuzko(pacientLuzko.idLuzko)}
                                 style={{marginLeft: "10px"}}
                             >
                                 Delete
@@ -150,10 +187,10 @@ const PacientiLuzkaList: React.FC = () => {
                             </button>
                             <button
                                 className="btn btn-success"
-                                onClick={() => pridatPacienta(pacientLuzko.idLuzko)}
+                                onClick={() => rezervaceLuzka(pacientLuzko.idLuzko)}
                                 style={{marginLeft: "10px"}}
                             >
-                                Pridat pacienta
+                                Rezervace
                             </button>
                         </td>
 

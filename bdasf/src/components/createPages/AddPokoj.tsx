@@ -23,7 +23,7 @@ const AddPokoj: React.FC = () => {
     const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
 
 
-    const saveOrUpdateZamestnance = (e: React.FormEvent) => {
+    const saveOrUpdateLuzko = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (id) {
@@ -127,7 +127,7 @@ const AddPokoj: React.FC = () => {
                                     <input
                                         placeholder="-"
                                         type="number"
-                                        name="pracovniZkusenosti"
+                                        name="cislo"
                                         className="form-control"
                                         value={pokoj.cislo}
                                         onChange={(e) =>
@@ -172,7 +172,7 @@ const AddPokoj: React.FC = () => {
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveOrUpdateZamestnance(e)}
+                                        onClick={(e) => saveOrUpdateLuzko(e)}
                                     >
                                         Submit
                                     </button>

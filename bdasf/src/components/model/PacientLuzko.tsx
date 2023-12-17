@@ -1,13 +1,13 @@
 export type PacientLuzko={
-    idLuzko:number,
+    idLuzko:number|null,
     idPokoj:number,
-    idPacient:number,
-    jmeno: string,
-    prijmeni: string,
-    datumRezervace:string,
-    datumPropusteni:string,
+    idPacient:string|null,
+    jmeno: string|null,
+    prijmeni: string|null,
+    datumRezervace:string|null,
+    datumPropusteni:string|null,
     status:boolean,
     cislo:number,
     patro:number,
-    nazevOddeleni:string
+    nazevOddeleni:string|null
 }

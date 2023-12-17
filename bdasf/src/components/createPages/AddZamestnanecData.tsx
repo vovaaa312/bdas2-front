@@ -1,7 +1,7 @@
 // AddPacient.tsx
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import ZamestnanciDataService from "../services/ZamestnanciDataService.tsx";
+import ZamestnanciDataService from "../services/ZamestnanecDataService.tsx";
 import OddeleniService from "../services/OddeleniService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
 const AddZamestnanecData: React.FC = () => {

@@ -42,6 +42,8 @@ const PacientList: React.FC = () => {
     };
     return new Intl.DateTimeFormat("en-US", options).format(date);
   };
+
+
   return (
     <div>
       <h1>Pacient</h1>

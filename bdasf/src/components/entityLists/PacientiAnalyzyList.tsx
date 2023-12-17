@@ -57,21 +57,20 @@ const PacientiAnalyzyList: React.FC = () => {
             <table className="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">ID_PACIENT</th>
 
                     <th scope="col">JMENO</th>
                     <th scope="col">PRIJMENI</th>
                     <th scope="col">CISLO TELEFONU</th>
                     <th scope="col">POHLAVI</th>
 
-                    <th scope="col">ID_KARTA</th>
-                    <th scope="col">ID_ANALYZA</th>
                     <th scope="col">RBC</th>
                     <th scope="col">WBC</th>
                     <th scope="col">HGB</th>
                     <th scope="col">PLT</th>
 
                     <th scope="col">DATUM</th>
+                    <th scope="col">ACTIONS</th>
+
 
 
                     {/* Добавьте остальные поля пациента по необходимости */}
@@ -80,14 +79,11 @@ const PacientiAnalyzyList: React.FC = () => {
                 <tbody>
                 {pacientiAnalyzyList.map((pacientAnalyza) => (
                     <tr key={pacientAnalyza.idAnalyza}>
-                        <td>{pacientAnalyza.idPacient}</td>
 
                         <td>{pacientAnalyza.jmeno}</td>
                         <td>{pacientAnalyza.prijmeni}</td>
                         <td>{pacientAnalyza.cisloTelefonu}</td>
                         <td>{pacientAnalyza.pohlavi}</td>
-                        <td>{pacientAnalyza.idKarta}</td>
-                        <td>{pacientAnalyza.idAnalyza}</td>
                         <td>{pacientAnalyza.rbc}</td>
                         <td>{pacientAnalyza.wbc}</td>
                         <td>{pacientAnalyza.hgb}</td>

@@ -1,15 +1,14 @@
 export interface PacientKarta {
-    idPacient: number;
-    jmeno: string;
-    prijmeni: string;
-    datumHospitalizace: string;
-    datumNarozeni: string;
-    cisloTelefonu: number;
-    pohlavi: string;
-
-    idKarta:number;
-    idOddeleni:number;
-    nazevOddeleni:string;
+    idPacient: number|null
+    jmeno: string|null
+    prijmeni: string|null
+    datumHospitalizace: string|null
+    datumNarozeni: string|null
+    cisloTelefonu: number|null
+    pohlavi: string|null
+    idKarta: number|null
+    idOddeleni: number|null
+    nazevOddeleni: string|null
 
 
 }

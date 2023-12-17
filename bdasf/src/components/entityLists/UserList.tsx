@@ -41,7 +41,7 @@ const UserList: React.FC = () => {
         <div>
             <h1>Users</h1>
             <div>
-                <Link to="/addUser">
+                <Link to="/add-user">
                     <button className="btn btn-info" type="button">
                         Add user
                     </button>

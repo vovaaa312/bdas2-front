@@ -1,9 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import PacientAnalyzaService from "../services/PacientAnalyzaService.tsx";
-import { PacientAnalyza } from "../model/PacientAnalyza.tsx";
+import {PacientAnalyza} from "../model/PacientAnalyza.tsx";
+import Select from "react-select";
+import {PacientKarta} from "../model/PacientKarta.tsx";
+import PacientKartaService from "../services/PacientKartaService.tsx";
+
 const AddPacientAnalyza: React.FC = () => {
     const navigate = useNavigate();
+
+    const [kartyPacientu, setKartyPacientu] = useState<PacientKarta[]>([]);
+
+    const pacientiOptions = kartyPacientu.map(pacient => ({
+        value: pacient.idKarta,
+        label: `${pacient.jmeno} ${pacient.prijmeni}, ${pacient.nazevOddeleni}`
+    }));
 
     const [analyza, setAnalyza] = useState<PacientAnalyza>({
         idPacient: 0,
@@ -20,12 +31,14 @@ const AddPacientAnalyza: React.FC = () => {
         datum: new Date().toISOString().split("T")[0]
     });
 
-    const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
+    //const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
 
-    const { id } = useParams<{ id?: string }>();
+    const {id} = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
 
-    const saveOrUpdatePacient = (e: React.FormEvent) => {
+
+
+    const saveOrUpdateAnalyza = (e: React.FormEvent) => {
         e.preventDefault();
         console.log(analyza);
         if (id) {
@@ -50,10 +63,20 @@ const AddPacientAnalyza: React.FC = () => {
     };
 
     useEffect(() => {
+        PacientKartaService.getAllPacienti()
+            .then((response) => {
+                setKartyPacientu(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
         if (id) {
             PacientAnalyzaService.getByAnalyzaId(pacientId)
                 .then((response) => {
                     setAnalyza(response.data);
+
                 })
                 .catch((error) => {
                     console.log(error);
@@ -69,6 +92,16 @@ const AddPacientAnalyza: React.FC = () => {
         }
     };
 
+    const handlePacientSelectChange = (selectedOption) => {
+        console.log("Selected Pacient:", selectedOption);
+        setAnalyza((prevAnalyza) => ({
+            ...prevAnalyza,
+            idKarta: selectedOption ? selectedOption.value : null
+        }));
+        console.log("Analyza idKarta:", analyza.idKarta);
+    };
+
+
     return (
         <div>
             {title()}
@@ -79,58 +112,17 @@ const AddPacientAnalyza: React.FC = () => {
                         <div className="card-body">
                             <form>
                                 <div className="form-group mb-2">
-                                    <label>Jmeno</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="jmeno"
-                                        className="form-control"
-                                        value={analyza.jmeno}
-                                        onChange={(e) =>
-                                            setAnalyza((prevPacient) => ({
-                                                ...prevPacient,
-                                                jmeno: e.target.value,
-                                            }))
-                                        }
+                                    <label>Pacient</label>
+                                    <Select
+                                        options={pacientiOptions}
+                                        onChange={handlePacientSelectChange}
+                                        value={pacientiOptions.find((option) => option.value === analyza.idKarta)}
+
                                     />
+
+
                                 </div>
-                                <div className="form-group mb-2">
-                                    <label>Prijmeni</label>
-                                    <input
-                                        placeholder="-"
-                                        type="text"
-                                        name="prijmeni"
-                                        className="form-control"
-                                        value={analyza.prijmeni}
-                                        onChange={(e) =>
-                                            setAnalyza((prevPacient) => ({
-                                                ...prevPacient,
-                                                prijmeni: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                <div className="form-group mb-2">
-                                    <label>Pohlavi</label>
-                                    <select
-                                        name="pohlavi"
-                                        className="form-control"
-                                        value={analyza.pohlavi || ""}
-                                        onChange={(e) =>
-                                            setAnalyza((prevPacient) => ({
-                                                ...prevPacient,
-                                                pohlavi: e.target.value,
-                                            }))
-                                        }
-                                    >
-                                        <option value="" disabled>Select Pohlavi</option>
-                                        {pohlaviOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+
                                 <div className="form-group mb-2">
                                     <label>RBC</label>
                                     <input
@@ -218,7 +210,7 @@ const AddPacientAnalyza: React.FC = () => {
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveOrUpdatePacient(e)}
+                                        onClick={(e) => saveOrUpdateAnalyza(e)}
                                     >
                                         Submit
                                     </button>

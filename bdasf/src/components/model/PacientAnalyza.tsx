@@ -1,15 +1,15 @@
 export interface PacientAnalyza {
-    idPacient: number;
-    jmeno: string;
-    prijmeni: string;
-    cisloTelefonu: number;
-    pohlavi: string;
-    idKarta:number;
-    idAnalyza:number;
-    rbc:number;
-    wbc:number;
-    hgb:number;
-    plt:number;
-    datum:string;
+    idPacient: number|null
+    jmeno: string|null
+    prijmeni: string|null
+    cisloTelefonu: number|null
+    pohlavi: string|null
+    idKarta:number|null
+    idAnalyza:number|null
+    rbc:number|null
+    wbc:number|null
+    hgb:number|null
+    plt:number|null
+    datum:string|null
 
 }

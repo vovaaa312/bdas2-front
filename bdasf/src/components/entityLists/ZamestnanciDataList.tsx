@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ZamestnanciViewService from "../services/ZamestnanciDataService.tsx";
+import ZamestnanciViewService from "../services/ZamestnanecDataService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
 
 const ZamestnanciDataList: React.FC = () => {

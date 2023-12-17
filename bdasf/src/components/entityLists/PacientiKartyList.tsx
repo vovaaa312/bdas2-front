@@ -57,7 +57,6 @@ const PacientiKartyList: React.FC = () => {
             <table className="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">ID_PACIENT</th>
 
                     <th scope="col">JMENO</th>
                     <th scope="col">PRIJMENI</th>
@@ -66,9 +65,7 @@ const PacientiKartyList: React.FC = () => {
                     <th scope="col">CISLO TELEFONU</th>
                     <th scope="col">POHLAVI</th>
 
-                    <th scope="col">ID_KARTA</th>
-                    <th scope="col">ID_ODDELENI
-                    </th>
+
                     <th scope="col">NAZEV_ODDELENI</th>
 
 
@@ -78,7 +75,6 @@ const PacientiKartyList: React.FC = () => {
                 <tbody>
                 {pacientiKartyList.map((pacientKarta) => (
                     <tr key={pacientKarta.idKarta}>
-                        <td >{pacientKarta.idPacient}</td>
 
                         <td >{pacientKarta.jmeno}</td>
                         <td>{pacientKarta.prijmeni}</td>
@@ -86,8 +82,6 @@ const PacientiKartyList: React.FC = () => {
                         <td>{formatDate(new Date(pacientKarta.datumNarozeni))}</td>
                         <td>{pacientKarta.cisloTelefonu}</td>
                         <td>{pacientKarta.pohlavi}</td>
-                        <td>{pacientKarta.idKarta}</td>
-                        <td>{pacientKarta.idOddeleni}</td>
                         <td>{pacientKarta.nazevOddeleni}</td>
 
                         <td>
