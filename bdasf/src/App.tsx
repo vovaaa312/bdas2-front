@@ -3,7 +3,6 @@ import {Route, Routes} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
 
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 import "./App.css";
@@ -14,7 +13,6 @@ import PacientiAdresyList from "./components/entityLists/PacientiAdresyList.tsx"
 import AddPacientAdresa from "./components/createPages/AddPacientAdresa.tsx";
 import ZamestnanciDataList from "./components/entityLists/ZamestnanciDataList.tsx";
 import AddZamestnanecData from "./components/createPages/AddZamestnanecData.tsx";
-import ChooseUserRolePage from "./components/ChooseUserRolePage.tsx";
 import PacientiKartyList from "./components/entityLists/PacientiKartyList.tsx";
 import AddPacientKarta from "./components/createPages/AddPacientKarta.tsx";
 import PacientiAnalyzyList from "./components/entityLists/PacientiAnalyzyList.tsx";
@@ -29,18 +27,19 @@ import AddNavsteva from "./components/createPages/AddNavsteva.tsx";
 import LogList from "./components/entityLists/LogList.tsx";
 import SystemCatalogList from "./components/entityLists/SystemCatalogList.tsx";
 
+import MenuAppBar from "./components/SideBarMenu/navbar/navbar.tsx"
+import TestLogin from "./components/auth/TestLogin.tsx";
+
 function App() {
     return (
         <div>
-            <Header></Header>
-
+            <MenuAppBar></MenuAppBar>
                 <Routes>
-                    <Route path="/select-role"              element={<ChooseUserRolePage/>}/>
-                    <Route path="/users"                    element={<UserList/>}/>
-                    <Route path="/add-user"                  element={<AddUser/>}/>
-                    <Route path="/edit-user/:id"            element={<AddUser/>}/>
+                    <Route path="/users" element={<UserList/>}/>
+                    <Route path="/add-user" element={<AddUser/>}/>
+                    <Route path="/edit-user/:id" element={<AddUser/>}/>
 
-                    <Route path="/login"                    element={<Login/>}/>
+                    <Route path="/login" element={<Login/>}/>
                     <Route path="/registration" element={<Registration/>}/>
 
                     <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
@@ -74,8 +73,10 @@ function App() {
                     <Route path="/catalog" element={<SystemCatalogList/>}/>
 
 
+                    <Route path="/test-login" element={<TestLogin/>}/>
 
                 </Routes>
+
 
             <Footer></Footer>
         </div>
@@ -85,9 +86,9 @@ function App() {
 export default App;
 
 
-
-
-
-{/*<Route path="/pacienti" element={<PacientList />} />*/}
-{/*<Route path="/addPacient" element={<AddPacient />} />*/}
-{/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/}
+{/*<Route path="/pacienti" element={<PacientList />} />*/
+}
+{/*<Route path="/addPacient" element={<AddPacient />} />*/
+}
+{/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/
+}

@@ -5,3 +5,4 @@ export interface LogData {
     editedData:string|null
     login:string|null
 }
+

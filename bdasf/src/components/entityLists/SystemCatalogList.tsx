@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {TableColumn} from "../model/TableColumn.tsx";
+import {TableColumn} from '../model/Types.ts'
 import DatabaseService from "../services/DatabaseService.tsx";
 
 const LogList:React.FC=()=>{

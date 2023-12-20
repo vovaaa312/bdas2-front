@@ -7,6 +7,9 @@ import { Pacient } from "../model/Pacient.tsx";
 const AddPacient: React.FC = () => {
   const navigate = useNavigate();
 
+    //const [user, setUser] = useState<User>();
+
+
 
 
   const [pacient, setPacient] = useState<Pacient>({
@@ -50,6 +53,9 @@ const AddPacient: React.FC = () => {
   };
 
   useEffect(() => {
+      // setUser(localStorage.getItem('user'));
+
+
     if (id) {
       PacientService.getPacientById(pacientId)
         .then((response) => {
