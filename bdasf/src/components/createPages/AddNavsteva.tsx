@@ -17,7 +17,8 @@ const AddNavsteva: React.FC = () => {
 
     const [navsteva, setNavsteva] = useState<NavstevaPacienta>({
         idNavsteva: 0,
-        datum: new Date().toISOString().split("T")[0], // начальное значение - пустая строка
+        // datum: new Date().toISOString().split("T")[0], // начальное значение - пустая строка
+        datum:'',
         idPacient: 0,
         idZamestnanec: 0,
         problem: '', // начальное значение - пустая строка
@@ -26,7 +27,9 @@ const AddNavsteva: React.FC = () => {
         pacientJmeno: '',
         pacientPrijmeni: '',
         cisloTelefonu: 0,
-        zamestnanecJmeno: ''
+        zamestnanecJmeno: '',
+        zamestnanecPrijmeni:'',
+        status:''
     });
     const [pacienti, setPacienti] = useState<Pacient[]>([]);
     const [zamestnanci, setZamestnanci] = useState<ZamestnanecData[]>([]);

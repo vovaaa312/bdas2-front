@@ -21,7 +21,7 @@ class PacientiLuzkaService {
     }
 
     rezervaceLuzka(rezervaceRequest: RezervaceLuzkaRequest): Promise<AxiosResponse<RezervaceLuzkaRequest>> {
-        return axios.post<RezervaceLuzkaRequest>(`${BASE_URL}/rezervace-luzka/`,rezervaceRequest);
+        return axios.post<RezervaceLuzkaRequest>(`${BASE_URL}/rezervace-luzka`,rezervaceRequest);
     }
     getByPokojId(pokojId: number): Promise<AxiosResponse<PacientLuzko[]>> {
         return axios.get<PacientLuzko[]>(`${BASE_URL}/pokoj/${pokojId}`);
