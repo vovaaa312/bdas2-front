@@ -8,7 +8,7 @@ class NavstevyPacientuService {
 
 
     getAllNavstevy(): Promise<AxiosResponse<NavstevaPacienta[]>> {
-        return axios.get<PacientLuzko[]>(BASE_URL);
+        return axios.get<NavstevaPacienta[]>(BASE_URL);
     }
 
     createNavsteva(navsteva: NavstevaPacienta): Promise<AxiosResponse<NavstevaPacienta>> {
@@ -21,6 +21,12 @@ class NavstevyPacientuService {
     getByZamestnanecId(zamestnanecId: number): Promise<AxiosResponse<NavstevaPacienta[]>> {
         return axios.get<NavstevaPacienta[]>(`${BASE_URL}/zamestnanec/${zamestnanecId}`);
     }
+
+    getByOddeleniId(oddeleniId: number): Promise<AxiosResponse<NavstevaPacienta[]>> {
+        return axios.get<NavstevaPacienta[]>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
+
     getByNavstevaId(navstevaId: number):Promise<AxiosResponse<NavstevaPacienta>>{
         return axios.get<NavstevaPacienta>(`${BASE_URL}/${navstevaId}`);    }
 

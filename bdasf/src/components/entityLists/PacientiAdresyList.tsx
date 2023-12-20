@@ -1,28 +1,46 @@
 // PacientList.tsx
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import PacientViewService from "../services/PacientAdresaService.tsx";
 import {PacientAdresa} from "../model/PacientAdresa.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const PacientiAdresyList: React.FC = () => {
     const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
+
+    useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+    }, []);// Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
+
 
     useEffect(() => {
         getAllPacients();
-    }, []);
+    }, [user]);
 
     const getAllPacients = () => {
-        PacientViewService.getAllPacienti()
-            .then((response) => {
-                setPacientiAdresyList(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            PacientViewService.getAllPacienti()
+                .then((response) => {
+                    setPacientiAdresyList(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     };
 
     const deletePacient = (pacientId: number) => {
+
         PacientViewService.deletePacient(pacientId)
             .then(() => {
                 getAllPacients();
@@ -43,9 +61,16 @@ const PacientiAdresyList: React.FC = () => {
         return new Intl.DateTimeFormat("en-US", options).format(date);
     };
 
+    const pageTitle = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <h1>Pacienti</h1>
+
+        } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
+
+    }
     return (
         <div>
-            <h1>Pacienti</h1>
+            {pageTitle()}
             <div>
                 <Link to="/add-pacient-adresa">
                     <button className="btn btn-info" type="button">
@@ -77,7 +102,7 @@ const PacientiAdresyList: React.FC = () => {
                 <tbody>
                 {pacientiAdresyList.map((pacientAdresa) => (
                     <tr key={pacientAdresa.idPacient}>
-                        <td >{pacientAdresa.jmeno}</td>
+                        <td>{pacientAdresa.jmeno}</td>
                         <td>{pacientAdresa.prijmeni}</td>
                         <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
                         <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
@@ -99,7 +124,7 @@ const PacientiAdresyList: React.FC = () => {
                             <button
                                 className="btn btn-danger"
                                 onClick={() => deletePacient(pacientAdresa.idPacient)}
-                                style={{ marginLeft: "10px" }}
+                                style={{marginLeft: "10px"}}
                             >
                                 Delete
                             </button>

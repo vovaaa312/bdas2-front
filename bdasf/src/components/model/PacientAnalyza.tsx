@@ -5,6 +5,7 @@ export interface PacientAnalyza {
     cisloTelefonu: number|null
     pohlavi: string|null
     idKarta:number|null
+    idOddeleni: number|null
     idAnalyza:number|null
     rbc:number|null
     wbc:number|null

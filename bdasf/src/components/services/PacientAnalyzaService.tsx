@@ -16,6 +16,14 @@ class PacientAnalyzaService {
         return axios.get<PacientAnalyza>(`${BASE_URL}/${analyzaId}`);
     }
 
+    getByPacientId(pacientId: number): Promise<AxiosResponse<PacientAnalyza[]>> {
+        return axios.get<PacientAnalyza[]>(`${BASE_URL}/pacient/${pacientId}`);
+    }
+
+    getByOddeleniId(oddeleniId: number): Promise<AxiosResponse<PacientAnalyza[]>> {
+        return axios.get<PacientAnalyza[]>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
     updateAnalyza(
         analyzaId: number,
         analyza: PacientAnalyza

@@ -4,7 +4,7 @@ const BASE_URL = "http://localhost:8080/api/logs";
 
 class LogDataService {
     getAll(): Promise<AxiosResponse<LogData[]>> {
-        return axios.get<LogData[]>(BASE_URL);
+        return axios.get<LogData[]>(`${BASE_URL}`);
     }
 
 }

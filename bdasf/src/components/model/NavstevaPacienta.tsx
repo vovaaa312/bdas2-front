@@ -8,9 +8,12 @@ export interface NavstevaPacienta {
     idStatus                :number|null
     pacientJmeno            :string|null
     pacientPrijmeni         :string|null
+    pacientCisloTelefonu    :number|null
     cisloTelefonu           :number|null
     zamestnanecJmeno        :string|null
     zamestnanecPrijmeni     :string|null
+    zamestnanecCisloTelefonu:number|null
+    idOddeleni              :number|null
     status                  :string|null
 
 }

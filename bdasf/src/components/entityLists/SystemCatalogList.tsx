@@ -1,29 +1,54 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import {TableColumn} from '../model/Types.ts'
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import DatabaseService from "../services/DatabaseService.tsx";
+import {TableColumn} from "../model/TableColumn.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
-const LogList:React.FC=()=>{
+const LogList: React.FC = () => {
     const [tableColumn, setTableColumn] = useState<TableColumn[]>([]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
+    useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+    }, []);
 
     useEffect(() => {
         getAll();
+
+
     }, []);
 
     const getAll = () => {
-        DatabaseService.getAll()
-            .then((response) => {
-                setTableColumn(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            DatabaseService.getAll()
+                .then((response) => {
+                    setTableColumn(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     };
+
+    const pageTitle = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <h1>System catalog</h1>
+
+        } else return <h1>K těmto údajům nemáte přístup</h1>
+
+    }
 
     return (
         <div>
-            <h1>System catalog</h1>
+            {pageTitle()}
             <div>
                 <Link to="/home-page">
                     <button className="btn btn-info" type="button">

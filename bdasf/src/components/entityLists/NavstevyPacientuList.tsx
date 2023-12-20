@@ -5,25 +5,45 @@ import {NavstevaPacienta} from "../model/NavstevaPacienta.tsx";
 import NavstevyPacientuService from "../services/NavstevyPacientuService.tsx";
 import {StorageUserData} from "../model/response/StorageUserData.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {Zamestnanec} from "../model/Zamestnanec.tsx";
+import ZamestnanecService from "../services/ZamestnanecService.tsx";
 
 const NavstevyPacientuList: React.FC = () => {
     const [navstevyList, setNavstevyList] = useState<NavstevaPacienta[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
-
+    const[zamestnanec,setZamestnanec ] = useState<Zamestnanec>();
 
     // Загрузка User при монтировании компонента
     useEffect(() => {
-        getUserFromLocalStorage();
-    }, []); // Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+    }, []);// Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
 
     useEffect(() => {
         // Этот код будет выполняться каждый раз, когда user обновится
         if (user) {
             console.log(user);
+            if(user.zamestnanecId){
+                getZamestnanec(user.zamestnanecId);
+
+            }
             getAllNavstevy();
         }
     }, [user]); // Указываем user как зависимость
-
+    const getZamestnanec = (zamId:number) => {
+        ZamestnanecService.getZamestnanecById(zamId)
+            .then((response) => {
+                setZamestnanec(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
     const getAllNavstevy = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
@@ -46,31 +66,29 @@ const NavstevyPacientuList: React.FC = () => {
                 .catch((error) => {
                     console.log(error);
                 });
+        }else if(user?.roleName === USER_ROLES.ZAMESTNANEC){
+            NavstevyPacientuService.getByZamestnanecId(user.zamestnanecId)
+                .then((response) => {
+                    setNavstevyList(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }else if(user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY && zamestnanec?.idOddeleni){
+            NavstevyPacientuService.getByOddeleniId(zamestnanec?.idOddeleni)
+                .then((response) => {
+                    setNavstevyList(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
         }
 
 
-    };
-
-    const getUserFromLocalStorage = () => {
-        const log = localStorage.getItem("login");
-        const role = localStorage.getItem("roleName");
-        const pacIdStr = localStorage.getItem("pacId");
-        const zamIdStr = localStorage.getItem("zamId");
-        const pacId = pacIdStr ? parseInt(pacIdStr) : 0;
-        const zamId = zamIdStr ? parseInt(zamIdStr) : 0;
-
-        if (log && role) {
-            const userData: StorageUserData = {
-                login: log,
-                roleName: role,
-                pacientId: pacId,
-                zamestnanecId: zamId
-            };
-
-            setUser(userData); // Установка данных в состояние user
-            console.log(userData); // Здесь user будет заполнен
-        }
-    };
+        };
 
 
 
@@ -94,9 +112,17 @@ const NavstevyPacientuList: React.FC = () => {
     //     };
     //     return new Intl.DateTimeFormat("en-US", options).format(date);
     // };
+
+    const pageTitle = () => {
+        if (user?.roleName === USER_ROLES.UZIVATEL) {
+            return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
+
+        } else return <h1>Navstevy pacientu</h1>
+
+    }
     return (
         <div>
-            <h1>Navstevy pacientu</h1>
+            {pageTitle()}
             <div>
                 <Link to="/add-navsteva">
                     <button className="btn btn-info" type="button">
