@@ -37,6 +37,10 @@ class NavstevyPacientuService {
         return axios.put<NavstevaPacienta>(`${BASE_URL}/${navstevaId}`, navsteva);
     }
 
+    deleteNavsteva(navstevaId: number): Promise<AxiosResponse<void>> {
+        return axios.delete<void>(`${BASE_URL}/${navstevaId}`);
+    }
+
 }
 
 export default new NavstevyPacientuService();

@@ -7,13 +7,10 @@ import {StorageUserData} from "../model/response/StorageUserData.tsx";
 import LocalStorageService from "../services/LocalStorageService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
 import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
-import {Oddeleni} from "../model/Oddeleni.tsx";
-import OddeleniService from "../services/OddeleniService.tsx";
 
 const PacientiAnalyzyList: React.FC = () => {
         const [pacientiAnalyzyList, setPacientiAnalyzyList] = useState<PacientAnalyza[]>([]);
         const [user, setUser] = useState<StorageUserData | null>(null);
-        const [oddeleni, setOddeleni]=useState<Oddeleni|null>(null);
         useEffect(() => {
             const userData = LocalStorageService.getUserFromLocalStorage();
             if (userData) {

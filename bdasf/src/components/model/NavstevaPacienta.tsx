@@ -9,7 +9,6 @@ export interface NavstevaPacienta {
     pacientJmeno            :string|null
     pacientPrijmeni         :string|null
     pacientCisloTelefonu    :number|null
-    cisloTelefonu           :number|null
     zamestnanecJmeno        :string|null
     zamestnanecPrijmeni     :string|null
     zamestnanecCisloTelefonu:number|null

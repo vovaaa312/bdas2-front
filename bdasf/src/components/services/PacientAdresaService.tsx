@@ -9,6 +9,10 @@ class PacientAdresaService {
         return axios.get<PacientAdresa[]>(BASE_URL);
     }
 
+    getAllByOddeleni(oddeleniId:number): Promise<AxiosResponse<PacientAdresa[]>> {
+        return axios.get<PacientAdresa[]>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
     createPacient(pacient: PacientAdresa): Promise<AxiosResponse<PacientAdresa>> {
         return axios.post<PacientAdresa>(BASE_URL, pacient);
     }
