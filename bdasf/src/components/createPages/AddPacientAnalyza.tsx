@@ -5,6 +5,9 @@ import {PacientAnalyza} from "../model/PacientAnalyza.tsx";
 import Select from "react-select";
 import {PacientKarta} from "../model/PacientKarta.tsx";
 import PacientKartaService from "../services/PacientKartaService.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const AddPacientAnalyza: React.FC = () => {
     const navigate = useNavigate();
@@ -16,6 +19,9 @@ const AddPacientAnalyza: React.FC = () => {
         label: `${pacient.jmeno} ${pacient.prijmeni}, ${pacient.nazevOddeleni}`
     }));
 
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
+
     const [analyza, setAnalyza] = useState<PacientAnalyza>({
         idPacient: 0,
         jmeno: "",
@@ -23,6 +29,7 @@ const AddPacientAnalyza: React.FC = () => {
         cisloTelefonu: 0,
         pohlavi: "",
         idKarta: 0,
+        idOddeleni:0,
         idAnalyza: 0,
         rbc: 0,
         wbc: 0,
@@ -63,6 +70,12 @@ const AddPacientAnalyza: React.FC = () => {
     };
 
     useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+
         PacientKartaService.getAllPacienti()
             .then((response) => {
                 setKartyPacientu(response.data);
@@ -84,13 +97,7 @@ const AddPacientAnalyza: React.FC = () => {
         }
     }, [id]);
 
-    const title = () => {
-        if (id) {
-            return <h2 className="text-center">Update analyza</h2>;
-        } else {
-            return <h2 className="text-center">Add analyza</h2>;
-        }
-    };
+
 
     const handlePacientSelectChange = (selectedOption) => {
         console.log("Selected Pacient:", selectedOption);
@@ -101,12 +108,26 @@ const AddPacientAnalyza: React.FC = () => {
         console.log("Analyza idKarta:", analyza.idKarta);
     };
 
+    const title = () => {
+        if(user?.roleName!==USER_ROLES.PACIENT&&
+            user?.roleName!==USER_ROLES.UZIVATEL&&
+            user){
+            if (id) {
+                return <h2 className="text-center">Update analyza</h2>;
+            } else {
+                return <h2 className="text-center">Add analyza</h2>;
+            }
+        }
+        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
 
-    return (
-        <div>
-            {title()}
 
-            <div className="container">
+    };
+
+    const content=()=>{
+        if(user?.roleName!==USER_ROLES.PACIENT&&
+            user?.roleName!==USER_ROLES.UZIVATEL&&
+            user){
+            return  <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -220,6 +241,14 @@ const AddPacientAnalyza: React.FC = () => {
                     </div>
                 </div>
             </div>
+        }
+    }
+
+    return (
+        <div>
+            {title()}
+            {content()}
+
         </div>
     );
 };

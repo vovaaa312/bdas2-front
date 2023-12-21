@@ -12,6 +12,10 @@ class ZamestnanecDataService {
         return axios.post<ZamestnanecData>(BASE_URL, pacient);
     }
 
+    getAllByOddeleni(oddeleniId: number): Promise<AxiosResponse<ZamestnanecData>> {
+        return axios.get<ZamestnanecData>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
     getZamestnanecById(zamestnanecId: number): Promise<AxiosResponse<ZamestnanecData>> {
         return axios.get<ZamestnanecData>(`${BASE_URL}/${zamestnanecId}`);
     }

@@ -42,22 +42,13 @@ const LogList: React.FC = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
             return <h1>System catalog</h1>
 
-        } else return <h1>K těmto údajům nemáte přístup</h1>
+        } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
     }
 
-    return (
-        <div>
-            {pageTitle()}
-            <div>
-                <Link to="/home-page">
-                    <button className="btn btn-info" type="button">
-                        Home page
-                    </button>
-                </Link>
-            </div>
-
-            <table className="table table-bordered">
+    const table=()=>{
+        if(user?.roleName===USER_ROLES.ADMIN){
+           return  <table className="table table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">TABLE NAME</th>
@@ -79,6 +70,15 @@ const LogList: React.FC = () => {
                 ))}
                 </tbody>
             </table>
+        }
+    }
+
+    return (
+        <div>
+            {pageTitle()}
+
+            {table()}
+
         </div>
     );
 

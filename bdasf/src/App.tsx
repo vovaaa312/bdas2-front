@@ -61,8 +61,8 @@ function App() {
                     <Route path="/pokoje-data" element={<PokojeDataList/>}/>
                     <Route path="/add-pokoj" element={<AddPokoj/>}/>
                     <Route path="/edit-pokoj/:id" element={<AddPokoj/>}/>
-                    <Route path="/luzka/:id" element={<PacientiLuzkaList/>}/>
 
+                    <Route path="/luzka/:id" element={<PacientiLuzkaList/>}/>
                     <Route path="/luzka/:id/rezervace-luzka/:id" element={<PacientiRezervaceList/>}/>
                     <Route path="/add-luzko/:id" element={<AddLuzko/>}/>
 

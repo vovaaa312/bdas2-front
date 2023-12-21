@@ -1,27 +1,73 @@
 // PacientList.tsx
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {PokojeOddeleni} from "../model/PokojeOddeleni.tsx";
 import PokojeOddeleniService from "../services/PokojeOddeleniService.tsx";
 
 import Modal from "react-modal";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import {Zamestnanec} from "../model/Zamestnanec.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import ZamestnanecService from "../services/ZamestnanecService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
+import PacientKataService from "../services/PacientKartaService.tsx";
+import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
+import PacientAnalyzaService from "../services/PacientAnalyzaService.tsx";
+
 Modal.setAppElement("#root");
 const PokojeOddeleniList: React.FC = () => {
     const [pokojeList, setPokojeList] = useState<PokojeOddeleni[]>([]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
+    useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+        }
+    }, []);
 
     useEffect(() => {
         getAllPokoje();
-    }, []);
+
+    }, [user]);
+
+
 
     const getAllPokoje = () => {
-        PokojeOddeleniService.getAllPokoje()
-            .then((response) => {
-                setPokojeList(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            PokojeOddeleniService.getAllPokoje()
+                .then((response) => {
+                    setPokojeList(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY ) {
+
+            ZamestnanecDataService.getZamestnanecById(user.zamestnanecId)
+                .then((response) => {
+                    const zamestnanecData = response.data;
+                    PokojeOddeleniService.getByOddeleniId(zamestnanecData.idOddeleni)
+                        .then((response) => {
+                            setPokojeList(response.data);
+
+
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+
+                    // Дальше вы можете использовать zamestnanecData по вашей необходимости
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+
     };
 
     const deletePokoj = (pokojId: number) => {
@@ -41,20 +87,72 @@ const PokojeOddeleniList: React.FC = () => {
     };
 
 
+    const pageTitle = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <h1>Pokoje</h1>
+        } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+            return <h1>Pokoje</h1>
+        } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
+    }
 
-    return (
-        <div>
-            <h1>Pokoje</h1>
-            <div>
+    const addPokojButton = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <div>
                 <Link to="/add-pokoj">
                     <button className="btn btn-info" type="button">
                         Add pokoj
                     </button>
                 </Link>
             </div>
+        }
 
-            <table className="table table-bordered">
+    }
+
+    function updateButton(idPokoj: number) {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <Link
+                className="btn btn-info"
+                to={`/edit-pokoj/${idPokoj}`}
+            >
+                Update
+            </Link>
+        }
+
+    }
+
+    function deleteButton(idPokoj: number) {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <button
+                className="btn btn-danger"
+                onClick={() => deletePokoj(idPokoj)}
+                style={{marginLeft: "10px"}}
+            >
+                Delete
+            </button>
+        }
+
+    }
+
+    function luzkaButton(idPokoj: number) {
+        if (user?.roleName !== USER_ROLES.PACIENT &&
+            user?.roleName !== USER_ROLES.UZIVATEL) {
+            return <Link
+                className="btn btn-success"
+                to={`/luzka/${idPokoj}`}
+                style={{marginLeft: "10px"}}
+            >
+                Luzka
+            </Link>
+        }
+
+    }
+
+    const table = () => {
+        if (user?.roleName !== USER_ROLES.PACIENT &&
+            user?.roleName !== USER_ROLES.UZIVATEL) {
+            return <table className="table table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">CISLO</th>
@@ -64,8 +162,6 @@ const PokojeOddeleniList: React.FC = () => {
                     <th scope="col">ACTIONS</th>
 
 
-
-                    {/* Добавьте остальные поля пациента по необходимости */}
                 </tr>
                 </thead>
                 <tbody>
@@ -78,33 +174,27 @@ const PokojeOddeleniList: React.FC = () => {
                         <td>{pokoj.pocetLuzek}</td>
 
                         <td>
-                            <Link
-                                className="btn btn-info"
-                                to={`/edit-pokoj/${pokoj.idPokoj}`}
-                            >
-                                Update
-                            </Link>
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => deletePokoj(pokoj.idPokoj)}
-                                style={{ marginLeft: "10px" }}
-                            >
-                                Delete
-                            </button>
+                            {updateButton(pokoj.idPokoj)}
+                            {deleteButton(pokoj.idPokoj)}
+                            {luzkaButton(pokoj.idPokoj)}
 
-                            <Link
-                                className="btn btn-success"
-                                to={`/luzka/${pokoj.idPokoj}`}
-                                style={{ marginLeft: "10px" }}
-                            >
-                                Luzka
-                            </Link>
+
                         </td>
                         {/* Добавьте остальные поля пациента по необходимости */}
                     </tr>
                 ))}
                 </tbody>
             </table>
+
+        }
+    }
+
+
+    return (
+        <div>
+            {pageTitle()}
+            {addPokojButton()}
+            {table()}
 
 
         </div>

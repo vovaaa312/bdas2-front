@@ -8,11 +8,12 @@ import LocalStorageService from "../services/LocalStorageService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
 import ZamestnanecService from "../services/ZamestnanecService.tsx";
 import {Zamestnanec} from "../model/Zamestnanec.tsx";
+import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
 
 const PacientiAdresyList: React.FC = () => {
     const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
-    const[zamestnanec,setZamestnanec ] = useState<Zamestnanec>();
+    const [zamestnanec, setZamestnanec] = useState<Zamestnanec>();
 
 
     useEffect(() => {
@@ -21,8 +22,7 @@ const PacientiAdresyList: React.FC = () => {
             setUser(userData);
             console.log(userData);
         }
-    }, []);// Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
-
+    }, []);
 
     useEffect(() => {
         if (user) {
@@ -35,7 +35,7 @@ const PacientiAdresyList: React.FC = () => {
         getAllPacients();
     }, [user]);
 
-    const getZamestnanec = (zamId:number) => {
+    const getZamestnanec = (zamId: number) => {
         ZamestnanecService.getZamestnanecById(zamId)
             .then((response) => {
                 setZamestnanec(response.data);
@@ -57,22 +57,25 @@ const PacientiAdresyList: React.FC = () => {
                     console.log(error);
                 });
         } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
-            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY ) {
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+            ZamestnanecDataService.getZamestnanecById(user.zamestnanecId)
+                .then((response) => {
+                    const zamestnanecData = response.data;
+                    PacientViewService.getAllByOddeleni(zamestnanecData.idOddeleni)
+                        .then((response) => {
+                            setPacientiAdresyList(response.data);
 
-            console.log(zamestnanec?.idOddeleni);
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
 
-            if( zamestnanec?.idOddeleni){
 
-                PacientViewService.getAllByOddeleni(zamestnanec?.idOddeleni)
-                    .then((response) => {
-                        setPacientiAdresyList(response.data);
-                        console.log(response.data);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
-
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
 
     };
@@ -106,16 +109,11 @@ const PacientiAdresyList: React.FC = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
             return <h1>Pacienti</h1>
 
-        }
-
-       else if (user?.roleName === USER_ROLES.ZAMESTNANEC||
+        } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
             user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
             return <h1>Pacienti</h1>
 
-        }
-
-
-        else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
+        } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
     }
 
@@ -212,80 +210,31 @@ const PacientiAdresyList: React.FC = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
             return adminUserTable();
         } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
-            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY
-        ) {
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
             return zamPacientTable();
         }
 
 
     }
-    return (
-        <div>
-            {pageTitle()}
-            <div>
+
+    const addPacientButton = () => {
+        if (user?.roleName !== USER_ROLES.PACIENT &&
+            user?.roleName !== USER_ROLES.UZIVATEL) {
+            return <div>
                 <Link to="/add-pacient-adresa">
                     <button className="btn btn-info" type="button">
                         Add pacient
                     </button>
                 </Link>
             </div>
+        }
+    }
+    return (
+        <div>
+            {pageTitle()}
+            {addPacientButton()}
             {table()}
-            {/*<table className="table table-bordered">*/}
-            {/*    <thead>*/}
-            {/*    <tr>*/}
-            {/*        <th scope="col">JMENO</th>*/}
-            {/*        <th scope="col">PRIJMENI</th>*/}
-            {/*        <th scope="col">DATUM HOSPITALIZACE</th>*/}
-            {/*        <th scope="col">DATUM NAROZENI</th>*/}
-            {/*        <th scope="col">CISLO TELEFONU</th>*/}
-            {/*        <th scope="col">POHLAVI</th>*/}
 
-            {/*        <th scope="col">ZEME</th>*/}
-            {/*        <th scope="col">MESTO</th>*/}
-            {/*        <th scope="col">ADRESA</th>*/}
-            {/*        <th scope="col">PSC</th>*/}
-            {/*        <th scope="col">ACTIONS</th>*/}
-
-
-            {/*        /!* Добавьте остальные поля пациента по необходимости *!/*/}
-            {/*    </tr>*/}
-            {/*    </thead>*/}
-            {/*    <tbody>*/}
-            {/*    {pacientiAdresyList.map((pacientAdresa) => (*/}
-            {/*        <tr key={pacientAdresa.idPacient}>*/}
-            {/*            <td>{pacientAdresa.jmeno}</td>*/}
-            {/*            <td>{pacientAdresa.prijmeni}</td>*/}
-            {/*            <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>*/}
-            {/*            <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>*/}
-            {/*            <td>{pacientAdresa.cisloTelefonu}</td>*/}
-            {/*            <td>{pacientAdresa.pohlavi}</td>*/}
-            {/*            <td>{pacientAdresa.zeme}</td>*/}
-            {/*            <td>{pacientAdresa.mesto}</td>*/}
-            {/*            <td>{pacientAdresa.adresa}</td>*/}
-            {/*            <td>{pacientAdresa.psc}</td>*/}
-
-            {/*            <td>*/}
-            {/*                <Link*/}
-            {/*                    className="btn btn-info"*/}
-            {/*                    to={`/edit-pacient-adresa/${pacientAdresa.idPacient}`}*/}
-            {/*                >*/}
-            {/*                    Update*/}
-            {/*                </Link>*/}
-
-            {/*                <button*/}
-            {/*                    className="btn btn-danger"*/}
-            {/*                    onClick={() => deletePacient(pacientAdresa.idPacient)}*/}
-            {/*                    style={{marginLeft: "10px"}}*/}
-            {/*                >*/}
-            {/*                    Delete*/}
-            {/*                </button>*/}
-            {/*            </td>*/}
-
-            {/*            /!* Добавьте остальные поля пациента по необходимости *!/*/}
-            {/*        </tr>*/}
-            {/*    ))}*/}
-            {/*    </tbody>*/}
-            {/*</table>*/}
         </div>
     );
 };

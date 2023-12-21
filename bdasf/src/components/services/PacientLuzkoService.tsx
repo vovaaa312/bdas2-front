@@ -1,11 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosResponse} from "axios";
 import {PacientLuzko} from "../model/PacientLuzko.tsx";
 import {RezervaceLuzkaRequest} from "../model/request/RezervaceLuzkaRequest.tsx";
 
 const BASE_URL = "http://localhost:8080/api/pacienti-luzka";
 
 class PacientiLuzkaService {
-
 
 
     getAllLuzka(): Promise<AxiosResponse<PacientLuzko[]>> {
@@ -21,14 +20,20 @@ class PacientiLuzkaService {
     }
 
     rezervaceLuzka(rezervaceRequest: RezervaceLuzkaRequest): Promise<AxiosResponse<RezervaceLuzkaRequest>> {
-        return axios.post<RezervaceLuzkaRequest>(`${BASE_URL}/rezervace-luzka`,rezervaceRequest);
+        return axios.post<RezervaceLuzkaRequest>(`${BASE_URL}/rezervace-luzka`, rezervaceRequest);
     }
+
     getByPokojId(pokojId: number): Promise<AxiosResponse<PacientLuzko[]>> {
         return axios.get<PacientLuzko[]>(`${BASE_URL}/pokoj/${pokojId}`);
     }
 
-    getByLuzkoId(luzkoId: number):Promise<AxiosResponse<PacientLuzko>>{
-        return axios.get<PacientLuzko>(`${BASE_URL}/luzko/${luzkoId}`);    }
+    getByPacientId(pacientId: number): Promise<AxiosResponse<PacientLuzko>> {
+        return axios.get<PacientLuzko>(`${BASE_URL}/pacient/${pacientId}`);
+    }
+
+    getByLuzkoId(luzkoId: number): Promise<AxiosResponse<PacientLuzko>> {
+        return axios.get<PacientLuzko>(`${BASE_URL}/luzko/${luzkoId}`);
+    }
 
     updateLuzko(
         luzkoId: number,

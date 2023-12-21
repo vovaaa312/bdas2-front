@@ -6,23 +6,26 @@ import {Pacient} from "../model/Pacient.tsx";
 import {RezervaceLuzkaRequest} from "../model/request/RezervaceLuzkaRequest.tsx";
 import PacientLuzkoService from "../services/PacientLuzkoService.tsx";
 import Select from "react-select";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import {Zamestnanec} from "../model/Zamestnanec.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
 
 const PacientiRezervaceList: React.FC = () => {
     const navigate = useNavigate();
     const [pacientiList, setPacientiList] = useState<Pacient[]>([]);
+    const [isDatumRezervaceSelected, setIsDatumRezervaceSelected] = useState(false);
 
+
+
+    useEffect(() => {
+        getAllPacients();
+    }, []);
     const pacientiOptions = pacientiList.map(pacient => ({
         value: pacient.idPacient, // Убедитесь, что здесь используется правильное свойство для идентификатора
         label: `${pacient.jmeno} ${pacient.prijmeni}`
     }));
 
-    const handlePacientSelectChange = (selectedOption) => {
-        // Обновление состояния запроса на резервацию с новым id пациента
-        setRequest(prevRequest => ({
-            ...prevRequest,
-            pacientId: selectedOption ? selectedOption.value : null
-        }));
-    };
+
 
     const [request, setRequest] = useState<RezervaceLuzkaRequest>({
         luzkoId: 0,
@@ -34,9 +37,7 @@ const PacientiRezervaceList: React.FC = () => {
     const {id} = useParams<{ id?: string }>();
     const luzkoId = parseInt(id || "0");
 
-    useEffect(() => {
-        getAllPacients();
-    }, []);
+
 
     const getAllPacients = () => {
         PacientService.getAllPacienti()
@@ -76,9 +77,14 @@ const PacientiRezervaceList: React.FC = () => {
 
     function zpet() {
         navigate(-1);
-
     }
-
+    const handlePacientSelectChange = (selectedOption) => {
+        // Обновление состояния запроса на резервацию с новым id пациента
+        setRequest(prevRequest => ({
+            ...prevRequest,
+            pacientId: selectedOption ? selectedOption.value : null
+        }));
+    };
     return (
         <div>
             <h2 className={"offset-md-0"}>Rezervace luzka</h2>
@@ -94,12 +100,14 @@ const PacientiRezervaceList: React.FC = () => {
                         className="form-control"
                         value={request.datumRezervace || ''} // Используйте || '' для корректного отображения null
                         min={today} // Устанавливаем минимальную дату
-                        onChange={(e) =>
+                        onChange={(e) => {
                             setRequest((prevRequest) => ({
                                 ...prevRequest,
                                 datumRezervace: e.target.value,
-                            }))
-                        }
+                            }));
+                            setIsDatumRezervaceSelected(true);
+                        }}
+
                     />
                 </div>
 
@@ -110,15 +118,17 @@ const PacientiRezervaceList: React.FC = () => {
                         type="date"
                         name="datumPropusteni"
                         className="form-control"
-                        value={request.datumPropusteni || ''} // Используйте || '' для корректного отображения null
-                        min={today} // Устанавливаем минимальную дату
-                        onChange={(e) =>
+                        value={request.datumPropusteni || ''}
+                        min={isDatumRezervaceSelected ? request.datumRezervace : today}
+                        onChange={(e) => {
                             setRequest((prevRequest) => ({
                                 ...prevRequest,
                                 datumPropusteni: e.target.value,
-                            }))
-                        }
+                            }));
+                        }}
+                        disabled={!isDatumRezervaceSelected}
                     />
+
                 </div>
 
                 <div>

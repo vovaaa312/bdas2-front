@@ -168,25 +168,7 @@ const AddPacientKarta: React.FC = () => {
                                         value={oddeleniOptions.find((option) => option.value === karta.idOddeleni)}
                                         onChange={handleOddeleniChange}
                                     />
-                                    {/*<label>Oddeleni</label>*/}
-                                    {/*<select*/}
-                                    {/*    name="oddeleni"*/}
-                                    {/*    className="form-control"*/}
-                                    {/*    value={karta.nazevOddeleni || ""}*/}
-                                    {/*    onChange={(e) =>*/}
-                                    {/*        setKarta((prevPacient) => ({*/}
-                                    {/*            ...prevPacient,*/}
-                                    {/*            nazevOddeleni: e.target.value,*/}
-                                    {/*        }))*/}
-                                    {/*    }*/}
-                                    {/*>*/}
-                                    {/*    <option value="" disabled>Select Oddeleni</option>*/}
-                                    {/*    {oddeleniOptions.map((oddeleni) => (*/}
-                                    {/*        <option key={oddeleni} value={oddeleni}>*/}
-                                    {/*            {oddeleni}*/}
-                                    {/*        </option>*/}
-                                    {/*    ))}*/}
-                                    {/*</select>*/}
+
                                 </div>
 
 

@@ -6,10 +6,14 @@ import OddeleniService from "../services/OddeleniService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
 import {Oddeleni} from "../model/Oddeleni.tsx";
 import Select from "react-select";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 const AddZamestnanecData: React.FC = () => {
     const navigate = useNavigate();
     const [oddeleni, setOddeleni] = useState<Oddeleni[]>([]);
     const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
 
     const oddeleniOptions = oddeleni.map(oddeleni => ({
         value: oddeleni.idOddeleni, // Убедитесь, что здесь используется правильное свойство для идентификатора
@@ -20,6 +24,7 @@ const AddZamestnanecData: React.FC = () => {
         idZamestnanec: 0,
         jmeno: "",
         prijmeni: "",
+        pohlavi:"",
         datumNarozeni: new Date().toISOString().split("T")[0],
         cisloTelefonu: 0,
         pracovniZkusenosti: 0,
@@ -66,6 +71,12 @@ const AddZamestnanecData: React.FC = () => {
     };
 
     useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+
         OddeleniService.getAllOddeleni()
             .then((response) => {
                 setOddeleni(response.data);
@@ -85,13 +96,6 @@ const AddZamestnanecData: React.FC = () => {
                 });
         }
 
-        // OddeleniService.getAllOddeleni()
-        //     .then((response) => {
-        //         setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error loading oddeleni options", error);
-        //     });
     }, [id]);
 
     const handleOddeleniChange = (selectedOption) => {
@@ -104,18 +108,23 @@ const AddZamestnanecData: React.FC = () => {
 
     };
     const title = () => {
-        if (id) {
-            return <h2 className="text-center">Update zamestnanec</h2>;
-        } else {
-            return <h2 className="text-center">Add zamestnanec</h2>;
+        if (user?.roleName === USER_ROLES.ADMIN ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+            if (id) {
+                return <h2 className="text-center">Update zamestnanec</h2>;
+            } else {
+                return <h2 className="text-center">Add zamestnanec</h2>;
+            }
         }
+        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
+
+
     };
 
-    return (
-        <div>
-            {title()}
-
-            <div className="container">
+    const form=()=>{
+        if (user?.roleName === USER_ROLES.ADMIN ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+            return<div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -236,6 +245,7 @@ const AddZamestnanecData: React.FC = () => {
                                     value={oddeleniOptions.find((option) => option.value === zamestnanec.idOddeleni)}
                                     onChange={handleOddeleniChange}
                                 />
+
 
                                 {/* Pracovni zkusenosti */}
                                 <div className="form-group mb-2">
@@ -368,6 +378,16 @@ const AddZamestnanecData: React.FC = () => {
                     </div>
                 </div>
             </div>
+        }
+    }
+
+
+
+    return (
+        <div>
+            {title()}
+            {form()}
+
         </div>
     );
 };

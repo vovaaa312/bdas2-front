@@ -4,9 +4,13 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import OddeleniService from "../services/OddeleniService.tsx";
 import PokojeOddeleniService from "../services/PokojeOddeleniService.tsx";
 import {PokojeOddeleni} from "../model/PokojeOddeleni.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const AddPokoj: React.FC = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState<StorageUserData | null>(null);
 
     const [pokoj, setPokoj] = useState<PokojeOddeleni>({
         idPokoj: 0,
@@ -50,6 +54,11 @@ const AddPokoj: React.FC = () => {
     };
 
     useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
         if (id) {
             PokojeOddeleniService.getPokojById(pokojId)
                 .then((response) => {
@@ -70,118 +79,128 @@ const AddPokoj: React.FC = () => {
     }, [id]);
 
     const title = () => {
-        if (id) {
-            return <h2 className="text-center">Update pokoj</h2>;
-        } else {
-            return <h2 className="text-center">Add pokoj</h2>;
+        if(user?.roleName ===USER_ROLES.ADMIN) {
+            if (id) {
+                return <h2 className="text-center">Update pokoj</h2>;
+            } else {
+                return <h2 className="text-center">Add pokoj</h2>;
+            }
         }
+        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
+
+
     };
+
+    const content=()=>{
+        if(user?.roleName ===USER_ROLES.ADMIN){
+        return   <div className="container">
+            <div className="row">
+                <div className="card col-md-6 offset-md-3 offset-md-3">
+                    <div className="card-body">
+                        <form>
+                            {/*<div className="form-group mb-2">*/}
+                            {/*  <label>Id adresa</label>*/}
+                            {/*  <input*/}
+                            {/*    placeholder="-"*/}
+                            {/*    type="number"*/}
+                            {/*    name="idAdresa"*/}
+                            {/*    className="form-control"*/}
+                            {/*    value={pokoj.idAdresa}*/}
+                            {/*    onChange={(e) =>*/}
+                            {/*      setPacient((prevPacient) => ({*/}
+                            {/*        ...prevPacient,*/}
+                            {/*        idAdresa: parseInt(e.target.value, 10),*/}
+                            {/*      }))*/}
+                            {/*    }*/}
+                            {/*  />*/}
+                            {/*</div>*/}
+
+
+                            {/* Patro */}
+                            <div className="form-group mb-2">
+                                <label>Patro</label>
+                                <input
+                                    placeholder="-"
+                                    type="number"
+                                    name="patro"
+                                    className="form-control"
+                                    value={pokoj.patro}
+                                    onChange={(e) =>
+                                        setPokoj((prevPacient) => ({
+                                            ...prevPacient,
+                                            patro: parseInt(e.target.value, 10),
+                                        }))
+                                    }
+                                />
+                            </div>
+                            {/* Cislo */}
+                            <div className="form-group mb-2">
+                                <label>Cislo</label>
+                                <input
+                                    placeholder="-"
+                                    type="number"
+                                    name="cislo"
+                                    className="form-control"
+                                    value={pokoj.cislo}
+                                    onChange={(e) =>
+                                        setPokoj((prevPacient) => ({
+                                            ...prevPacient,
+                                            cislo: parseInt(e.target.value, 10),
+                                        }))
+                                    }
+                                />
+                            </div>
+
+
+                            {/* Combobox для Oddeleni */}
+                            <div className="form-group mb-2">
+                                <label>Oddeleni</label>
+                                <select
+                                    name="oddeleni"
+                                    className="form-control"
+                                    value={pokoj.nazevOddeleni || ""}
+                                    onChange={(e) =>
+                                        setPokoj((prevPacient) => ({
+                                            ...prevPacient,
+                                            nazevOddeleni: e.target.value,
+                                        }))
+                                    }
+                                >
+                                    <option value="" disabled>Select Oddeleni</option>
+                                    {oddeleniOptions.map((oddeleni) => (
+                                        <option key={oddeleni} value={oddeleni}>
+                                            {oddeleni}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
+                                <Link to="/pokoje-data
+                                    " className="btn btn-danger">
+                                    Back
+                                </Link>
+
+                                <button
+                                    type="button"
+                                    className="btn btn-success"
+                                    onClick={(e) => saveOrUpdateLuzko(e)}
+                                >
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }}
 
     return (
         <div>
             {title()}
+            {content()}
 
-            <div className="container">
-                <div className="row">
-                    <div className="card col-md-6 offset-md-3 offset-md-3">
-                        <div className="card-body">
-                            <form>
-                                {/*<div className="form-group mb-2">*/}
-                                {/*  <label>Id adresa</label>*/}
-                                {/*  <input*/}
-                                {/*    placeholder="-"*/}
-                                {/*    type="number"*/}
-                                {/*    name="idAdresa"*/}
-                                {/*    className="form-control"*/}
-                                {/*    value={pokoj.idAdresa}*/}
-                                {/*    onChange={(e) =>*/}
-                                {/*      setPacient((prevPacient) => ({*/}
-                                {/*        ...prevPacient,*/}
-                                {/*        idAdresa: parseInt(e.target.value, 10),*/}
-                                {/*      }))*/}
-                                {/*    }*/}
-                                {/*  />*/}
-                                {/*</div>*/}
-
-
-                                {/* Patro */}
-                                <div className="form-group mb-2">
-                                    <label>Patro</label>
-                                    <input
-                                        placeholder="-"
-                                        type="number"
-                                        name="patro"
-                                        className="form-control"
-                                        value={pokoj.patro}
-                                        onChange={(e) =>
-                                            setPokoj((prevPacient) => ({
-                                                ...prevPacient,
-                                                patro: parseInt(e.target.value, 10),
-                                            }))
-                                        }
-                                    />
-                                </div>
-                                {/* Cislo */}
-                                <div className="form-group mb-2">
-                                    <label>Cislo</label>
-                                    <input
-                                        placeholder="-"
-                                        type="number"
-                                        name="cislo"
-                                        className="form-control"
-                                        value={pokoj.cislo}
-                                        onChange={(e) =>
-                                            setPokoj((prevPacient) => ({
-                                                ...prevPacient,
-                                                cislo: parseInt(e.target.value, 10),
-                                            }))
-                                        }
-                                    />
-                                </div>
-
-
-                                {/* Combobox для Oddeleni */}
-                                <div className="form-group mb-2">
-                                    <label>Oddeleni</label>
-                                    <select
-                                        name="oddeleni"
-                                        className="form-control"
-                                        value={pokoj.nazevOddeleni || ""}
-                                        onChange={(e) =>
-                                            setPokoj((prevPacient) => ({
-                                                ...prevPacient,
-                                                nazevOddeleni: e.target.value,
-                                            }))
-                                        }
-                                    >
-                                        <option value="" disabled>Select Oddeleni</option>
-                                        {oddeleniOptions.map((oddeleni) => (
-                                            <option key={oddeleni} value={oddeleni}>
-                                                {oddeleni}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-
-                                <div>
-                                    <Link to="/pokoje-data
-                                    " className="btn btn-danger">
-                                        Back
-                                    </Link>
-
-                                    <button
-                                        type="button"
-                                        className="btn btn-success"
-                                        onClick={(e) => saveOrUpdateLuzko(e)}
-                                    >
-                                        Submit
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 };

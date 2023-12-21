@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, useParams, useNavigate} from "react-router-dom";
 import PacientAdresaService from "../services/PacientAdresaService.tsx";
-import { PacientAdresa } from "../model/PacientAdresa.tsx";
+import {PacientAdresa} from "../model/PacientAdresa.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const AddPacientAdresa: React.FC = () => {
     const navigate = useNavigate();
+    const [user, setUser] = useState<StorageUserData | null>(null);
 
     const [pacient, setPacient] = useState<PacientAdresa>({
         idPacient: 0,
@@ -23,7 +27,7 @@ const AddPacientAdresa: React.FC = () => {
     });
     const [pohlaviOptions] = useState<string[]>(["Muz", "Zena"]);
 
-    const { id } = useParams<{ id?: string }>();
+    const {id} = useParams<{ id?: string }>();
     const pacientId = parseInt(id || "0");
 
     const saveOrUpdatePacient = (e: React.FormEvent) => {
@@ -53,6 +57,12 @@ const AddPacientAdresa: React.FC = () => {
     };
 
     useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+
         if (id) {
             PacientAdresaService.getPacientById(pacientId)
                 .then((response) => {
@@ -65,18 +75,26 @@ const AddPacientAdresa: React.FC = () => {
     }, [id]);
 
     const title = () => {
-        if (id) {
-            return <h2 className="text-center">Update pacient</h2>;
-        } else {
-            return <h2 className="text-center">Add pacient</h2>;
+
+        if (user?.roleName !== USER_ROLES.UZIVATEL &&
+            user?.roleName !== USER_ROLES.PACIENT&&
+            user) {
+            if (id) {
+                return <h2 className="text-center">Update pacient</h2>;
+            } else {
+                return <h2 className="text-center">Add pacient</h2>;
+            }
         }
+        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
+
+
     };
 
-    return (
-        <div>
-            {title()}
-
-            <div className="container">
+    const form = () => {
+        if (user?.roleName !== USER_ROLES.UZIVATEL &&
+            user?.roleName !== USER_ROLES.PACIENT&&
+            user) {
+            return <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -115,23 +133,7 @@ const AddPacientAdresa: React.FC = () => {
                                         }
                                     />
                                 </div>
-                                {/* Datum Hospitalizace */}
-                                <div className="form-group mb-2">
-                                    <label>Datum Hospitalizace</label>
-                                    <input
-                                        placeholder="-"
-                                        type="date"
-                                        name="datumHospitalizace"
-                                        className="form-control"
-                                        value={pacient.datumHospitalizace}
-                                        onChange={(e) =>
-                                            setPacient((prevPacient) => ({
-                                                ...prevPacient,
-                                                datumHospitalizace: e.target.value,
-                                            }))
-                                        }
-                                    />
-                                </div>
+
                                 {/* Datum Narozeni */}
                                 <div className="form-group mb-2">
                                     <label>Datum Narozeni</label>
@@ -188,6 +190,24 @@ const AddPacientAdresa: React.FC = () => {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+
+                                {/* Datum Hospitalizace */}
+                                <div className="form-group mb-2">
+                                    <label>Datum Hospitalizace</label>
+                                    <input
+                                        placeholder="-"
+                                        type="date"
+                                        name="datumHospitalizace"
+                                        className="form-control"
+                                        value={pacient.datumHospitalizace}
+                                        onChange={(e) =>
+                                            setPacient((prevPacient) => ({
+                                                ...prevPacient,
+                                                datumHospitalizace: e.target.value,
+                                            }))
+                                        }
+                                    />
                                 </div>
 
                                 {/* Zeme */}
@@ -279,6 +299,15 @@ const AddPacientAdresa: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+        }
+    }
+
+    return (
+        <div>
+            {title()}
+            {form()}
+
         </div>
     );
 };

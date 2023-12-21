@@ -3,6 +3,8 @@ import {User} from "../model/security/User.tsx";
 import {RegisterRequest} from "../model/request/RegisterRequest.tsx";
 import {NewPasswordRequest} from "../model/request/NewPasswordRequest.tsx";
 import {ChangeRoleRequest} from "../model/request/ChangeRoleRequest.tsx";
+import {ChangeUserPacIdRequest} from "../model/request/ChangeUserPacIdRequest.tsx";
+import {ChangeUserZamIdRequest} from "../model/request/ChangeUserZamIdRequest.tsx";
 
 
 const BASE_URL = "http://localhost:8080/api/users";
@@ -23,6 +25,14 @@ class UserService {
 
     changeUserRole(changeRoleRequest:ChangeRoleRequest):Promise<AxiosResponse<void>>{
         return axios.post<void>(`${BASE_URL}/changerole`, changeRoleRequest);
+    }
+
+    changeUserPacId(changePacIdRequest:ChangeUserPacIdRequest):Promise<AxiosResponse<void>>{
+        return axios.post<void>(`${BASE_URL}/changepacient`, changePacIdRequest);
+    }
+
+    changeUserZamId(changeZamIdReques:ChangeUserZamIdRequest):Promise<AxiosResponse<void>>{
+        return axios.post<void>(`${BASE_URL}/changezamestnanec`, changeZamIdReques);
     }
 
     getAllUsers(): Promise<AxiosResponse<User[]>> {

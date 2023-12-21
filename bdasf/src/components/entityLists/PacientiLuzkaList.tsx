@@ -2,30 +2,62 @@ import React, {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {PacientLuzko} from "../model/PacientLuzko.tsx";
 import PacientLuzkoService from "../services/PacientLuzkoService.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const PacientiLuzkaList: React.FC = () => {
     const navigate = useNavigate();
     const [pacientiLuzkaList, setPacientiLuzkaList] = useState<PacientLuzko[]>([]);
     const {id} = useParams<{ id?: string }>();
     const luzkoId = parseInt(id || "0");
-   // const [luzko, setLuzko] = useState<PacientLuzko>();
+    // const [luzko, setLuzko] = useState<PacientLuzko>();
+
+
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
+    useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+        }
+    }, []);
 
 
     useEffect(() => {
+
         getAllLuzka();
 
-    }, []);
+    }, [user]);
+
 
     const getAllLuzka = () => {
         if (id) {
-            PacientLuzkoService.getByPokojId(luzkoId)
-                .then((response) => {
-                    setPacientiLuzkaList(response.data);
-                    console.log(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            if (user?.roleName !== USER_ROLES.UZIVATEL &&
+                user?.roleName !== USER_ROLES.PACIENT) {
+
+                PacientLuzkoService.getByPokojId(luzkoId)
+                    .then((response) => {
+                        setPacientiLuzkaList(response.data);
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+            } else if (user?.roleName === USER_ROLES.PACIENT) {
+                PacientLuzkoService.getByPacientId(user.pacientId)
+                    .then((response) => {
+                        setPacientiLuzkaList([response.data]); // Обернуть данные в массив
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+            }
+
+
         }
 
     };
@@ -58,7 +90,6 @@ const PacientiLuzkaList: React.FC = () => {
             });
 
 
-
     };
 
     const releaseLuzko = (luzkoId: number) => {
@@ -72,7 +103,8 @@ const PacientiLuzkaList: React.FC = () => {
                 })
                 .catch((error) => {
                     console.log(error);
-                });}
+                });
+        }
 
     };
 
@@ -119,28 +151,11 @@ const PacientiLuzkaList: React.FC = () => {
             });
     };
 
-
-    return (
-        <div>
-            <h1>Luzka</h1>
-            <div>
-                <Link
-                    className="btn btn-info"
-                    to={`/add-luzko/${id}`}
-                >
-                  Add luzko
-                </Link>
-            </div>
-
-            <div>
-                <Link to="/pokoje-data">
-                    <button className="btn btn-link" type="button">
-                       Zpet
-                    </button>
-                </Link>
-            </div>
-
-            <table className="table table-bordered">
+    const table = () => {
+        if(user?.roleName === USER_ROLES.UZIVATEL||
+            user?.roleName === USER_ROLES.PACIENT&&
+            !user){
+            return <table className="table table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">CISLO</th>
@@ -171,27 +186,11 @@ const PacientiLuzkaList: React.FC = () => {
                         <td>{pacientLuzko.prijmeni}</td>
 
                         <td>
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => deleteLuzko(pacientLuzko.idLuzko)}
-                                style={{marginLeft: "10px"}}
-                            >
-                                Delete
-                            </button>
-                            <button
-                                className="btn btn-warning"
-                                onClick={() => releaseLuzko(pacientLuzko.idLuzko)}
-                                style={{marginLeft: "10px"}}
-                            >
-                                Uvolnit luzko
-                            </button>
-                            <button
-                                className="btn btn-success"
-                                onClick={() => rezervaceLuzka(pacientLuzko.idLuzko)}
-                                style={{marginLeft: "10px"}}
-                            >
-                                Rezervace
-                            </button>
+                            {deleteButton(pacientLuzko.idLuzko)}
+                            {uvolnitButton(pacientLuzko.idLuzko)}
+
+                            {rezervaceButton(pacientLuzko.idLuzko)}
+
                         </td>
 
                         {/* Добавьте остальные поля пациента по необходимости */}
@@ -199,6 +198,91 @@ const PacientiLuzkaList: React.FC = () => {
                 ))}
                 </tbody>
             </table>
+
+
+        }
+
+    }
+
+
+    const deleteButton = (idLuzko: number) => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <button
+                className="btn btn-danger"
+                onClick={() => deleteLuzko(idLuzko)}
+                style={{marginLeft: "10px"}}
+            >
+                Delete
+            </button>
+        }
+
+    }
+
+    const uvolnitButton = (idLuzko: number) => {
+        if (user?.roleName === USER_ROLES.ADMIN ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+            return <button
+                className="btn btn-warning"
+                onClick={() => releaseLuzko(idLuzko)}
+                style={{marginLeft: "10px"}}
+            >
+                Uvolnit luzko
+            </button>
+        }
+
+    }
+
+    const rezervaceButton = (idPokoj: number) => {
+        if (user?.roleName !== USER_ROLES.PACIENT &&
+            user?.roleName !== USER_ROLES.UZIVATEL) {
+            return <button
+                className="btn btn-success"
+                onClick={() => rezervaceLuzka(idPokoj)}
+                style={{marginLeft: "10px"}}
+            >
+                Rezervace
+            </button>
+        }
+
+    }
+
+    const addLuzkoButton = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <div>
+                <Link
+                    className="btn btn-info"
+                    to={`/add-luzko/${id}`}
+                >
+                    Add luzko
+                </Link>
+            </div>
+        }
+    }
+
+    const pageTitle=()=>{
+        if(user?.roleName === USER_ROLES.UZIVATEL||
+            user?.roleName === USER_ROLES.PACIENT||
+        !user){
+           return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
+        }
+        return <h1>Luzka</h1>
+    }
+
+
+    return (
+        <div>
+            {pageTitle()}
+            {addLuzkoButton()}
+
+            <div>
+                <Link to="/pokoje-data">
+                    <button className="btn btn-link" type="button">
+                        Zpet
+                    </button>
+                </Link>
+            </div>
+            {table()}
         </div>
     );
 };

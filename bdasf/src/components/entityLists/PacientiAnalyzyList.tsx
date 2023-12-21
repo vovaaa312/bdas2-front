@@ -11,14 +11,14 @@ import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
 const PacientiAnalyzyList: React.FC = () => {
         const [pacientiAnalyzyList, setPacientiAnalyzyList] = useState<PacientAnalyza[]>([]);
         const [user, setUser] = useState<StorageUserData | null>(null);
+
         useEffect(() => {
             const userData = LocalStorageService.getUserFromLocalStorage();
             if (userData) {
                 setUser(userData);
                 console.log(userData);
             }
-        }, []);// Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
-
+        }, []);
         useEffect(() => {
             getAllAnalyzy();
         }, [user]);
@@ -54,47 +54,21 @@ const PacientiAnalyzyList: React.FC = () => {
                                 setPacientiAnalyzyList(response.data);
 
 
-
                                 console.log(response.data);
                             })
                             .catch((error) => {
                                 console.log(error);
                             });
 
-                        // Дальше вы можете использовать zamestnanecData по вашей необходимости
+
                     })
                     .catch((error) => {
                         console.log(error);
                     });
 
-                // OddeleniService.getOddeleniById(user.zamestnanecId)
-                //     .then((response) => {
-                //         const zamestnanecData = response.data;
-                //         PacientAnalyzaService.getByOddeleniId(zamestnanecData.idOddeleni)
-                //             .then((response) => {
-                //                 setPacientiAnalyzyList(response.data);
-                //
-                //
-                //
-                //                 console.log(response.data);
-                //             })
-                //             .catch((error) => {
-                //                 console.log(error);
-                //             });
-                //
-                //         // Дальше вы можете использовать zamestnanecData по вашей необходимости
-                //     })
-                //     .catch((error) => {
-                //         console.log(error);
-                //     });
-
-
-
             }
 
         };
-
-
         const deleteAnalyza = (analyzaId: number) => {
             PacientAnalyzaService.deleteAnalyza(analyzaId)
                 .then(() => {
@@ -121,14 +95,37 @@ const PacientiAnalyzyList: React.FC = () => {
                 return <h1>Analyzy pacientu</h1>
 
             } else if (user?.roleName === USER_ROLES.PACIENT) {
-                return <h1>Analyzy pacienta {user.login}</h1>
-            }else if(user?.roleName === USER_ROLES.ZAMESTNANEC ||
-                user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY){
+                return <h1>Analyzy pacienta</h1>
+            } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
+                user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
                 return <h1>Analyzy pacientu</h1>
 
             } else
                 return <h1>K těmto údajům nemáte přístup</h1>
 
+        }
+
+        const updateButton = (id: number) => {
+            if (user?.roleName !== USER_ROLES.PACIENT) {
+                return <Link
+                    className="btn btn-info"
+                    to={`/edit-pacient-analyza/${id}`}
+                >
+                    Update
+                </Link>
+            }
+        }
+
+        const deleteButton = (id: number) => {
+            if (user?.roleName === USER_ROLES.ADMIN) {
+                return <button
+                    className="btn btn-danger"
+                    onClick={() => deleteAnalyza(id)}
+                    style={{marginLeft: "10px"}}
+                >
+                    Delete
+                </button>
+            }
         }
         return (
             <div>
@@ -178,23 +175,10 @@ const PacientiAnalyzyList: React.FC = () => {
 
 
                             <td>
-                                <Link
-                                    className="btn btn-info"
-                                    to={`/edit-pacient-analyza/${pacientAnalyza.idAnalyza}`}
-                                >
-                                    Update
-                                </Link>
-
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => deleteAnalyza(pacientAnalyza.idAnalyza)}
-                                    style={{marginLeft: "10px"}}
-                                >
-                                    Delete
-                                </button>
+                                {updateButton(pacientAnalyza.idAnalyza)}
+                                {deleteButton(pacientAnalyza.idAnalyza)}
                             </td>
 
-                            {/* Добавьте остальные поля пациента по необходимости */}
                         </tr>
                     ))}
                     </tbody>

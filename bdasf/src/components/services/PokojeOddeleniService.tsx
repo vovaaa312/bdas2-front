@@ -17,6 +17,10 @@ class PokojeOddeleniService {
         return axios.get<PokojeOddeleni>(`${BASE_URL}/${pokojId}`);
     }
 
+    getByOddeleniId(oddeleniId: number): Promise<AxiosResponse<PokojeOddeleni>> {
+        return axios.get<PokojeOddeleni>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
     updatePokoj(
         pokojId: number,
         pokoj: PokojeOddeleni

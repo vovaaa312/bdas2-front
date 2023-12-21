@@ -12,7 +12,10 @@ class ZamestnanecService {
         return axios.post<Zamestnanec>(BASE_URL, pacient);
     }
 
+
+
     getZamestnanecById(zamestnanecId: number): Promise<AxiosResponse<Zamestnanec>> {
+        console.log("asdkjhajsdhkkjhadskjhasd");
         return axios.get<Zamestnanec>(`${BASE_URL}/${zamestnanecId}`);
     }
 

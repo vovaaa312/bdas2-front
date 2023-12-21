@@ -10,6 +10,9 @@ import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
 import StatusNavstevyService from "../services/StatusNavstevyService.tsx";
 import {StatusNavstevy} from "../model/StatusNavstevy.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const AddNavsteva: React.FC = () => {
     const navigate = useNavigate();
@@ -18,7 +21,7 @@ const AddNavsteva: React.FC = () => {
     const [navsteva, setNavsteva] = useState<NavstevaPacienta>({
         idNavsteva: 0,
         // datum: new Date().toISOString().split("T")[0], // начальное значение - пустая строка
-        datum:'',
+        datum: '',
         idPacient: 0,
         idZamestnanec: 0,
         problem: '', // начальное значение - пустая строка
@@ -28,16 +31,23 @@ const AddNavsteva: React.FC = () => {
         pacientPrijmeni: '',
         cisloTelefonu: 0,
         zamestnanecJmeno: '',
-        zamestnanecPrijmeni:'',
-        status:''
+        zamestnanecPrijmeni: '',
+        status: ''
     });
     const [pacienti, setPacienti] = useState<Pacient[]>([]);
     const [zamestnanci, setZamestnanci] = useState<ZamestnanecData[]>([]);
     const [statusyNavstev, setStatusyNavstev] = useState<StatusNavstevy[]>([]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
 
     //const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
+
         PacientService.getAllPacienti().then((response) => {
             setPacienti(response.data);
         });
@@ -76,8 +86,6 @@ const AddNavsteva: React.FC = () => {
     };
 
 
-
-
     const pacientOptions = pacienti.map(pacient => ({
         value: pacient.idPacient,
         label: `${pacient.jmeno} ${pacient.prijmeni}`
@@ -91,9 +99,6 @@ const AddNavsteva: React.FC = () => {
         value: status.idStatus,
         label: status.status
     }));
-
-
-
     const saveNavsteva = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -112,25 +117,30 @@ const AddNavsteva: React.FC = () => {
     };
 
 
-
-
     const title = () => {
-        if (id) {
-            return <h2 className="text-center">Update navsteva</h2>;
-        } else {
-            return <h2 className="text-center">Add navsteva</h2>;
+        if (user?.roleName !== USER_ROLES.UZIVATEL &&
+            user?.roleName !== USER_ROLES.PACIENT&&
+            user) {
+            if (id) {
+                return <h2 className="text-center">Update navsteva</h2>;
+            } else {
+                return <h2 className="text-center">Add navsteva</h2>;
+            }
         }
+        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
+
+
     };
 
     function zpet() {
         navigate(-1)
     }
 
-    return (
-        <div>
-            {title()}
-
-            <div className="container">
+    const form = () => {
+        if (user?.roleName !== USER_ROLES.UZIVATEL &&
+            user?.roleName !== USER_ROLES.PACIENT&&
+            user) {
+            return  <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -214,8 +224,6 @@ const AddNavsteva: React.FC = () => {
                                 </div>
 
 
-
-
                                 <div>
                                     <button
                                         type="button"
@@ -238,6 +246,14 @@ const AddNavsteva: React.FC = () => {
                     </div>
                 </div>
             </div>
+        }
+    }
+
+    return (
+        <div>
+            {title()}
+            {form()}
+
         </div>
     );
 };

@@ -19,6 +19,10 @@ class PacientKartaService {
         return axios.get<PacientKarta>(`${BASE_URL}/karta/${kartaId}`);
     }
 
+    getByOddeleniId(oddeleniId: number): Promise<AxiosResponse<PacientKarta>> {
+        return axios.get<PacientKarta>(`${BASE_URL}/oddeleni/${oddeleniId}`);
+    }
+
     getByPacientId(pacientId: number):Promise<AxiosResponse<PacientKarta[]>>{
         return axios.get<PacientKarta[]>(`${BASE_URL}/pacient/${pacientId}`);    }
 

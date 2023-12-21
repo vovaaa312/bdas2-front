@@ -3,22 +3,42 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserService from "../services/UserService.tsx";
 import {User} from "../model/security/User.tsx";
+import {StorageUserData} from "../model/response/StorageUserData.tsx";
+import {Zamestnanec} from "../model/Zamestnanec.tsx";
+import LocalStorageService from "../services/LocalStorageService.tsx";
+import ZamestnanecService from "../services/ZamestnanecService.tsx";
+import {USER_ROLES} from "../model/USER_ROLES.tsx";
 const UserList: React.FC = () => {
     const [userList, setUserList] = useState<User[]>([]);
+    const [user, setUser] = useState<StorageUserData | null>(null);
+
 
     useEffect(() => {
-        getAllUsers();
+        const userData = LocalStorageService.getUserFromLocalStorage();
+        if (userData) {
+            setUser(userData);
+            console.log(userData);
+        }
     }, []);
 
+
+    useEffect(() => {
+
+        getAllUsers();
+    }, [user]);
+
     const getAllUsers = () => {
-        UserService.getAllUsers()
-            .then((response) => {
-                setUserList(response.data);
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            UserService.getAllUsers()
+                .then((response) => {
+                    setUserList(response.data);
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
     };
 
     const deleteUser = (userId: number) => {
@@ -36,19 +56,30 @@ const UserList: React.FC = () => {
             });
     };
 
+    const pageTitle = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <h1>Users</h1>
+        }
+        else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
-    return (
-        <div>
-            <h1>Users</h1>
-            <div>
+    }
+
+    const addButton=()=>{
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return             <div>
                 <Link to="/add-user">
                     <button className="btn btn-info" type="button">
                         Add user
                     </button>
                 </Link>
             </div>
+        }
 
-            <table className="table table-bordered">
+    }
+
+    const table=()=>{
+        if (user?.roleName === USER_ROLES.ADMIN) {
+            return <table className="table table-bordered">
                 <thead>
                 <tr>
                     <th scope="col">LOGIN</th>
@@ -88,6 +119,16 @@ const UserList: React.FC = () => {
                 ))}
                 </tbody>
             </table>
+        }
+        }
+
+
+    return (
+        <div>
+            {pageTitle()}
+            {addButton()}
+            {table()}
+
         </div>
     );
 };

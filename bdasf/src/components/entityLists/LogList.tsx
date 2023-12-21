@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {LogData} from "../model/LogData.tsx";
 import LogDataService from "../services/LogDataService.tsx";
 import {StorageUserData} from "../model/response/StorageUserData.tsx";
 import LocalStorageService from "../services/LocalStorageService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
-const LogList:React.FC=()=>{
+const LogList: React.FC = () => {
     const [logList, setLogList] = useState<LogData[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
 
@@ -44,6 +44,36 @@ const LogList:React.FC=()=>{
         } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
     }
+
+    const table = () => {
+        if (user?.roleName === USER_ROLES.ADMIN) {
+        return <table className="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">TIME</th>
+                <th scope="col">EDITED TABLE</th>
+                <th scope="col">EDITED DATA</th>
+                <th scope="col">LOGIN</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {logList.map((log) => (
+                <tr key={log.idLog}>
+                    {/*<td>{formatDate(new Date(log.time))}</td>*/}
+                    <td>{log.time}</td>
+
+                    <td>{log.editedTable}</td>
+
+                    <td>{log.editedData}</td>
+                    <td>{log.login}</td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+
+        }
+    }
     return (
         <div>
             {pageTitle()}
@@ -55,31 +85,9 @@ const LogList:React.FC=()=>{
                 </Link>
             </div>
 
-            <table className="table table-bordered">
-                <thead>
-                <tr>
-                    <th scope="col">TIME</th>
-                    <th scope="col">EDITED TABLE</th>
-                    <th scope="col">EDITED DATA</th>
-                    <th scope="col">LOGIN</th>
+            {table()}
 
-                </tr>
-                </thead>
-                <tbody>
-                {logList.map((log) => (
-                    <tr key={log.idLog}>
-                        {/*<td>{formatDate(new Date(log.time))}</td>*/}
-                        <td>{log.time}</td>
-
-                        <td>{log.editedTable}</td>
-
-                        <td>{log.editedData}</td>
-                        <td>{log.login}</td>
-                       </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+            </div>
     );
 
 }
