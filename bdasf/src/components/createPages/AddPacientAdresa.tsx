@@ -76,9 +76,10 @@ const AddPacientAdresa: React.FC = () => {
 
     const title = () => {
 
-        if (user?.roleName !== USER_ROLES.UZIVATEL &&
-            user?.roleName !== USER_ROLES.PACIENT&&
-            user) {
+        if (user?.roleName === USER_ROLES.PACIENT  && user) {
+            return <h2 className="text-center">Pacient data</h2>;
+
+        } else if (user?.roleName !== USER_ROLES.UZIVATEL && user) {
             if (id) {
                 return <h2 className="text-center">Update pacient</h2>;
             } else {
@@ -90,9 +91,14 @@ const AddPacientAdresa: React.FC = () => {
 
     };
 
+    const back = () => {
+        navigate(-1);
+    };
+
     const form = () => {
+
+
         if (user?.roleName !== USER_ROLES.UZIVATEL &&
-            user?.roleName !== USER_ROLES.PACIENT&&
             user) {
             return <div className="container">
                 <div className="row">
@@ -207,6 +213,8 @@ const AddPacientAdresa: React.FC = () => {
                                                 datumHospitalizace: e.target.value,
                                             }))
                                         }
+                                        disabled={user?.roleName === USER_ROLES.PACIENT}
+
                                     />
                                 </div>
 
@@ -282,10 +290,14 @@ const AddPacientAdresa: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <Link to="/pacienti-adresy" className="btn btn-danger">
-                                        Back
-                                    </Link>
 
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={back}
+                                    >
+                                        Back
+                                    </button>
                                     <button
                                         type="button"
                                         className="btn btn-success"

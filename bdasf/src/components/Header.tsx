@@ -1,7 +1,7 @@
 import React from "react";
 
 const mainContentStyle = {
-    paddingBottom: '50px'
+    paddingBottom: '0px'
 };
 const Header: React.FC = () => {
     return (

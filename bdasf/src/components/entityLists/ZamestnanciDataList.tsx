@@ -115,11 +115,15 @@ const ZamestnanciDataList: React.FC = () => {
 
     }
     const table = () => {
-        if (user?.roleName === USER_ROLES.ADMIN) {
-            return adminTable();
-        } else if (user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
-            return zamTable();
-        }
+        // if (user?.roleName === USER_ROLES.ADMIN) {
+        //     console.log("ADASDASDASDASD")
+        //     return adminTable();
+        // } else if (user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+        //     return zamTable();
+        // }
+
+        return adminTable();
+
 
 
     }

@@ -1,8 +1,10 @@
 // App.tsx
+
 import {Route, Routes} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
 
+import Header from "./components/Header.tsx";
 import Footer from "./components/Footer";
 
 import "./App.css";
@@ -27,68 +29,72 @@ import AddNavsteva from "./components/createPages/AddNavsteva.tsx";
 import LogList from "./components/entityLists/LogList.tsx";
 import SystemCatalogList from "./components/entityLists/SystemCatalogList.tsx";
 
-import MenuAppBar from "./components/SideBarMenu/navbar/navbar.tsx"
-import TestLogin from "./components/auth/TestLogin.tsx";
+import React from "react";
+import SideMenu from "./components/SideBarMenu/SideMenu.tsx";
+
 
 function App() {
+
+
     return (
         <div>
-            <MenuAppBar></MenuAppBar>
-                <Routes>
-                    <Route path="/users" element={<UserList/>}/>
-                    <Route path="/add-user" element={<AddUser/>}/>
-                    <Route path="/edit-user/:id" element={<AddUser/>}/>
-
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/registration" element={<Registration/>}/>
-
-                    <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
-                    <Route path="/add-pacient-analyza" element={<AddPacientAnalyza/>}/>
-                    <Route path="/edit-pacient-analyza/:id" element={<AddPacientAnalyza/>}/>
-
-                    <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>
-                    <Route path="/add-pacient-karta" element={<AddPacientKarta/>}/>
-                    <Route path="/edit-pacient-karta/:id" element={<AddPacientKarta/>}/>
-
-                    <Route path="/pacienti-adresy" element={<PacientiAdresyList/>}/>
-                    <Route path="/add-pacient-adresa" element={<AddPacientAdresa/>}/>
-                    <Route path="/edit-pacient-adresa/:id" element={<AddPacientAdresa/>}/>
-
-                    <Route path="/zamestnanci-data" element={<ZamestnanciDataList/>}/>
-                    <Route path="/add-zamestnanec" element={<AddZamestnanecData/>}/>
-                    <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecData/>}/>
-
-                    <Route path="/pokoje-data" element={<PokojeDataList/>}/>
-                    <Route path="/add-pokoj" element={<AddPokoj/>}/>
-                    <Route path="/edit-pokoj/:id" element={<AddPokoj/>}/>
-
-                    <Route path="/luzka/:id" element={<PacientiLuzkaList/>}/>
-                    <Route path="/luzka/:id/rezervace-luzka/:id" element={<PacientiRezervaceList/>}/>
-                    <Route path="/add-luzko/:id" element={<AddLuzko/>}/>
-
-                    <Route path="/navstevy-pacientu" element={<NavstevyPacientuList/>}/>
-                    <Route path="/add-navsteva" element={<AddNavsteva/>}/>
-
-                    <Route path="/logs" element={<LogList/>}/>
-                    <Route path="/catalog" element={<SystemCatalogList/>}/>
 
 
-                    <Route path="/test-login" element={<TestLogin/>}/>
-
-                </Routes>
-
-
+            <Header></Header>
             <Footer></Footer>
+            <SideMenu></SideMenu>
+            <Routes>
+                <Route path="/users" element={<UserList/>}/>
+                <Route path="/add-user" element={<AddUser/>}/>
+                <Route path="/edit-user/:id" element={<AddUser/>}/>
+
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/registration" element={<Registration/>}/>
+
+                <Route path="/pacienti-analyzy" element={<PacientiAnalyzyList/>}/>
+                <Route path="/add-pacient-analyza" element={<AddPacientAnalyza/>}/>
+                <Route path="/edit-pacient-analyza/:id" element={<AddPacientAnalyza/>}/>
+
+                <Route path="/pacienti-karty" element={<PacientiKartyList/>}/>
+                <Route path="/add-pacient-karta" element={<AddPacientKarta/>}/>
+                <Route path="/edit-pacient-karta/:id" element={<AddPacientKarta/>}/>
+
+                <Route path="/pacienti-adresy" element={<PacientiAdresyList/>}/>
+                <Route path="/add-pacient-adresa" element={<AddPacientAdresa/>}/>
+                <Route path="/edit-pacient-adresa/:id" element={<AddPacientAdresa/>}/>
+
+                <Route path="/zamestnanci-data" element={<ZamestnanciDataList/>}/>
+                <Route path="/add-zamestnanec" element={<AddZamestnanecData/>}/>
+                <Route path="/edit-zamestnanec/:id" element={<AddZamestnanecData/>}/>
+
+                <Route path="/pokoje-data" element={<PokojeDataList/>}/>
+                <Route path="/add-pokoj" element={<AddPokoj/>}/>
+                <Route path="/edit-pokoj/:id" element={<AddPokoj/>}/>
+
+                <Route path="/luzka/:id" element={<PacientiLuzkaList/>}/>
+                <Route path="/luzka/:id/rezervace-luzka/:id" element={<PacientiRezervaceList/>}/>
+                <Route path="/add-luzko/:id" element={<AddLuzko/>}/>
+
+                <Route path="/navstevy-pacientu" element={<NavstevyPacientuList/>}/>
+                <Route path="/add-navsteva" element={<AddNavsteva/>}/>
+
+                <Route path="/logs" element={<LogList/>}/>
+                <Route path="/catalog" element={<SystemCatalogList/>}/>
+
+
+                {/*<Route path="/test-login" element={<TestLogin/>}/>*/}
+
+            </Routes>
         </div>
     );
 }
 
 export default App;
-
-
-{/*<Route path="/pacienti" element={<PacientList />} />*/
-}
-{/*<Route path="/addPacient" element={<AddPacient />} />*/
-}
-{/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/
-}
+//
+//
+// {/*<Route path="/pacienti" element={<PacientList />} />*/
+// }
+// {/*<Route path="/addPacient" element={<AddPacient />} />*/
+// }
+// {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/
+// }
