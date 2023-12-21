@@ -52,6 +52,7 @@ const PacientiKartyList: React.FC = () => {
                             console.log(error);
                         });
 
+                    // Дальше вы можете использовать zamestnanecData по вашей необходимости
                 })
                 .catch((error) => {
                     console.log(error);
@@ -83,7 +84,7 @@ const PacientiKartyList: React.FC = () => {
     };
 
     function addKartaButton() {
-        if (user?.roleName === USER_ROLES.ADMIN ||
+        if (user?.roleName === USER_ROLES.ADMIN||
             user?.roleName === USER_ROLES.ZAMESTNANEC ||
             user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
             return <div>
@@ -99,11 +100,13 @@ const PacientiKartyList: React.FC = () => {
 
     const pageTitle = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
-            return <h1>Karty pacientu</h1>
-        } else if (user?.roleName === USER_ROLES.ZAMESTNANEC ||
+            return    <h1>Karty pacientu</h1>
+        }
+        else if (user?.roleName === USER_ROLES.ZAMESTNANEC||
             user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
-            return <h1>Karty pacientu</h1>
-        } else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
+            return    <h1>Karty pacientu</h1>
+        }
+        else return <h1>Nedostatečná práva pro přístup k těmto údajům</h1>
 
     }
 
@@ -118,9 +121,9 @@ const PacientiKartyList: React.FC = () => {
         }
     }
 
-    function deleteButton(idKarta: number) {
+    function deleteButton(idKarta: number ) {
         if (user?.roleName === USER_ROLES.ADMIN) {
-            return <button
+            return                             <button
                 className="btn btn-danger"
                 onClick={() => deletePacient(idKarta)}
                 style={{marginLeft: "10px"}}
@@ -131,11 +134,12 @@ const PacientiKartyList: React.FC = () => {
 
     }
 
-    const table = () => {
-        if (user?.roleName === USER_ROLES.ADMIN ||
-            user?.roleName === USER_ROLES.ZAMESTNANEC ||
-            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
-            return <table className="table table-bordered">
+    return (
+        <div>
+            {pageTitle()}
+            {addKartaButton()}
+
+            <table className="table table-bordered">
                 <thead>
                 <tr>
 
@@ -178,15 +182,6 @@ const PacientiKartyList: React.FC = () => {
                 ))}
                 </tbody>
             </table>
-
-        }
-    }
-
-    return (
-        <div>
-            {pageTitle()}
-            {addKartaButton()}
-            {                table()}
         </div>
     );
 };

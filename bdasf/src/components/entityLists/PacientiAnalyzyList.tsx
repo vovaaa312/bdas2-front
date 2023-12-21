@@ -127,10 +127,18 @@ const PacientiAnalyzyList: React.FC = () => {
                 </button>
             }
         }
+        return (
+            <div>
+                {pageTitle()}
+                <div>
+                    <Link to="/add-pacient-analyza">
+                        <button className="btn btn-info" type="button">
+                            Add analyza
+                        </button>
+                    </Link>
+                </div>
 
-        const table = () => {
-            if (user?.roleName !== USER_ROLES.UZIVATEL && user) {
-                return <table className="table table-bordered">
+                <table className="table table-bordered">
                     <thead>
                     <tr>
 
@@ -175,27 +183,6 @@ const PacientiAnalyzyList: React.FC = () => {
                     ))}
                     </tbody>
                 </table>
-            }
-        }
-
-        const addAnalyzaButton = () => {
-            if (user?.roleName !== USER_ROLES.UZIVATEL&&
-                user?.roleName !== USER_ROLES.PACIENT && user) {
-                return                 <div>
-                    <Link to="/add-pacient-analyza">
-                        <button className="btn btn-info" type="button">
-                            Add analyza
-                        </button>
-                    </Link>
-                </div>
-            }
-        }
-        return (
-            <div>
-                {pageTitle()}
-                {addAnalyzaButton()}
-
-                {table()}
             </div>
         );
     }

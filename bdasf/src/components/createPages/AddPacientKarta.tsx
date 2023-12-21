@@ -7,16 +7,12 @@ import PacientService from "../services/PacientService.tsx";
 import {Pacient} from "../model/Pacient.tsx";
 import Select from "react-select";
 import {Oddeleni} from "../model/Oddeleni.tsx";
-import {StorageUserData} from "../model/response/StorageUserData.tsx";
-import LocalStorageService from "../services/LocalStorageService.tsx";
-import {USER_ROLES} from "../model/USER_ROLES.tsx";
 
 const AddPacientKarta: React.FC = () => {
     const navigate = useNavigate();
 
     const [pacienti, setPacienti] = useState<Pacient[]>([]);
     const [oddeleni, setOddeleni] = useState<Oddeleni[]>([]);
-    const [user, setUser] = useState<StorageUserData | null>(null);
 
     const oddeleniOptions = oddeleni.map(oddeleni => ({
         value: oddeleni.idOddeleni, // Убедитесь, что здесь используется правильное свойство для идентификатора
@@ -80,13 +76,6 @@ const AddPacientKarta: React.FC = () => {
     };
 
     useEffect(() => {
-
-        const userData = LocalStorageService.getUserFromLocalStorage();
-        if (userData) {
-            setUser(userData);
-            console.log(userData);
-        }
-
         PacientService.getAllPacienti()
             .then((response) => {
                 setPacienti(response.data);
@@ -122,17 +111,11 @@ const AddPacientKarta: React.FC = () => {
     }, [id]);
 
     const title = () => {
-        if(user?.roleName!==USER_ROLES.PACIENT&&
-            user?.roleName!==USER_ROLES.UZIVATEL&&
-            user){
-            if (id) {
-                return <h2 className="text-center">Update karta</h2>;
-            } else {
-                return <h2 className="text-center">Add karta</h2>;
-            }
+        if (id) {
+            return <h2 className="text-center">Update karta</h2>;
+        } else {
+            return <h2 className="text-center">Add karta</h2>;
         }
-        return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
-
     };
 
     const handlePacientChange = (selectedOption) => {
@@ -155,11 +138,11 @@ const AddPacientKarta: React.FC = () => {
 
     };
 
-    const content=()=>{
-        if(user?.roleName!==USER_ROLES.PACIENT&&
-            user?.roleName!==USER_ROLES.UZIVATEL&&
-            user){
-            return <div className="container">
+    return (
+        <div>
+            {title()}
+
+            <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -207,15 +190,6 @@ const AddPacientKarta: React.FC = () => {
                     </div>
                 </div>
             </div>
-
-        }
-    }
-
-
-        return (
-        <div>
-            {title()}
-            {content()}
         </div>
     );
 };
