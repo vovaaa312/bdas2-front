@@ -29,6 +29,7 @@ import SystemCatalogList from "./components/entityLists/SystemCatalogList.tsx";
 
 import TestLogin from "./components/auth/TestLogin.tsx";
 import Header from "./components/Header.tsx";
+import HomePage from "./components/HomePage.tsx";
 
 function App() {
     return (
@@ -74,6 +75,9 @@ function App() {
 
 
                 <Route path="/test-login" element={<TestLogin/>}/>
+
+                <Route path="/" element={<HomePage/>}/>
+
 
             </Routes>
 

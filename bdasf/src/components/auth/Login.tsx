@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import UserService from "../services/AuthService.tsx";
 
 function Login() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleLogin = async () => {
     console.log('login:',login);
     console.log('password:',password);
@@ -19,6 +21,8 @@ function Login() {
       // Проверяем, есть ли данные в ответе
       if (response) {
         console.log("Login successful");
+        navigate('/');
+        window.location.reload();
         // Обработайте успешный вход, сохраните данные пользователя, выполните перенаправление и т. д.
       } else {
         console.error("Login failed: Response does not contain data");

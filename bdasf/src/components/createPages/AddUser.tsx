@@ -198,7 +198,7 @@ const AddUser: React.FC = () => {
                 className="form-control"
                 value={user.roleName}
                 onChange={(e) => setUser({...user, roleName: e.target.value})}
-                disabled={user.roleName != USER_ROLES.ADMIN}
+                disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
             >
                 {roleOptions.map((role, index) => (
                     <option key={index} value={role}>
@@ -213,7 +213,7 @@ const AddUser: React.FC = () => {
                 onClick={(e) => {
                     changeRole(e);
                 }}
-                disabled={user.roleName != USER_ROLES.ADMIN}
+                disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
 
             >
                 Change role
@@ -236,6 +236,8 @@ const AddUser: React.FC = () => {
                         {role}
                     </option>
                 ))}
+                disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+
             </select>
 
 
@@ -290,7 +292,7 @@ const AddUser: React.FC = () => {
                     className="form-control"
                     value={user.idPacient}
                     onChange={handlePacientChange}
-                    disabled={user.roleName != USER_ROLES.ADMIN}
+                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
                 >
                     {pacienti.map((pacient, index) => (
                         <option key={index} value={pacient.idPacient}>
@@ -304,7 +306,7 @@ const AddUser: React.FC = () => {
                     onClick={(e) => {
                         changePacId(e);
                     }}
-                    disabled={user.roleName != USER_ROLES.ADMIN}
+                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
                 >
                     Change pacient
                 </button>
@@ -344,6 +346,8 @@ const AddUser: React.FC = () => {
                     className="form-control"
                     value={user.idZamestnanec}
                     onChange={(e) => setUser({...user, idZamestnanec: parseInt(e.target.value, 10)})}
+                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+
                 >
                     {zamestnanci.map((zamestnanec, index) => (
                         <option key={index} value={zamestnanec.idZamestnanec}>
@@ -357,6 +361,8 @@ const AddUser: React.FC = () => {
                     onClick={(e) => {
                         changeZamId(e);
                     }}
+                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+
                 >
                     Change zamestnanec
                 </button>
@@ -423,26 +429,27 @@ const AddUser: React.FC = () => {
 
     const usersEquals = userId == localStorage.getItem('userId');
 
-    const login=()=>{
-        return                                         <div className="form-group mb-2">
-            <label>Login</label>
-            <input
-                placeholder="-"
-                type="text"
-                name="login"
-                className="form-control"
-                value={user.login}
-                onChange={(e) =>
-                    setUser((prevUser) => ({
-                        ...prevUser,
-                        login: e.target.value,
-                    }))
-                }
-                disabled={user.roleName != USER_ROLES.ADMIN}
-            />
-        </div>
-
-    }
+    const login = () => {
+        return (
+            <div className="form-group mb-2">
+                <label>Login</label>
+                <input
+                    placeholder="-"
+                    type="text"
+                    name="login"
+                    className="form-control"
+                    value={user.login}
+                    onChange={(e) =>
+                        setUser((prevUser) => ({
+                            ...prevUser,
+                            login: e.target.value,
+                        }))
+                    }
+                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+                />
+            </div>
+        );
+    };
 
     const content = () => {
 

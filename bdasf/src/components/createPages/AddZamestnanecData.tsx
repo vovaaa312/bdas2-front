@@ -109,6 +109,8 @@ const AddZamestnanecData: React.FC = () => {
     };
     const title = () => {
         if (user?.roleName === USER_ROLES.ADMIN ||
+
+            user?.roleName === USER_ROLES.ZAMESTNANEC||
             user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
             if (id) {
                 return <h2 className="text-center">Update zamestnanec</h2>;
@@ -123,6 +125,7 @@ const AddZamestnanecData: React.FC = () => {
 
     const form=()=>{
         if (user?.roleName === USER_ROLES.ADMIN ||
+            user?.roleName === USER_ROLES.ZAMESTNANEC||
             user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
             return<div className="container">
                 <div className="row">
@@ -244,6 +247,7 @@ const AddZamestnanecData: React.FC = () => {
                                     options={oddeleniOptions}
                                     value={oddeleniOptions.find((option) => option.value === zamestnanec.idOddeleni)}
                                     onChange={handleOddeleniChange}
+                                    isDisabled={user.roleName!==USER_ROLES.ADMIN}
                                 />
 
 

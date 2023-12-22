@@ -127,16 +127,24 @@ const PacientiAnalyzyList: React.FC = () => {
                 </button>
             }
         }
-        return (
-            <div>
-                {pageTitle()}
-                <div>
+
+        const addAnalyzaButton=()=>{
+            if(user?.roleName!==USER_ROLES.UZIVATEL&&
+                user?.roleName!==USER_ROLES.PACIENT){
+                return <div>
                     <Link to="/add-pacient-analyza">
                         <button className="btn btn-info" type="button">
                             Add analyza
                         </button>
                     </Link>
                 </div>
+            }
+
+        }
+        return (
+            <div>
+                {pageTitle()}
+                {addAnalyzaButton()}
 
                 <table className="table table-bordered">
                     <thead>

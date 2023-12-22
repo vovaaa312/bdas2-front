@@ -10,8 +10,6 @@ const AddPacient: React.FC = () => {
     //const [user, setUser] = useState<User>();
 
 
-
-
   const [pacient, setPacient] = useState<Pacient>({
     idPacient: 0,
     idAdresa: 0,

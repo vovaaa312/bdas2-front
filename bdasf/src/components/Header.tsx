@@ -46,7 +46,7 @@ const Header: React.FC = () => {
         navigate(`/edit-user/${localStorage.getItem('userId')}`);
     };
 
-    const editUserSpan=()=>{
+    const editUserSpan = () => {
         return <span style={linkStyle} onClick={editUser}>Edit user</span>
 
     }
@@ -81,6 +81,14 @@ const Header: React.FC = () => {
         );
     }
 
+    const editZam = () => {
+        navigate(`/edit-zamestnanec/${localStorage.getItem('zamId')}`);
+    };
+
+    const editZamSpan = () => {
+        return <span style={linkStyle} onClick={editZam}>Edit zamestnanec</span>
+
+    }
     const zamNadrMenu = () => {
         return (
             <div>
@@ -91,6 +99,7 @@ const Header: React.FC = () => {
                 <Link style={linkStyle} to="/navstevy-pacientu">Navstevy pacientu</Link>
                 <Link style={linkStyle} to="/zamestnanci-data">Zamestnanci</Link>
                 <Link style={linkStyle} to="/pokoje-data">Pokoje</Link>
+                {editZamSpan()}
                 {editUserSpan()}
                 {logoutSpan()}
 
@@ -98,7 +107,7 @@ const Header: React.FC = () => {
         );
     }
 
-    const pacMenu=()=>{
+    const pacMenu = () => {
         return (
             <div>
                 <Link style={linkStyle} to="/">HomePage</Link>
@@ -110,7 +119,7 @@ const Header: React.FC = () => {
             </div>
         );
     }
-    const zamMenu=()=>{
+    const zamMenu = () => {
         return (
             <div>
                 <Link style={linkStyle} to="/">HomePage</Link>
@@ -119,12 +128,27 @@ const Header: React.FC = () => {
                 <Link style={linkStyle} to="/pacienti-adresy">Pacienti</Link>
                 <Link style={linkStyle} to="/navstevy-pacientu">Navstevy pacientu</Link>
                 <Link style={linkStyle} to="/pokoje-data">Pokoje</Link>
+                {editZamSpan()}
+                {editUserSpan()}
+
                 {logoutSpan()}
                 {/*<span style={linkStyle} onClick={logout}>Logout</span>*/}
 
             </div>
         );
     }
+
+    const uzivatelMenu = () => {
+        return (
+            <div>
+                <Link style={linkStyle} to="/">HomePage</Link>
+                {editUserSpan()}
+                {loginSpan()}
+
+            </div>
+        );
+    }
+
     const itemMenu = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
             return adminMenu();
@@ -134,10 +158,13 @@ const Header: React.FC = () => {
             return zamNadrMenu();
         } else if (user?.roleName === USER_ROLES.PACIENT) {
             return pacMenu();
+        } else if (user?.roleName === USER_ROLES.UZIVATEL) {
+            return uzivatelMenu();
         } else {
             return unauthMenu();
         }
     }
+
     return (
         <div style={mainContentStyle}>
             <header style={{position: 'fixed', top: 0, width: '100%', zIndex: 1000}}>
