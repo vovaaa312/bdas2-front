@@ -198,6 +198,7 @@ const AddUser: React.FC = () => {
                 className="form-control"
                 value={user.roleName}
                 onChange={(e) => setUser({...user, roleName: e.target.value})}
+                disabled={user.roleName != USER_ROLES.ADMIN}
             >
                 {roleOptions.map((role, index) => (
                     <option key={index} value={role}>
@@ -208,9 +209,12 @@ const AddUser: React.FC = () => {
             <button
                 type="button"
                 className="btn btn-success"
+
                 onClick={(e) => {
                     changeRole(e);
                 }}
+                disabled={user.roleName != USER_ROLES.ADMIN}
+
             >
                 Change role
             </button>
@@ -243,8 +247,11 @@ const AddUser: React.FC = () => {
         } else {
             return createRole();
         }
+
+
     }
     const changePacId = () => {
+
         const changePacIdRequest = {
             userId: user.id,
             newPacId: user.idPacient,
@@ -283,6 +290,7 @@ const AddUser: React.FC = () => {
                     className="form-control"
                     value={user.idPacient}
                     onChange={handlePacientChange}
+                    disabled={user.roleName != USER_ROLES.ADMIN}
                 >
                     {pacienti.map((pacient, index) => (
                         <option key={index} value={pacient.idPacient}>
@@ -296,6 +304,7 @@ const AddUser: React.FC = () => {
                     onClick={(e) => {
                         changePacId(e);
                     }}
+                    disabled={user.roleName != USER_ROLES.ADMIN}
                 >
                     Change pacient
                 </button>
@@ -356,30 +365,48 @@ const AddUser: React.FC = () => {
     };
 
     const select = () => {
-        if (user.roleName === USER_ROLES.PACIENT) {
-            return pacientSelect();
-        } else if (user.roleName === USER_ROLES.ZAMESTNANEC ||
-            user.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
-            return zamestnanectSelect();
+
+        // if (user.roleName === USER_ROLES.PACIENT) {
+        //     return pacientSelect();
+        // } else if (user.roleName === USER_ROLES.ZAMESTNANEC ||
+        //     user.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+        //     return zamestnanectSelect();
+        // }
+        const selectedRole = user.roleName;
+
+        if (roleOptions.includes(selectedRole)) {
+            if (selectedRole === USER_ROLES.PACIENT) {
+                return pacientSelect();
+            } else if (selectedRole === USER_ROLES.ZAMESTNANEC || selectedRole === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+                return zamestnanectSelect();
+            }
         }
+
+        return null;
+
     }
 
+    const back=()=>{
+        navigate(-1);
+    }
     const buttons = () => {
         if (id) {
             return <div className="form-group mb-2">
-                <Link to="/users">
-                    <button type="button" className="btn btn-danger">
+                    <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={back}
+                    >
                         Back
                     </button>
-                </Link>
             </div>
         } else {
             return <div className="form-group mb-2">
-                <Link to="/users">
-                    <button type="button" className="btn btn-danger">
+                    <button type="button"
+                            className="btn btn-danger"
+                            onClick={back}  >
                         Back
                     </button>
-                </Link>
 
                 <button
                     type="button"
@@ -394,8 +421,35 @@ const AddUser: React.FC = () => {
         }
     }
 
+    const usersEquals = userId == localStorage.getItem('userId');
+
+    const login=()=>{
+        return                                         <div className="form-group mb-2">
+            <label>Login</label>
+            <input
+                placeholder="-"
+                type="text"
+                name="login"
+                className="form-control"
+                value={user.login}
+                onChange={(e) =>
+                    setUser((prevUser) => ({
+                        ...prevUser,
+                        login: e.target.value,
+                    }))
+                }
+                disabled={user.roleName != USER_ROLES.ADMIN}
+            />
+        </div>
+
+    }
+
     const content = () => {
-        if (storedUser?.roleName === USER_ROLES.ADMIN) {
+
+        if (
+            (storedUser?.roleName === USER_ROLES.ADMIN || // Пользователь - администратор
+                (storedUser?.roleName !== USER_ROLES.ADMIN && usersEquals)) // Пользователь не администратор, но userId совпадает с авторизованным
+        ) {
             return (
                 <div>
                     {title()}
@@ -407,22 +461,7 @@ const AddUser: React.FC = () => {
                                     <form>
 
                                         {/* login */}
-                                        <div className="form-group mb-2">
-                                            <label>Login</label>
-                                            <input
-                                                placeholder="-"
-                                                type="text"
-                                                name="login"
-                                                className="form-control"
-                                                value={user.login}
-                                                onChange={(e) =>
-                                                    setUser((prevUser) => ({
-                                                        ...prevUser,
-                                                        login: e.target.value,
-                                                    }))
-                                                }
-                                            />
-                                        </div>
+                                        {login()}
                                         {/* password */}
                                         {password()}
 

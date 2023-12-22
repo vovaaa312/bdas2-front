@@ -28,6 +28,7 @@ const PacientiLuzkaList: React.FC = () => {
 
         getAllLuzka();
 
+
     }, [user]);
 
 
@@ -152,8 +153,8 @@ const PacientiLuzkaList: React.FC = () => {
     };
 
     const table = () => {
-        if(user?.roleName === USER_ROLES.UZIVATEL||
-            user?.roleName === USER_ROLES.PACIENT&&
+        if(user?.roleName !== USER_ROLES.UZIVATEL||
+            user?.roleName !== USER_ROLES.PACIENT&&
             !user){
             return <table className="table table-bordered">
                 <thead>

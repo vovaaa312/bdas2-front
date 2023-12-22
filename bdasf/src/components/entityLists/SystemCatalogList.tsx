@@ -14,7 +14,6 @@ const LogList: React.FC = () => {
         const userData = LocalStorageService.getUserFromLocalStorage();
         if (userData) {
             setUser(userData);
-            console.log(userData);
         }
     }, []);
 
@@ -22,7 +21,7 @@ const LogList: React.FC = () => {
         getAll();
 
 
-    }, []);
+    }, [user]);
 
     const getAll = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {

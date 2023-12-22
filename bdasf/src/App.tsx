@@ -1,10 +1,8 @@
 // App.tsx
-
 import {Route, Routes} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Registration from "./components/auth/Registration";
 
-import Header from "./components/Header.tsx";
 import Footer from "./components/Footer";
 
 import "./App.css";
@@ -29,20 +27,13 @@ import AddNavsteva from "./components/createPages/AddNavsteva.tsx";
 import LogList from "./components/entityLists/LogList.tsx";
 import SystemCatalogList from "./components/entityLists/SystemCatalogList.tsx";
 
-import React from "react";
-import SideMenu from "./components/SideBarMenu/SideMenu.tsx";
-
+import TestLogin from "./components/auth/TestLogin.tsx";
+import Header from "./components/Header.tsx";
 
 function App() {
-
-
     return (
         <div>
-
-
             <Header></Header>
-            <Footer></Footer>
-            <SideMenu></SideMenu>
             <Routes>
                 <Route path="/users" element={<UserList/>}/>
                 <Route path="/add-user" element={<AddUser/>}/>
@@ -82,19 +73,22 @@ function App() {
                 <Route path="/catalog" element={<SystemCatalogList/>}/>
 
 
-                {/*<Route path="/test-login" element={<TestLogin/>}/>*/}
+                <Route path="/test-login" element={<TestLogin/>}/>
 
             </Routes>
+
+
+            <Footer></Footer>
         </div>
     );
 }
 
 export default App;
-//
-//
-// {/*<Route path="/pacienti" element={<PacientList />} />*/
-// }
-// {/*<Route path="/addPacient" element={<AddPacient />} />*/
-// }
-// {/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/
-// }
+
+
+{/*<Route path="/pacienti" element={<PacientList />} />*/
+}
+{/*<Route path="/addPacient" element={<AddPacient />} />*/
+}
+{/*<Route path="/edit-pacient/:id" element={<AddPacient />} />*/
+}
