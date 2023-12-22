@@ -84,9 +84,7 @@ const PacientiKartyList: React.FC = () => {
     };
 
     function addKartaButton() {
-        if (user?.roleName === USER_ROLES.ADMIN||
-            user?.roleName === USER_ROLES.ZAMESTNANEC ||
-            user?.roleName === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+        if (user?.roleName === USER_ROLES.ADMIN) {
             return <div>
 
                 <Link to="/add-pacient-karta">

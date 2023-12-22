@@ -218,8 +218,7 @@ const PacientiAdresyList: React.FC = () => {
     }
 
     const addPacientButton = () => {
-        if (user?.roleName !== USER_ROLES.PACIENT &&
-            user?.roleName !== USER_ROLES.UZIVATEL) {
+        if (user?.roleName === USER_ROLES.ADMIN) {
             return <div>
                 <Link to="/add-pacient-adresa">
                     <button className="btn btn-info" type="button">

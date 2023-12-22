@@ -16,15 +16,14 @@ const HomePage = () => {
                         personál.
                     </p>
                 </div>
-                {/*<div className="col-md-6">*/}
-                {/*    <h2>Наши услуги</h2>*/}
-                {/*    <ul>*/}
-                {/*        <li>Общая медицинская практика</li>*/}
-                {/*        <li>Хирургические операции</li>*/}
-                {/*        <li>Лабораторные исследования</li>*/}
-                {/*        <li>Имеющиеся у нас услуги</li>*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
+                <div className="col-md-6">
+                    <h2>Naše služby</h2>
+                    <ul>
+                        <li>Rezervace lůžka pacienta</li>
+                        <li>Provádění analýz</li>
+                        <li>Objednávání schůzek pro pacienty a zaměstnanci</li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

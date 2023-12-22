@@ -9,6 +9,7 @@ import {Pacient} from "../model/Pacient.tsx";
 import {StorageUserData} from "../model/response/StorageUserData.tsx";
 import LocalStorageService from "../services/LocalStorageService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
+import BinaryContentService from "../services/BinaryContentService.tsx";
 
 // AddPacient.tsx
 
@@ -451,8 +452,48 @@ const AddUser: React.FC = () => {
         );
     };
 
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            // Вызываем метод для загрузки файла
+            BinaryContentService.uploadBinaryContent(selectedFile, user.id)
+                .then((response) => {
+                    console.log("File uploaded successfully");
+                    // Дополнительные действия после успешной загрузки файла (если нужно)
+                })
+                .catch((error) => {
+                    console.error("Error uploading file", error);
+                });
+        }
+    };
+    const userPhoto = () => {
+        return (
+            <div className="form-group mb-2">
+                <label>Photo</label>
+                <img
+                    src={user.photoUrl} // Здесь должен быть путь к фотографии пользователя
+                    alt="User Photo"
+                    className="img-thumbnail"
+                />
+                <input
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange} // Привязываем обработчик события
+                    className="form-control"
+                />
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => {
+                        // Дополнительные действия при удалении фотографии (если нужно)
+                    }}
+                >
+                    Delete Photo
+                </button>
+            </div>
+        );
+    };
     const content = () => {
-
         if (
             (storedUser?.roleName === USER_ROLES.ADMIN || // Пользователь - администратор
                 (storedUser?.roleName !== USER_ROLES.ADMIN && usersEquals)) // Пользователь не администратор, но userId совпадает с авторизованным
@@ -466,20 +507,20 @@ const AddUser: React.FC = () => {
                             <div className="card col-md-6 offset-md-3 offset-md-3">
                                 <div className="card-body">
                                     <form>
-
                                         {/* login */}
                                         {login()}
                                         {/* password */}
                                         {password()}
-
 
                                         {/* Combobox для Role */}
                                         {role()}
 
                                         {select()}
 
-                                        {buttons()}
+                                        {/* Добавление фотографии */}
+                                        {/*{userPhoto()}*/}
 
+                                        {buttons()}
                                     </form>
                                 </div>
                             </div>
@@ -488,8 +529,8 @@ const AddUser: React.FC = () => {
                 </div>
             );
         } else return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
+    };
 
-    }
 
 
     return content();
