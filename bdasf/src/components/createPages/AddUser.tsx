@@ -245,11 +245,14 @@ const AddUser: React.FC = () => {
         </div>
     }
     const role = () => {
-        if (id) {
-            return chngRole();
-        } else {
-            return createRole();
+        if(storedUser?.roleName===USER_ROLES.ADMIN){
+            if (id) {
+                return chngRole();
+            } else {
+                return createRole();
+            }
         }
+
 
 
     }
@@ -380,14 +383,16 @@ const AddUser: React.FC = () => {
         //     return zamestnanectSelect();
         // }
         const selectedRole = user.roleName;
-
-        if (roleOptions.includes(selectedRole)) {
-            if (selectedRole === USER_ROLES.PACIENT) {
-                return pacientSelect();
-            } else if (selectedRole === USER_ROLES.ZAMESTNANEC || selectedRole === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
-                return zamestnanectSelect();
+        if(storedUser?.roleName === USER_ROLES.ADMIN){
+            if (roleOptions.includes(selectedRole)) {
+                if (selectedRole === USER_ROLES.PACIENT) {
+                    return pacientSelect();
+                } else if (selectedRole === USER_ROLES.ZAMESTNANEC || selectedRole === USER_ROLES.ZAMESTNANEC_NADRIZENY) {
+                    return zamestnanectSelect();
+                }
             }
         }
+
 
         return null;
 
