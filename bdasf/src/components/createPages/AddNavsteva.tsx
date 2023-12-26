@@ -45,7 +45,6 @@ const AddNavsteva: React.FC = () => {
         const userData = LocalStorageService.getUserFromLocalStorage();
         if (userData) {
             setUser(userData);
-            console.log(userData);
         }
 
         PacientService.getAllPacienti().then((response) => {
@@ -59,7 +58,13 @@ const AddNavsteva: React.FC = () => {
         StatusNavstevyService.getAll().then((response) => {
             setStatusyNavstev(response.data);
         });
-    }, []);
+        if (user?.roleName === USER_ROLES.ZAMESTNANEC) {
+            setNavsteva((prevNavsteva) => ({
+                ...prevNavsteva,
+                idZamestnanec: user.zamestnanecId
+            }));
+        }
+    }, [user]);
 
     const handlePacientChange = (selectedOption) => {
         console.log("Selected Pacient:", selectedOption);
@@ -84,6 +89,8 @@ const AddNavsteva: React.FC = () => {
             idStatus: selectedOption ? selectedOption.value : null
         }));
     };
+
+
 
 
     const pacientOptions = pacienti.map(pacient => ({

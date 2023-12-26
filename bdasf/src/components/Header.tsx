@@ -95,7 +95,7 @@ const Header: React.FC = () => {
                 <Link style={linkStyle} to="/">HomePage</Link>
                 <Link style={linkStyle} to="/pacienti-analyzy">Analyzy pacientu</Link>
                 <Link style={linkStyle} to="/pacienti-karty">Karty pacientu</Link>
-                <Link style={linkStyle} to="/pacienti-adresy">Pacienti</Link>
+                {/*<Link style={linkStyle} to="/pacienti-adresy">Pacienti</Link>*/}
                 <Link style={linkStyle} to="/navstevy-pacientu">Navstevy pacientu</Link>
                 <Link style={linkStyle} to="/zamestnanci-data">Zamestnanci</Link>
                 <Link style={linkStyle} to="/pokoje-data">Pokoje</Link>
@@ -125,7 +125,7 @@ const Header: React.FC = () => {
                 <Link style={linkStyle} to="/">HomePage</Link>
                 <Link style={linkStyle} to="/pacienti-analyzy">Analyzy pacientu</Link>
                 <Link style={linkStyle} to="/pacienti-karty">Karty pacientu</Link>
-                <Link style={linkStyle} to="/pacienti-adresy">Pacienti</Link>
+                {/*<Link style={linkStyle} to="/pacienti-adresy">Pacienti</Link>*/}
                 <Link style={linkStyle} to="/navstevy-pacientu">Navstevy pacientu</Link>
                 <Link style={linkStyle} to="/pokoje-data">Pokoje</Link>
                 {editZamSpan()}

@@ -304,19 +304,44 @@ const AddUser: React.FC = () => {
                         </option>
                     ))}
                 </select>
-                <button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={(e) => {
-                        changePacId(e);
-                    }}
-                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
-                >
-                    Change pacient
-                </button>
+                {changePacButton()}
             </div>
         );
     };
+
+    const changeZamButton=()=>{
+        if(id){
+            return <button
+                type="button"
+                className="btn btn-success"
+                onClick={(e) => {
+                    changeZamId(e);
+                }}
+                disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+
+            >
+                Change zamestnanec
+            </button>
+        }
+
+    }
+
+    const changePacButton=()=>{
+        if(id){
+            return <button
+                type="button"
+                className="btn btn-success"
+                onClick={(e) => {
+                    changePacId(e);
+                }}
+                disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+
+            >
+                Change pacient
+            </button>
+        }
+
+    }
 
     const changeZamId = () => {
         const changeZamIdRequest = {
@@ -359,17 +384,8 @@ const AddUser: React.FC = () => {
                         </option>
                     ))}
                 </select>
-                <button
-                    type="button"
-                    className="btn btn-success"
-                    onClick={(e) => {
-                        changeZamId(e);
-                    }}
-                    disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
+                {changeZamButton()}
 
-                >
-                    Change zamestnanec
-                </button>
             </div>
         );
     };

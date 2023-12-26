@@ -62,7 +62,7 @@ const AddLuzko: React.FC = () => {
     }
 
     const content = () => {
-        if (user?.roleName !== USER_ROLES.ADMIN) {
+        if (user?.roleName === USER_ROLES.ADMIN) {
             return <div className="container">
                 {title()}
                 <div className="row">
