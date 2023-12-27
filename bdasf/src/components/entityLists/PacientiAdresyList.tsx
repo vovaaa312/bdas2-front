@@ -9,13 +9,19 @@ import {USER_ROLES} from "../model/USER_ROLES.tsx";
 import ZamestnanecService from "../services/ZamestnanecService.tsx";
 import {Zamestnanec} from "../model/Zamestnanec.tsx";
 import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
+import PacientAdresaService from "../services/PacientAdresaService.tsx";
+import {PrumVekRequest} from "../model/request/PrumVekRequest.tsx";
 
 const PacientiAdresyList: React.FC = () => {
     const [pacientiAdresyList, setPacientiAdresyList] = useState<PacientAdresa[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
     const [zamestnanec, setZamestnanec] = useState<Zamestnanec>();
-
-
+    const [prumVekRequest, setPrumVekRequest] = useState<PrumVekRequest>({
+        datumOd: null,
+        datumDo: null,
+        pohlavi: "",
+    });
+    const [averageAge, setAverageAge] = useState<number | null>(null);
     useEffect(() => {
         const userData = LocalStorageService.getUserFromLocalStorage();
         if (userData) {
@@ -26,7 +32,6 @@ const PacientiAdresyList: React.FC = () => {
 
     useEffect(() => {
         if (user) {
-
             if (user.zamestnanecId) {
                 getZamestnanec(user.zamestnanecId);
 
@@ -34,6 +39,21 @@ const PacientiAdresyList: React.FC = () => {
         }
         getAllPacients();
     }, [user]);
+
+    useEffect(() => {
+        if (prumVekRequest.datumOd && prumVekRequest.datumDo && prumVekRequest.pohlavi) {
+            PacientAdresaService.vypocitatPrumernyVekPacientu(prumVekRequest)
+                .then((response) => {
+                    console.log('Average age response:', response.data); // Добавьте это для отладки
+
+                    setAverageAge(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [prumVekRequest]);
+
 
     const getZamestnanec = (zamId: number) => {
         ZamestnanecService.getZamestnanecById(zamId)
@@ -70,8 +90,6 @@ const PacientiAdresyList: React.FC = () => {
                         .catch((error) => {
                             console.log(error);
                         });
-
-
                 })
                 .catch((error) => {
                     console.log(error);
@@ -118,6 +136,16 @@ const PacientiAdresyList: React.FC = () => {
     }
 
     const adminUserTable = () => {
+        const filteredPacienti = pacientiAdresyList.filter((pacient) => {
+            const birthDate = new Date(pacient.datumNarozeni);
+            const isDateInRange = (!prumVekRequest.datumOd || !prumVekRequest.datumDo) ? true : (
+                birthDate >= new Date(prumVekRequest.datumOd) && birthDate <= new Date(prumVekRequest.datumDo)
+            );
+            const isGenderMatch = prumVekRequest.pohlavi === "" || pacient.pohlavi === prumVekRequest.pohlavi;
+
+            return isDateInRange && isGenderMatch;
+        });
+
         return <table className="table table-bordered">
             <thead>
             <tr>
@@ -139,7 +167,7 @@ const PacientiAdresyList: React.FC = () => {
             </tr>
             </thead>
             <tbody>
-            {pacientiAdresyList.map((pacientAdresa) => (
+            {filteredPacienti.map((pacientAdresa) => (
                 <tr key={pacientAdresa.idPacient}>
                     <td>{pacientAdresa.jmeno}</td>
                     <td>{pacientAdresa.prijmeni}</td>
@@ -177,6 +205,16 @@ const PacientiAdresyList: React.FC = () => {
     }
 
     const zamPacientTable = () => {
+        const filteredPacienti = pacientiAdresyList.filter((pacient) => {
+            const birthDate = new Date(pacient.datumNarozeni);
+            const isDateInRange = (!prumVekRequest.datumOd || !prumVekRequest.datumDo) ? true : (
+                birthDate >= new Date(prumVekRequest.datumOd) && birthDate <= new Date(prumVekRequest.datumDo)
+            );
+            const isGenderMatch = prumVekRequest.pohlavi === "" || pacient.pohlavi === prumVekRequest.pohlavi;
+
+            return isDateInRange && isGenderMatch;
+        });
+
         return (
             <table className="table table-bordered">
                 <thead>
@@ -190,7 +228,7 @@ const PacientiAdresyList: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {pacientiAdresyList.map((pacientAdresa) => (
+                {filteredPacienti.map((pacientAdresa) => (
                     <tr key={pacientAdresa.idPacient}>
                         <td>{pacientAdresa.jmeno}</td>
                         <td>{pacientAdresa.prijmeni}</td>
@@ -204,8 +242,6 @@ const PacientiAdresyList: React.FC = () => {
             </table>
         );
     }
-
-
     const table = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
             return adminUserTable();
@@ -228,9 +264,148 @@ const PacientiAdresyList: React.FC = () => {
             </div>
         }
     }
+
+
+    const handleDatumOdChange = (event) => {
+        const newDatumOd = new Date(event.target.value);
+        setPrumVekRequest((prevRequest) => {
+            const updatedRequest = {...prevRequest, datumOd: newDatumOd};
+
+            // if (newDatumOd > new Date(prevRequest.datumDo)) {
+            //     updatedRequest.datumDo = newDatumOd;
+            // }
+
+            return updatedRequest;
+        });
+    };
+
+    const handleDatumDoChange = (event) => {
+        const newDatumDo = new Date(event.target.value);
+        setPrumVekRequest((prevRequest) => {
+            const updatedRequest = {...prevRequest, datumDo: newDatumDo};
+
+            // if (newDatumDo < new Date(prevRequest.datumOd)) {
+            //     updatedRequest.datumOd = newDatumDo;
+            // }
+
+            return updatedRequest;
+        });
+    };
+
+
+    const handlePohlaviChange = (event) => {
+        const newPohlavi = event.target.value;
+
+        setPrumVekRequest((prevRequest) => {
+            return {...prevRequest, pohlavi: newPohlavi};
+        });
+    };
+
+
+    const prumVekSelect = () => {
+
+        // const handleDatumOdChange = (event) => {
+        //     const newDatumOd = new Date(event.target.value);
+        //     setPrumVekRequest((prevRequest) => {
+        //         const updatedRequest = {
+        //             ...prevRequest,
+        //             datumOd: newDatumOd,
+        //         };
+        //
+        //         if (newDatumOd > new Date(prevRequest.datumDo)) {
+        //             updatedRequest.datumDo = newDatumOd;
+        //         }
+        //
+        //         return updatedRequest;
+        //     });
+        // };
+        //
+        // const handleDatumDoChange = (event) => {
+        //     setPrumVekRequest({
+        //         ...prumVekRequest,
+        //         datumDo: event.target.value,
+        //     });
+        //
+        //     if (new Date(event.target.value) < new Date(prumVekRequest.datumOd)) {
+        //         setPrumVekRequest({
+        //             ...prumVekRequest,
+        //             datumOd: event.target.value,
+        //         });
+        //     }
+        //
+        //     if (prumVekRequest.datumOd && prumVekRequest.datumDo && prumVekRequest.pohlavi) {
+        //         PacientAdresaService.vypocitatPrumernyVekPacientu(prumVekRequest)
+        //             .then((response) => {
+        //                 setAverageAge(response.data);
+        //             })
+        //             .catch((error) => {
+        //                 console.log(error);
+        //             });
+        //     }
+        // };
+        //
+        // const handlePohlaviChange = (event) => {
+        //     setPohlavi(event.target.value);
+        //
+        //     if (datumOd && datumDo && event.target.value) {
+        //         PacientAdresaService.vypocitatPrumernyVekPacientu(prumVekRequest)
+        //             .then((response) => {
+        //                 // Установите средний возраст в состоянии
+        //                 setAverageAge(response.data);
+        //             })
+        //             .catch((error) => {
+        //                 console.log(error);
+        //             });
+        //     }
+        // };
+        //
+
+        return (
+            <div className="card col-md-0 offset-md-0 offset-md-0">
+                <div className="card-body">
+                    <div>
+                        <label>Datum od:</label>
+                        <input
+                            className="form-control"
+                            type="date"
+                            value={prumVekRequest.datumOd ? prumVekRequest.datumOd.toISOString().substring(0, 10) : ""}
+                            onChange={handleDatumOdChange}
+                        />
+                    </div>
+                    <div>
+                        <label>Datum do:</label>
+                        <input
+                            className="form-control"
+                            type="date"
+                            value={prumVekRequest.datumDo ? prumVekRequest.datumDo.toISOString().substring(0, 10) : ""}
+                            onChange={handleDatumDoChange}/>
+                    </div>
+                    <div>
+                        <label>Pohlavi:</label>
+                        <select
+                            className="form-control"
+                            value={prumVekRequest.pohlavi}
+                            onChange={handlePohlaviChange}>
+                            <option value="">Vyberte pohlavi</option>
+                            <option value="Muz">Muz</option>
+                            <option value="Zena">Zena</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Průměrný věk pacientů:{averageAge}</label>
+
+                    </div>
+                </div>
+            </div>
+
+        );
+
+    }
+
     return (
         <div>
             {pageTitle()}
+            {prumVekSelect()}
             {addPacientButton()}
             {table()}
 

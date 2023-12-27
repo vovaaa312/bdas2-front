@@ -24,7 +24,7 @@ const AddPokoj: React.FC = () => {
     const { id } = useParams<{ id?: string }>();
     const pokojId = parseInt(id || "0");
 
-    const [oddeleniOptions, setOddeleniOptions] = useState<string[]>([]);
+    const [oddeleniOptions, setOddeleniOptions] = useState<{id: number, nazev: string}[]>([]);
 
 
     const saveOrUpdateLuzko = (e: React.FormEvent) => {
@@ -69,9 +69,13 @@ const AddPokoj: React.FC = () => {
                 });
         }
 
+
         OddeleniService.getAllOddeleni()
             .then((response) => {
-                setOddeleniOptions(response.data.map((oddeleni) => oddeleni.nazevOddeleni));
+                setOddeleniOptions(response.data.map((oddeleni) => ({
+                    id: oddeleni.idOddeleni,
+                    nazev: oddeleni.nazevOddeleni
+                })));
             })
             .catch((error) => {
                 console.error("Error loading pokoje options", error);
@@ -158,21 +162,22 @@ const AddPokoj: React.FC = () => {
                                 <select
                                     name="oddeleni"
                                     className="form-control"
-                                    value={pokoj.nazevOddeleni || ""}
+                                    value={pokoj.idOddeleni || ""}
                                     onChange={(e) =>
-                                        setPokoj((prevPacient) => ({
-                                            ...prevPacient,
-                                            nazevOddeleni: e.target.value,
+                                        setPokoj((prevPokoj) => ({
+                                            ...prevPokoj,
+                                            idOddeleni: parseInt(e.target.value, 10),
                                         }))
                                     }
                                 >
                                     <option value="" disabled>Select Oddeleni</option>
-                                    {oddeleniOptions.map((oddeleni) => (
-                                        <option key={oddeleni} value={oddeleni}>
-                                            {oddeleni}
+                                    {oddeleniOptions.map((option) => (
+                                        <option key={option.id} value={option.id}>
+                                            {option.nazev}
                                         </option>
                                     ))}
                                 </select>
+
                             </div>
 
                             <div>

@@ -13,6 +13,7 @@ const PacientiAnalyzyList: React.FC = () => {
         const [user, setUser] = useState<StorageUserData | null>(null);
 
         useEffect(() => {
+
             const userData = LocalStorageService.getUserFromLocalStorage();
             if (userData) {
                 setUser(userData);
@@ -20,15 +21,21 @@ const PacientiAnalyzyList: React.FC = () => {
             }
         }, []);
         useEffect(() => {
+
+
             getAllAnalyzy();
         }, [user]);
 
-        const getAllAnalyzy = () => {
+
+
+
+
+
+    const getAllAnalyzy = () => {
             if (user?.roleName === USER_ROLES.ADMIN) {
                 PacientAnalyzaService.getAllAnalyzy()
                     .then((response) => {
                         setPacientiAnalyzyList(response.data);
-                        console.log(response.data);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -38,7 +45,6 @@ const PacientiAnalyzyList: React.FC = () => {
                 PacientAnalyzaService.getByPacientId(user.pacientId)
                     .then((response) => {
                         setPacientiAnalyzyList(response.data);
-                        console.log(response.data);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -52,9 +58,6 @@ const PacientiAnalyzyList: React.FC = () => {
                         PacientAnalyzaService.getByOddeleniId(zamestnanecData.idOddeleni)
                             .then((response) => {
                                 setPacientiAnalyzyList(response.data);
-
-
-                                console.log(response.data);
                             })
                             .catch((error) => {
                                 console.log(error);
@@ -128,9 +131,9 @@ const PacientiAnalyzyList: React.FC = () => {
             }
         }
 
-        const addAnalyzaButton=()=>{
-            if(user?.roleName!==USER_ROLES.UZIVATEL&&
-                user?.roleName!==USER_ROLES.PACIENT){
+        const addAnalyzaButton = () => {
+            if (user?.roleName !== USER_ROLES.UZIVATEL &&
+                user?.roleName !== USER_ROLES.PACIENT) {
                 return <div>
                     <Link to="/add-pacient-analyza">
                         <button className="btn btn-info" type="button">
@@ -141,11 +144,13 @@ const PacientiAnalyzyList: React.FC = () => {
             }
 
         }
+
+
+
         return (
             <div>
                 {pageTitle()}
                 {addAnalyzaButton()}
-
                 <table className="table table-bordered">
                     <thead>
                     <tr>

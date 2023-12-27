@@ -1,15 +1,23 @@
 import HomePageService from "./services/HomePageService.tsx";
 import {useEffect, useState} from "react";
+import PacientAnalyzaService from "./services/PacientAnalyzaService.tsx";
 
 const HomePage = () => {
     const homePageService = new HomePageService();
-
 
     const [availableBedsChirurgie, setAvailableBedsChirurgie] = useState<number | null>(null);
     const [availableBedsKardiologie, setAvailableBedsKardiologie] = useState<number | null>(null);
     const [availableBedsOcni, setAvailableBedsOcni] = useState<number | null>(null);
     const [availableBedsOnkologie, setAvailableBedsOnkologie] = useState<number | null>(null);
     const [availableBedsPsychiatrie, setAvailableBedsPsychiatrie] = useState<number | null>(null);
+
+    //const [oddeleniScore, setOddeleniScore] = useState<OddeleniScore[]>([]);
+    const [scoreChirurgie, setScoreChirurgie] = useState<number | null>(null);
+    const [scoreKardiologie, setScoreKardiologie] = useState<number | null>(null);
+    const [scoreOcni, setScoreOcni] = useState<number | null>(null);
+    const [scoreOnkologie, setScoreOnkologie] = useState<number | null>(null);
+    const [scorePsychiatrie, setScorePsychiatrie] = useState<number | null>(null);
+
 
     const fetchAvailableBeds = (departmentId: number, setter: (value: number | null) => void) => {
         homePageService
@@ -23,6 +31,39 @@ const HomePage = () => {
             });
     };
 
+    useEffect(() => {
+        PacientAnalyzaService.vypocitatScoreZdraviOddeleni()
+            .then(response => {
+                const data = response.data;
+                console.log("Data from server:", data); // Проверка данных от сервера
+
+
+                const chirurgieData = data.find(dept => dept.NAZEV_ODDELENI === "Chirurgie");
+                if (chirurgieData) {
+                    setScoreChirurgie(chirurgieData.PRUM_ZDRAV_SKORE);
+                }
+                const kardiologieData = data.find(dept => dept.NAZEV_ODDELENI === "Kardiologie");
+                if (kardiologieData) {
+                    setScoreKardiologie(kardiologieData.PRUM_ZDRAV_SKORE);
+                }
+                const ocniData = data.find(dept => dept.NAZEV_ODDELENI === "Ocni");
+                if (ocniData) {
+                    setScoreOcni(ocniData.PRUM_ZDRAV_SKORE);
+                }
+                const onkologieData = data.find(dept => dept.NAZEV_ODDELENI === "Chirurgie");
+                if (onkologieData) {
+                    setScoreOnkologie(onkologieData.PRUM_ZDRAV_SKORE);
+                }
+                const psychiatrieData = data.find(dept => dept.NAZEV_ODDELENI  === "Chirurgie");
+                if (psychiatrieData) {
+                    setScorePsychiatrie(psychiatrieData.PRUM_ZDRAV_SKORE);
+                }
+
+            })
+            .catch(error => {
+                console.error('Ошибка при получении данных:', error);
+            });
+    }, []);
     useEffect(() => {
         const departmentIds = [
             70000,      //Chirurgie
@@ -52,7 +93,10 @@ const HomePage = () => {
                     break;
             }
         });
+
+
     }, []);
+
 
     const descr = () => {
         return <div className="col-md-12">
@@ -87,7 +131,7 @@ const HomePage = () => {
                     <li>Dostupných lůžek v oddělení: {availableBedsChirurgie}</li>
 
                 )}
-                <li>Informace oddeleni 'Chirurgie'</li>
+                <li>Průměrný skór zdraví: {scoreChirurgie}</li>
                 <li>Informace oddeleni 'Chirurgie'</li>
             </ul>
         </div>
@@ -108,7 +152,7 @@ const HomePage = () => {
                     <li>Dostupných lůžek v oddělení: {availableBedsKardiologie}</li>
 
                 )}
-                <li>Informace oddeleni 'Kardiologie'</li>
+                <li>Průměrný skór zdraví: {scoreKardiologie}</li>
                 <li>Informace oddeleni 'Kardiologie'</li>
             </ul>
         </div>
@@ -127,7 +171,7 @@ const HomePage = () => {
                     <li>Dostupných lůžek v oddělení: {availableBedsOcni}</li>
 
                 )}
-                <li>Informace oddeleni 'Ocni'</li>
+                <li>Průměrný skór zdraví: {scoreOcni}</li>
                 <li>Informace oddeleni 'Ocni'</li>
             </ul>
         </div>
@@ -146,7 +190,7 @@ const HomePage = () => {
                     <li>Dostupných lůžek v oddělení: {availableBedsOnkologie}</li>
 
                 )}
-                <li>Informace oddeleni 'Onkologie'</li>
+                <li>Průměrný skór zdraví: {scoreOnkologie}</li>
                 <li>Informace oddeleni 'Onkologie'</li>
             </ul>
         </div>
@@ -166,7 +210,7 @@ const HomePage = () => {
                     <li>Dostupných lůžek v oddělení: {availableBedsPsychiatrie}</li>
 
                 )}
-                <li>Informace oddeleni 'Psychiatrie'</li>
+                <li>Průměrný skór zdraví: {scorePsychiatrie}</li>
                 <li>Informace oddeleni 'Psychiatrie'</li>
             </ul>
         </div>

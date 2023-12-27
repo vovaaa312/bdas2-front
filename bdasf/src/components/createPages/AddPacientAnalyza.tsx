@@ -79,7 +79,6 @@ const AddPacientAnalyza: React.FC = () => {
         PacientKartaService.getAllPacienti()
             .then((response) => {
                 setKartyPacientu(response.data);
-                console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
