@@ -1,16 +1,15 @@
 // UserList.tsx
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import UserService from "../services/UserService.tsx";
 import {User} from "../model/security/User.tsx";
 import {StorageUserData} from "../model/response/StorageUserData.tsx";
-import {Zamestnanec} from "../model/Zamestnanec.tsx";
 import LocalStorageService from "../services/LocalStorageService.tsx";
-import ZamestnanecService from "../services/ZamestnanecService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
 const UserList: React.FC = () => {
     const [userList, setUserList] = useState<User[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -26,6 +25,35 @@ const UserList: React.FC = () => {
 
         getAllUsers();
     }, [user]);
+
+    const handleEmulateClick = (userId: number) => {
+        UserService.getUserById(userId)
+            .then((response) => {
+                const getUser = response.data;
+
+
+
+                localStorage.setItem('userId', getUser.id.toString());
+                localStorage.setItem('login', getUser.login);
+                localStorage.setItem('roleName', getUser.roleName);
+
+                if (getUser.zamestnanecId) {
+                    localStorage.setItem('zamId', getUser.zamestnanecId.toString());
+                }
+                if (getUser.pacientId) {
+                    localStorage.setItem('pacId', getUser.pacientId.toString());
+                }
+
+
+                window.sessionStorage.setItem('authenticated', 'true');
+                navigate('/');
+                window.location.reload();
+
+            })
+            .catch((error) => {
+                console.error('Ошибка при получении данных пользователя:', error);
+            });
+    };
 
     const getAllUsers = () => {
         if (user?.roleName === USER_ROLES.ADMIN) {
@@ -113,6 +141,13 @@ const UserList: React.FC = () => {
                                 style={{ marginLeft: "10px" }}
                             >
                                 Delete
+                            </button>
+                            <button
+                                className="btn btn-success"
+                                onClick={() => handleEmulateClick(user.id)}
+                                style={{ marginLeft: "10px" }}
+                            >
+                                Spustit emulace
                             </button>
                         </td>
                     </tr>

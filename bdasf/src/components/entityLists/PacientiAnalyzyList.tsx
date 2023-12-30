@@ -17,7 +17,6 @@ const PacientiAnalyzyList: React.FC = () => {
             const userData = LocalStorageService.getUserFromLocalStorage();
             if (userData) {
                 setUser(userData);
-                console.log(userData);
             }
         }, []);
         useEffect(() => {

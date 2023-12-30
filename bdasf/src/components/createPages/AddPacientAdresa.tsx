@@ -76,7 +76,7 @@ const AddPacientAdresa: React.FC = () => {
 
     const title = () => {
 
-        if (user?.roleName === USER_ROLES.PACIENT  && user) {
+        if (user?.roleName === USER_ROLES.PACIENT && user) {
             return <h2 className="text-center">Pacient data</h2>;
 
         } else if (user?.roleName !== USER_ROLES.UZIVATEL && user) {

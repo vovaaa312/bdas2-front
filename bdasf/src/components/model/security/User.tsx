@@ -11,7 +11,7 @@ export type User={
     roleId:number,
     roleName:string
 
-    idPacient:number,
-    idZamestnanec:number
+    pacientId:number,
+    zamestnanecId:number
 
 }

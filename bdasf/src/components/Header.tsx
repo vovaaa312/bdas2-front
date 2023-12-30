@@ -89,6 +89,18 @@ const Header: React.FC = () => {
         return <span style={linkStyle} onClick={editZam}>Edit zamestnanec</span>
 
     }
+
+    const editPac=()=> {
+        navigate(`/edit-pacient-adresa/${localStorage.getItem('pacId')}`);
+
+    }
+
+    const editPacSpan=()=>{
+
+
+        return <span style={linkStyle} onClick={editPac}>Edit pacient</span>
+
+    }
     const zamNadrMenu = () => {
         return (
             <div>
@@ -113,6 +125,7 @@ const Header: React.FC = () => {
                 <Link style={linkStyle} to="/">HomePage</Link>
                 <Link style={linkStyle} to="/pacienti-analyzy">Analyzy pacientu</Link>
                 <Link style={linkStyle} to="/navstevy-pacientu">Navstevy pacientu</Link>
+                {editPacSpan()}
                 {editUserSpan()}
                 {logoutSpan()}
 

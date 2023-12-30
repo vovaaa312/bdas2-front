@@ -35,8 +35,6 @@ const HomePage = () => {
         PacientAnalyzaService.vypocitatScoreZdraviOddeleni()
             .then(response => {
                 const data = response.data;
-                console.log("Data from server:", data); // Проверка данных от сервера
-
 
                 const chirurgieData = data.find(dept => dept.NAZEV_ODDELENI === "Chirurgie");
                 if (chirurgieData) {

@@ -10,6 +10,7 @@ import {StorageUserData} from "../model/response/StorageUserData.tsx";
 import LocalStorageService from "../services/LocalStorageService.tsx";
 import {USER_ROLES} from "../model/USER_ROLES.tsx";
 import BinaryContentService from "../services/BinaryContentService.tsx";
+import {BinaryContent} from "../model/BinaryContent.tsx";
 
 // AddPacient.tsx
 
@@ -25,20 +26,25 @@ const AddUser: React.FC = () => {
 
     const [storedUser, setStoredUser] = useState<StorageUserData | null>(null);
 
+    const [selectedFile, setSelectedFile] = useState(null);
+
     const [user, setUser] = useState<User>({
         id: 0,
         login: "",
         password: "",
         roleId: 0,
         roleName: roleOptions[0],  // Начальное значение из roleOptions
-        idPacient: 0,
-        idZamestnanec: 0
+        pacientId: 0,
+        zamestnanecId: 0
 
     });
 
-
     const {id} = useParams<{ id?: string }>();
     const userId = parseInt(id || "0");
+
+    const usersEquals = userId == localStorage.getItem('userId');
+
+    const [userImage, setUserImage] = useState<BinaryContent |null>(null);
 
 
     const saveOrUpdateUser = (e: React.FormEvent) => {
@@ -79,6 +85,18 @@ const AddUser: React.FC = () => {
             UserService.getUserById(userId)
                 .then((response) => {
                     setUser(response.data);
+
+
+                    BinaryContentService.getBinaryContentByUserId(userId)
+                        .then((response) => {
+                            const imageData: BinaryContent = response.data; // предполагаем, что response.data уже имеет тип BinaryContent
+                            console.log(userImage ? `data:${userImage.fileType};base64,${userImage.content}` : 'NO IMAGE');
+                            setUserImage(imageData);
+                        })
+                        .catch((error) => {
+                            console.error('Error loading user image:', error);
+                        });
+
                 })
                 .catch((error) => {
                     console.log(error);
@@ -245,7 +263,7 @@ const AddUser: React.FC = () => {
         </div>
     }
     const role = () => {
-        if(storedUser?.roleName===USER_ROLES.ADMIN){
+        if (storedUser?.roleName === USER_ROLES.ADMIN) {
             if (id) {
                 return chngRole();
             } else {
@@ -254,13 +272,12 @@ const AddUser: React.FC = () => {
         }
 
 
-
     }
     const changePacId = () => {
 
         const changePacIdRequest = {
             userId: user.id,
-            newPacId: user.idPacient,
+            newPacId: user.pacientId,
         };
         try {
             // Отправка запроса на изменение пациента
@@ -284,7 +301,7 @@ const AddUser: React.FC = () => {
             const selectedPacientId = parseInt(e.target.value, 10);
             setUser((prevUser) => ({
                 ...prevUser,
-                idPacient: selectedPacientId,
+                pacientId: selectedPacientId,
             }));
         };
 
@@ -294,7 +311,7 @@ const AddUser: React.FC = () => {
                 <select
                     name="idPacient"
                     className="form-control"
-                    value={user.idPacient}
+                    value={user.pacientId}
                     onChange={handlePacientChange}
                     disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
                 >
@@ -309,8 +326,8 @@ const AddUser: React.FC = () => {
         );
     };
 
-    const changeZamButton=()=>{
-        if(id){
+    const changeZamButton = () => {
+        if (id) {
             return <button
                 type="button"
                 className="btn btn-success"
@@ -326,8 +343,8 @@ const AddUser: React.FC = () => {
 
     }
 
-    const changePacButton=()=>{
-        if(id){
+    const changePacButton = () => {
+        if (id) {
             return <button
                 type="button"
                 className="btn btn-success"
@@ -346,7 +363,7 @@ const AddUser: React.FC = () => {
     const changeZamId = () => {
         const changeZamIdRequest = {
             userId: user.id,
-            newZamId: user.idZamestnanec,
+            newZamId: user.zamestnanecId,
         };
         try {
             // Отправка запроса на изменение сотрудника
@@ -373,8 +390,8 @@ const AddUser: React.FC = () => {
                 <select
                     name="idZamestnanec"
                     className="form-control"
-                    value={user.idZamestnanec}
-                    onChange={(e) => setUser({...user, idZamestnanec: parseInt(e.target.value, 10)})}
+                    value={user.zamestnanecId}
+                    onChange={(e) => setUser({...user, zamestnanecId: parseInt(e.target.value, 10)})}
                     disabled={storedUser?.roleName !== USER_ROLES.ADMIN}
 
                 >
@@ -399,7 +416,7 @@ const AddUser: React.FC = () => {
         //     return zamestnanectSelect();
         // }
         const selectedRole = user.roleName;
-        if(storedUser?.roleName === USER_ROLES.ADMIN){
+        if (storedUser?.roleName === USER_ROLES.ADMIN) {
             if (roleOptions.includes(selectedRole)) {
                 if (selectedRole === USER_ROLES.PACIENT) {
                     return pacientSelect();
@@ -414,27 +431,27 @@ const AddUser: React.FC = () => {
 
     }
 
-    const back=()=>{
+    const back = () => {
         navigate(-1);
     }
     const buttons = () => {
         if (id) {
             return <div className="form-group mb-2">
-                    <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={back}
-                    >
-                        Back
-                    </button>
+                <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={back}
+                >
+                    Back
+                </button>
             </div>
         } else {
             return <div className="form-group mb-2">
-                    <button type="button"
-                            className="btn btn-danger"
-                            onClick={back}  >
-                        Back
-                    </button>
+                <button type="button"
+                        className="btn btn-danger"
+                        onClick={back}>
+                    Back
+                </button>
 
                 <button
                     type="button"
@@ -449,7 +466,6 @@ const AddUser: React.FC = () => {
         }
     }
 
-    const usersEquals = userId == localStorage.getItem('userId');
 
     const login = () => {
         return (
@@ -473,48 +489,75 @@ const AddUser: React.FC = () => {
         );
     };
 
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-            // Вызываем метод для загрузки файла
-            BinaryContentService.uploadBinaryContent(selectedFile, user.id)
-                .then((response) => {
-                    console.log("File uploaded successfully");
-                    // Дополнительные действия после успешной загрузки файла (если нужно)
-                })
-                .catch((error) => {
-                    console.error("Error uploading file", error);
-                });
+
+
+    const avatar = () => {
+        return <div>
+            {/*<textarea value={userImage ? atob(userImage.content) : ''} readOnly />*/}
+
+            <div
+                style={{
+                    width: '75px',
+                    height: '75px', // Updated height to make the photo display correctly
+                    border: '1px solid #ccc',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                {userImage && userImage.data ? (
+                    <img
+                        src={`data:${userImage.fileType};base64,${userImage.content}`}
+                        alt="User"
+                        style={{ maxWidth: '100%', maxHeight: '100%' }} // Ensure the image fits into the container
+                    />
+                ) : (
+                    <p style={{ margin: '0', color: '#888' }}>NO IMAGE</p>
+                )}
+            </div>
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="form-control"
+            />
+            <button type="button" className="btn btn-success" onClick={handleSubmit}>
+                Podtvrdit
+            </button>
+        </div>
+
+
+    }
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            console.log("Выбран файл:", file);
+            setSelectedFile(file); // Сохраняем файл в состояние
         }
     };
-    const userPhoto = () => {
-        return (
-            <div className="form-group mb-2">
-                <label>Photo</label>
-                <img
-                    src={user.photoUrl} // Здесь должен быть путь к фотографии пользователя
-                    alt="User Photo"
-                    className="img-thumbnail"
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={onFileChange} // Привязываем обработчик события
-                    className="form-control"
-                />
-                <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => {
-                        // Дополнительные действия при удалении фотографии (если нужно)
-                    }}
-                >
-                    Delete Photo
-                </button>
-            </div>
-        );
+
+    const handleSubmit = () => {
+        if (selectedFile) {
+            // Assuming you have the user ID available
+            const userId = storedUser?.id || 0; // Replace 0 with the default user ID if needed
+
+            // Use BinaryContentService to upload the file
+            BinaryContentService.uploadBinaryContent(selectedFile, userId)
+                .then((response) => {
+                    console.log("File uploaded successfully:", response);
+                    // Additional actions after a successful upload
+                })
+                .catch((error) => {
+                    console.error("Error uploading file:", error);
+                });
+        } else {
+            console.log("File is not selected");
+        }
     };
     const content = () => {
+
+
         if (
             (storedUser?.roleName === USER_ROLES.ADMIN || // Пользователь - администратор
                 (storedUser?.roleName !== USER_ROLES.ADMIN && usersEquals)) // Пользователь не администратор, но userId совпадает с авторизованным
@@ -528,6 +571,7 @@ const AddUser: React.FC = () => {
                             <div className="card col-md-6 offset-md-3 offset-md-3">
                                 <div className="card-body">
                                     <form>
+                                        {avatar()}
                                         {/* login */}
                                         {login()}
                                         {/* password */}
@@ -551,7 +595,6 @@ const AddUser: React.FC = () => {
             );
         } else return <h2 className="text-center">Nedostatečná práva pro přístup k této stránce</h2>;
     };
-
 
 
     return content();
