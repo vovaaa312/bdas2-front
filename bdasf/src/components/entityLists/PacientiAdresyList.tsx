@@ -173,7 +173,7 @@ const PacientiAdresyList: React.FC = () => {
                     <td>{pacientAdresa.prijmeni}</td>
                     <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
                     <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
-                    <td>{pacientAdresa.cisloTelefonu}</td>
+                    <td>{pacientAdresa.pacientCisloTelefonu}</td>
                     <td>{pacientAdresa.pohlavi}</td>
                     <td>{pacientAdresa.zeme}</td>
                     <td>{pacientAdresa.mesto}</td>
@@ -234,7 +234,7 @@ const PacientiAdresyList: React.FC = () => {
                         <td>{pacientAdresa.prijmeni}</td>
                         <td>{formatDate(new Date(pacientAdresa.datumHospitalizace))}</td>
                         <td>{formatDate(new Date(pacientAdresa.datumNarozeni))}</td>
-                        <td>{pacientAdresa.cisloTelefonu}</td>
+                        <td>{pacientAdresa.pacientCisloTelefonu}</td>
                         <td>{pacientAdresa.pohlavi}</td>
                     </tr>
                 ))}

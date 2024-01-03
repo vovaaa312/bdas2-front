@@ -18,12 +18,26 @@ const HomePage = () => {
     const [scoreOnkologie, setScoreOnkologie] = useState<number | null>(null);
     const [scorePsychiatrie, setScorePsychiatrie] = useState<number | null>(null);
 
+    const [dobaChirurgie, setDobaChirurgie] = useState<number | null>(null);
+    const [dobaKardiologie, setDobaKardiologie] = useState<number | null>(null);
+    const [dobaOcni, setDobaOcni] = useState<number | null>(null);
+    const [dobaOnkologie, setDobaOnkologie] = useState<number | null>(null);
+    const [dobaPsychiatrie, setDobaPsychiatrie] = useState<number | null>(null);
 
+    const fetchAverageStayDuration = (departmentId: number, setter: (value: number | null) => void) => {
+        homePageService
+            .getAverageStayDuration(departmentId)
+            .then((response) => {
+                setter(response.data);
+            })
+            .catch((error) => {
+                console.error("Error while fetching avg duration: ", error);
+            });
+    };
     const fetchAvailableBeds = (departmentId: number, setter: (value: number | null) => void) => {
         homePageService
             .getAvailableBedsInDepartment(departmentId)
             .then((response) => {
-                // Устанавливаем значение доступных койкокапелек
                 setter(response.data);
             })
             .catch((error) => {
@@ -95,6 +109,39 @@ const HomePage = () => {
 
     }, []);
 
+    useEffect(() => {
+        const departmentIds = [
+            70000,      //Chirurgie
+            70001,      //Kardiologie
+            70002,      //Ocni
+            70020,      //Onkologie
+            70004       //Psychiatrie
+        ];
+        departmentIds.forEach((departmentId) => {
+            switch (departmentId) {
+                case 70000:
+                    fetchAverageStayDuration(departmentId, setDobaChirurgie);
+                    break;
+                case 70001:
+                    fetchAverageStayDuration(departmentId, setDobaKardiologie);
+                    break;
+                case 70002:
+                    fetchAverageStayDuration(departmentId, setDobaOcni);
+                    break;
+                case 70020:
+                    fetchAverageStayDuration(departmentId, setDobaOnkologie);
+                    break;
+                case 70004:
+                    fetchAverageStayDuration(departmentId, setDobaPsychiatrie);
+                    break;
+                default:
+                    break;
+            }
+        });
+
+
+    }, []);
+
 
     const descr = () => {
         return <div className="col-md-12">
@@ -130,7 +177,7 @@ const HomePage = () => {
 
                 )}
                 <li>Průměrný skór zdraví: {scoreChirurgie}</li>
-                <li>Informace oddeleni 'Chirurgie'</li>
+                <li>Průměrná doba pobytu: {dobaChirurgie}</li>
             </ul>
         </div>
     }
@@ -151,7 +198,7 @@ const HomePage = () => {
 
                 )}
                 <li>Průměrný skór zdraví: {scoreKardiologie}</li>
-                <li>Informace oddeleni 'Kardiologie'</li>
+                <li>Průměrná doba pobytu: {dobaKardiologie}</li>
             </ul>
         </div>
     }
@@ -170,7 +217,7 @@ const HomePage = () => {
 
                 )}
                 <li>Průměrný skór zdraví: {scoreOcni}</li>
-                <li>Informace oddeleni 'Ocni'</li>
+                <li>Průměrná doba pobytu: {dobaOcni}</li>
             </ul>
         </div>
     }
@@ -189,7 +236,7 @@ const HomePage = () => {
 
                 )}
                 <li>Průměrný skór zdraví: {scoreOnkologie}</li>
-                <li>Informace oddeleni 'Onkologie'</li>
+                <li>Průměrná doba pobytu: {dobaOnkologie}</li>
             </ul>
         </div>
     }
@@ -209,7 +256,7 @@ const HomePage = () => {
 
                 )}
                 <li>Průměrný skór zdraví: {scorePsychiatrie}</li>
-                <li>Informace oddeleni 'Psychiatrie'</li>
+                <li>Průměrná doba pobytu: {dobaPsychiatrie}</li>
             </ul>
         </div>
     }

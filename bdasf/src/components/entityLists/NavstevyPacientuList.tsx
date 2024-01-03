@@ -21,12 +21,12 @@ const NavstevyPacientuList: React.FC = () => {
         }
     }, []);// Пустой массив зависимостей, чтобы выполнять только один раз при монтировании
 
-
     useEffect(() => {
+        if (user) {
+            getAllNavstevy();
+        }
+    }, [user]); // Зависимость от user
 
-        getAllNavstevy();
-
-    }, [user]);
 
 
     const getAllNavstevy = () => {
@@ -92,7 +92,6 @@ const NavstevyPacientuList: React.FC = () => {
     };
 
     const pageTitle = () => {
-        console.log("asdasdasd")
         if(user?.roleName!==USER_ROLES.UZIVATEL && user){
             return <h1>Navstevy pacientu</h1>
         }

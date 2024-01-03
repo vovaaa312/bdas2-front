@@ -9,7 +9,7 @@ const AddZamestnanec: React.FC = () => {
     jmeno: "",
     prijmeni: "",
     datumNarozeni: new Date(),
-    cisloTelefonu: 0,
+    pacientCisloTelefonu: 0,
     pracZkusenosti: 0,
     pohlavi: "",
     zeme: "",
@@ -99,7 +99,7 @@ const AddZamestnanec: React.FC = () => {
               placeholder="-"
               type="number"
               name="cisloTelefonu"
-              value={formData.cisloTelefonu}
+              value={formData.pacientCisloTelefonu}
               onChange={handleChange}
             />
           </div>

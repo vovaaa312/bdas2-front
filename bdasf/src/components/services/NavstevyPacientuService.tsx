@@ -15,6 +15,8 @@ class NavstevyPacientuService {
         return axios.post<NavstevaPacienta>(BASE_URL, navsteva);
     }
 
+
+
     getByPacientId(pacientId: number): Promise<AxiosResponse<NavstevaPacienta[]>> {
         return axios.get<NavstevaPacienta[]>(`${BASE_URL}/pacient/${pacientId}`);
     }

@@ -69,6 +69,7 @@ function App() {
 
                 <Route path="/navstevy-pacientu" element={<NavstevyPacientuList/>}/>
                 <Route path="/add-navsteva" element={<AddNavsteva/>}/>
+                <Route path="/edit-navsteva/:id" element={<AddNavsteva/>}/>
 
                 <Route path="/logs" element={<LogList/>}/>
                 <Route path="/catalog" element={<SystemCatalogList/>}/>

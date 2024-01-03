@@ -26,7 +26,7 @@ const AddZamestnanecData: React.FC = () => {
         prijmeni: "",
         pohlavi:"",
         datumNarozeni: new Date().toISOString().split("T")[0],
-        cisloTelefonu: 0,
+        pacientCisloTelefonu: 0,
         pracovniZkusenosti: 0,
 
         idAdresa: 0,
@@ -232,11 +232,11 @@ const AddZamestnanecData: React.FC = () => {
                                         type="number"
                                         name="cisloTelefonu"
                                         className="form-control"
-                                        value={zamestnanec.cisloTelefonu}
+                                        value={zamestnanec.pacientCisloTelefonu}
                                         onChange={(e) =>
                                             setZamestnanec((prevPacient) => ({
                                                 ...prevPacient,
-                                                cisloTelefonu: parseInt(e.target.value, 10),
+                                                pacientCisloTelefonu: parseInt(e.target.value, 10),
                                             }))
                                         }
                                     />

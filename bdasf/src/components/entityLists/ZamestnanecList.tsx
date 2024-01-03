@@ -79,7 +79,7 @@ const ZamestnanecList: React.FC = () => {
               <td>{zamestnanec.jmeno}</td>
               <td>{zamestnanec.prijmeni}</td>
               <td>{formatDate(new Date(zamestnanec.datumNarozeni))}</td>
-              <td>{zamestnanec.cisloTelefonu}</td>
+              <td>{zamestnanec.pacientCisloTelefonu}</td>
               <td>{zamestnanec.pracZkusenosti}</td>
               <td>{zamestnanec.idOddeleni}</td>
               <td>

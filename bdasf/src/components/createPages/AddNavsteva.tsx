@@ -5,7 +5,7 @@ import {NavstevaPacienta} from "../model/NavstevaPacienta.tsx";
 import NavstevyPacientuService from "../services/NavstevyPacientuService.tsx";
 import PacientService from "../services/PacientService.tsx";
 import {Pacient} from "../model/Pacient.tsx";
-import Select from 'react-select';
+import Select, {ActionMeta, SingleValue} from 'react-select';
 import ZamestnanecDataService from "../services/ZamestnanecDataService.tsx";
 import {ZamestnanecData} from "../model/ZamestnanecData.tsx";
 import StatusNavstevyService from "../services/StatusNavstevyService.tsx";
@@ -17,7 +17,7 @@ import {USER_ROLES} from "../model/USER_ROLES.tsx";
 const AddNavsteva: React.FC = () => {
     const navigate = useNavigate();
     const {id} = useParams<{ id?: string }>();
-
+    const navstevaId = parseInt(id || "0");
     const [navsteva, setNavsteva] = useState<NavstevaPacienta>({
         idNavsteva: 0,
         // datum: new Date().toISOString().split("T")[0], // начальное значение - пустая строка
@@ -29,9 +29,11 @@ const AddNavsteva: React.FC = () => {
         idStatus: 0,
         pacientJmeno: '',
         pacientPrijmeni: '',
-        cisloTelefonu: 0,
+        pacientCisloTelefonu: 0,
         zamestnanecJmeno: '',
         zamestnanecPrijmeni: '',
+        zamestnanecCisloTelefonu: 0,
+        idOddeleni: 0,
         status: ''
     });
     const [pacienti, setPacienti] = useState<Pacient[]>([]);
@@ -39,6 +41,7 @@ const AddNavsteva: React.FC = () => {
     const [statusyNavstev, setStatusyNavstev] = useState<StatusNavstevy[]>([]);
     const [user, setUser] = useState<StorageUserData | null>(null);
 
+    const [selectedPacient, setSelectedPacient] = useState<Pacient | null>(null);
     //const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
@@ -64,15 +67,54 @@ const AddNavsteva: React.FC = () => {
                 idZamestnanec: user.zamestnanecId
             }));
         }
-    }, [user]);
+
+        if (id) {
+            NavstevyPacientuService.getByNavstevaId(navstevaId)
+                .then((response) => {
+                    setNavsteva(response.data);
+                    // setPacienti(response.data.idPacient);
+                    // setOddeleni(response.data.idOddeleni);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+    }, [id]);
+
+    useEffect(() => {
+        if (id) {
+            NavstevyPacientuService.getByNavstevaId(navstevaId)
+                .then((response) => {
+                    const fetchedNavsteva = response.data;
+
+                    setNavsteva(fetchedNavsteva);
+                    const foundPacient = pacienti.find(p => p.idPacient === fetchedNavsteva.idPacient);
+                    setSelectedPacient(foundPacient || null);
+                    console.log(navsteva)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    }, [id]);
 
     const handlePacientChange = (selectedOption) => {
         console.log("Selected Pacient:", selectedOption);
         setNavsteva(prevNavsteva => ({
+
             ...prevNavsteva,
             idPacient: selectedOption ? selectedOption.value : null
         }));
     };
+
+    // const handlePacientChange = (newValue: SingleValue<Pacient>, actionMeta: ActionMeta<Pacient>) => {
+    //     console.log("Selected Pacient:", newValue);
+    //     setNavsteva(prevNavsteva => ({
+    //         ...prevNavsteva,
+    //         idPacient: newValue ? newValue.idPacient : null
+    //     }));
+    // };
 
     const handleZamestnanecChange = (selectedOption) => {
         console.log("Selected Zamestnanec:", selectedOption);
@@ -91,7 +133,10 @@ const AddNavsteva: React.FC = () => {
     };
 
 
-
+    // const pacientOptions = pacienti.map(pacient => ({
+    //     value: pacient.idPacient,
+    //     label: `${pacient.jmeno} ${pacient.prijmeni}`
+    // }));
 
     const pacientOptions = pacienti.map(pacient => ({
         value: pacient.idPacient,
@@ -106,27 +151,72 @@ const AddNavsteva: React.FC = () => {
         value: status.idStatus,
         label: status.status
     }));
-    const saveNavsteva = (e: React.FormEvent) => {
+    const saveOrUpdateNavsteva = async (e: React.FormEvent) => {
         e.preventDefault();
 
 
-        NavstevyPacientuService.createNavsteva(navsteva)
-            .then((response) => {
+        try {
+            if (id) {
+                console.log("Before Update/Insert:", navsteva); // Check the navsteva object before the update/insert
+
+                // NavstevyPacientuService.getByNavstevaId(analyzaId).then((response) => {
+                //     setNavsteva(response.data);
+                //
+                //     // setPacienti(response.data.idPacient);
+                //     // setOddeleni(response.data.idOddeleni);
+                // })
+                //     .catch((error) => {
+                //         console.log(error);
+                //     });
+
+                const response = await NavstevyPacientuService.updateNavsteva(navstevaId, navsteva);
                 console.log(response.data);
                 navigate("/navstevy-pacientu");
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+            } else {
+                const navstevaPacienta = {
+                    idNavsteva: navsteva.idNavsteva,
+                    datum: navsteva.datum,
+                    idPacient: navsteva.idPacient,
+                    idZamestnanec: navsteva.idZamestnanec,
+                    problem: navsteva.problem,
+                    rekomendace: navsteva.rekomendace,
+                    idStatus: navsteva.idStatus,
+                    pacientJmeno: navsteva.pacientJmeno,
+                    pacientPrijmeni: navsteva.pacientPrijmeni,
+                    pacientCisloTelefonu: navsteva.pacientCisloTelefonu,
+                    zamestnanecJmeno: navsteva.zamestnanecJmeno,
+                    zamestnanecPrijmeni: navsteva.zamestnanecPrijmeni,
+                    zamestnanecCisloTelefonu: navsteva.zamestnanecCisloTelefonu,
+                    idOddeleni: navsteva.idOddeleni,
+                    status: navsteva.status
+                }
+                const response = await NavstevyPacientuService.createNavsteva(navstevaPacienta);
+                console.log(response.data);
+                navigate('/navstevy-pacientu');
 
-        console.log(navsteva);
+            }
+
+
+            // NavstevyPacientuService.createNavsteva(navsteva)
+            //     .then((response) => {
+            //         console.log(response.data);
+            //         navigate("/navstevy-pacientu");
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            //
+            // console.log(navsteva);
+        } catch (error) {
+            console.log(error);
+        }
 
     };
 
 
     const title = () => {
         if (user?.roleName !== USER_ROLES.UZIVATEL &&
-            user?.roleName !== USER_ROLES.PACIENT&&
+            user?.roleName !== USER_ROLES.PACIENT &&
             user) {
             if (id) {
                 return <h2 className="text-center">Update navsteva</h2>;
@@ -145,9 +235,9 @@ const AddNavsteva: React.FC = () => {
 
     const form = () => {
         if (user?.roleName !== USER_ROLES.UZIVATEL &&
-            user?.roleName !== USER_ROLES.PACIENT&&
+            user?.roleName !== USER_ROLES.PACIENT &&
             user) {
-            return  <div className="container">
+            return <div className="container">
                 <div className="row">
                     <div className="card col-md-6 offset-md-3 offset-md-3">
                         <div className="card-body">
@@ -155,8 +245,11 @@ const AddNavsteva: React.FC = () => {
                                 {/* Pacient  */}
                                 <div className="form-group mb-2">
                                     <label>Vyberte pacienta</label>
+
+
                                     <Select
                                         options={pacientOptions}
+                                        value={pacientOptions.find((option) => option.value === navsteva.idPacient)}
                                         onChange={handlePacientChange}
                                     />
                                 </div>
@@ -166,6 +259,7 @@ const AddNavsteva: React.FC = () => {
                                     <label>Vyberte zamestnance</label>
                                     <Select
                                         options={zamestnanecOptions}
+                                        value={zamestnanecOptions.find((option)=>option.value===navsteva.idZamestnanec)}
                                         onChange={handleZamestnanecChange}
                                     />
                                 </div>
@@ -226,6 +320,7 @@ const AddNavsteva: React.FC = () => {
                                     <label>Vyberte status navstevy</label>
                                     <Select
                                         options={statusNavstevyOptions}
+                                        value={statusNavstevyOptions.find((option) => option.value === navsteva.idStatus)}
                                         onChange={handleStatusChange}
                                     />
                                 </div>
@@ -243,7 +338,7 @@ const AddNavsteva: React.FC = () => {
                                     <button
                                         type="button"
                                         className="btn btn-success"
-                                        onClick={(e) => saveNavsteva(e)}
+                                        onClick={(e) => saveOrUpdateNavsteva(e)}
                                     >
                                         Submit
                                     </button>

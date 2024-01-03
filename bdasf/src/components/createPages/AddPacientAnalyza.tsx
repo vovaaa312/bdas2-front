@@ -26,7 +26,7 @@ const AddPacientAnalyza: React.FC = () => {
         idPacient: 0,
         jmeno: "",
         prijmeni: "",
-        cisloTelefonu: 0,
+        pacientCisloTelefonu: 0,
         pohlavi: "",
         idKarta: 0,
         idOddeleni:0,

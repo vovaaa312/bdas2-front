@@ -17,7 +17,7 @@ const AddPacient: React.FC = () => {
     prijmeni: "",
     datumHospitalizace: new Date(),
     datumNarozeni: new Date(),
-    cisloTelefonu: 0,
+    pacientCisloTelefonu: 0,
     pohlavi: "",
   });
 
@@ -183,11 +183,11 @@ const AddPacient: React.FC = () => {
                     type="number"
                     name="cisloTelefonu"
                     className="form-control"
-                    value={pacient.cisloTelefonu}
+                    value={pacient.pacientCisloTelefonu}
                     onChange={(e) =>
                       setPacient((prevPacient) => ({
                         ...prevPacient,
-                        cisloTelefonu: parseInt(e.target.value, 10),
+                        pacientCisloTelefonu: parseInt(e.target.value, 10),
                       }))
                     }
                   />

@@ -84,7 +84,7 @@ const PacientList: React.FC = () => {
               {/*<td>{pacient.datumNarozeni.toString()}</td>*/}
               <td>{formatDate(new Date(pacient.datumHospitalizace))}</td>
               <td>{formatDate(new Date(pacient.datumNarozeni))}</td>
-              <td>{pacient.cisloTelefonu}</td>
+              <td>{pacient.pacientCisloTelefonu}</td>
               <td>{pacient.pohlavi}</td>
 
               <td>

@@ -39,6 +39,10 @@ class PacientAnalyzaService {
     vypocitatScoreZdraviOddeleni(): Promise<AxiosResponse<OddeleniScore[]>> {
         return axios.get<OddeleniScore[]>(`${BASE_URL}/avgscore`);
     }
+
+    vypocitatPrumerneAnalyzy(pacientId: number): Promise<AxiosResponse<Map<string, number>>> {
+        return axios.get<Map<string, number>>(`${BASE_URL}/prum-analyzy/${pacientId}`);
+    }
 }
 
 export default new PacientAnalyzaService();

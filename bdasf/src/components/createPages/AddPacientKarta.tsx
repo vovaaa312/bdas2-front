@@ -30,7 +30,7 @@ const AddPacientKarta: React.FC = () => {
         prijmeni: "",
         datumHospitalizace: new Date().toISOString().split("T")[0],
         datumNarozeni: new Date().toISOString().split("T")[0],
-        cisloTelefonu: 0,
+        pacientCisloTelefonu: 0,
         pohlavi: "",
 
         idKarta: 0,
@@ -60,7 +60,7 @@ const AddPacientKarta: React.FC = () => {
                     prijmeni: karta.prijmeni,
                     datumHospitalizace: karta.datumHospitalizace,
                     datumNarozeni: karta.datumNarozeni,
-                    cisloTelefonu: karta.cisloTelefonu,
+                    pacientCisloTelefonu: karta.cisloTelefonu,
                     pohlavi: karta.pohlavi,
                     idKarta: karta.idKarta,
                     idOddeleni: karta.idOddeleni,

@@ -159,7 +159,7 @@ const ZamestnanciDataList: React.FC = () => {
                     <td>{zamestnanecData.jmeno}</td>
                     <td>{zamestnanecData.prijmeni}</td>
                     <td>{formatDate(new Date(zamestnanecData.datumNarozeni))}</td>
-                    <td>{zamestnanecData.cisloTelefonu}</td>
+                    <td>{zamestnanecData.pacientCisloTelefonu}</td>
                     <td>{zamestnanecData.pracovniZkusenosti}</td>
                     <td>{zamestnanecData.pohlavi}</td>
 
@@ -228,7 +228,7 @@ const ZamestnanciDataList: React.FC = () => {
                     <td>{zamestnanecData.jmeno}</td>
                     <td>{zamestnanecData.prijmeni}</td>
                     <td>{formatDate(new Date(zamestnanecData.datumNarozeni))}</td>
-                    <td>{zamestnanecData.cisloTelefonu}</td>
+                    <td>{zamestnanecData.pacientCisloTelefonu}</td>
                     <td>{zamestnanecData.pracovniZkusenosti}</td>
                     <td>{zamestnanecData.pohlavi}</td>
 

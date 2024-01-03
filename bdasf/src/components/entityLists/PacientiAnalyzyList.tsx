@@ -26,10 +26,6 @@ const PacientiAnalyzyList: React.FC = () => {
         }, [user]);
 
 
-
-
-
-
     const getAllAnalyzy = () => {
             if (user?.roleName === USER_ROLES.ADMIN) {
                 PacientAnalyzaService.getAllAnalyzy()
@@ -144,6 +140,23 @@ const PacientiAnalyzyList: React.FC = () => {
 
         }
 
+    const avgAnalyzy = async (idAnalyza: number) => {
+        try {
+            const response = await PacientAnalyzaService.vypocitatPrumerneAnalyzy(idAnalyza);
+            const data = response.data;
+            alert(`Prumerne analyzy pacient: ${JSON.stringify(data)}`);
+        } catch (error) {
+            console.error('Error fetching avg analyzy data:', error);
+            alert('Error fetching avg analyzy data');
+        }
+    };
+    const avgAnalyzyButton = (idAnalyza: number) => {
+        return <button className="btn btn-secondary" onClick={() => avgAnalyzy(idAnalyza)} style={{marginLeft: "10px"}}>
+            Prumerne Analyzy
+        </button>;
+    };
+
+
 
 
         return (
@@ -189,6 +202,8 @@ const PacientiAnalyzyList: React.FC = () => {
                             <td>
                                 {updateButton(pacientAnalyza.idAnalyza)}
                                 {deleteButton(pacientAnalyza.idAnalyza)}
+                                {avgAnalyzyButton(pacientAnalyza.idPacient)}
+
                             </td>
 
                         </tr>
